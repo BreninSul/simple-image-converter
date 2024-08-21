@@ -1,10 +1,9 @@
 import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageConsumer
-import io.github.breninsul.simpleimageconvertor.service.reader.*
 import io.github.breninsul.simpleimageconvertor.service.writer.WebpWriter
 import org.junit.jupiter.api.Test
 import java.io.File
 
-class TeatRead {
+class TestRead {
     val writer = WebpWriter()
     val reader = DefaultImageConsumer()
     @Test

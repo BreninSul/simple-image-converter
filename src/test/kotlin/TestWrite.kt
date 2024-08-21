@@ -5,9 +5,8 @@ import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageCon
 import io.github.breninsul.simpleimageconvertor.service.convert.DefaultImageConverter
 import org.junit.jupiter.api.Test
 import java.io.File
-import javax.imageio.ImageIO
 
-class TeatWrite {
+class TestWrite {
     val writer = DefaultImageConverter()
     val reader = DefaultImageConsumer()
     @Test
