@@ -1,4 +1,5 @@
 import com.sksamuel.scrimage.ScaleMethod
+import com.sksamuel.scrimage.angles.Degrees
 import io.github.breninsul.simpleimageconvertor.dto.*
 import io.github.breninsul.simpleimageconvertor.service.processor.ImageProcessorService
 import io.github.breninsul.simpleimageconvertor.service.transformer.ImageTransformer
@@ -18,7 +19,7 @@ class TestTransform {
         outFile.createNewFile()
         processor.process({ file.inputStream() }, { outFile.outputStream() },
             listOf(ConvertSettings(format = format)),
-            listOf(ScaleTransformer(), ImageTransformer{ img, st->img}),
+            listOf(ScaleTransformer(), ImageTransformer{ img, st->img.rotate(Degrees(90))}),
             listOf(ScaleSettings(Resolution(100, 100), ScaleMethod.FastScale))
         )
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
