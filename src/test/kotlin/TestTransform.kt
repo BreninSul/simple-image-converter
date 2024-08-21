@@ -1,11 +1,12 @@
 import com.sksamuel.scrimage.ScaleMethod
 import io.github.breninsul.simpleimageconvertor.dto.*
 import io.github.breninsul.simpleimageconvertor.service.processor.ImageProcessorService
+import io.github.breninsul.simpleimageconvertor.service.transformer.ImageTransformer
 import io.github.breninsul.simpleimageconvertor.service.transformer.ScaleTransformer
 import org.junit.jupiter.api.Test
 import java.io.File
 
-class TestProcess {
+class TestTransform {
     val processor = ImageProcessorService.Default
 
     @Test
@@ -17,7 +18,7 @@ class TestProcess {
         outFile.createNewFile()
         processor.process({ file.inputStream() }, { outFile.outputStream() },
             listOf(ConvertSettings(format = format)),
-            listOf(ScaleTransformer()),
+            listOf(ScaleTransformer(), ImageTransformer{ img, st->img}),
             listOf(ScaleSettings(Resolution(100, 100), ScaleMethod.FastScale))
         )
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")

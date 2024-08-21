@@ -8,13 +8,12 @@ import io.github.breninsul.simpleimageconvertor.service.transformer.ScaleTransfo
 import java.util.logging.Level
 
 /** Represents an interface for image transformation operations. */
-@FunctionalInterface
-interface ImageTransformer {
+fun interface ImageTransformer {
     /**
      * The `name` property represents the name of an image transformer. It is a
      * string value.
      */
-    val name: String
+    val name: String get() = "Functional"
 
     /**
      * Processes a static image using the provided settings.
@@ -62,5 +61,5 @@ interface ImageTransformer {
      *
      * @return `true` if all settings in the list support the operation, `false` otherwise.
      */
-    fun List<Settings>.supports(): Boolean
+    fun List<Settings>.supports(): Boolean =true
 }
