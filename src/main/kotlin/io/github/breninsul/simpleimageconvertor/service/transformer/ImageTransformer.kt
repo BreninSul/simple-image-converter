@@ -8,6 +8,7 @@ import io.github.breninsul.simpleimageconvertor.service.transformer.ScaleTransfo
 import java.util.logging.Level
 
 /** Represents an interface for image transformation operations. */
+@FunctionalInterface
 interface ImageTransformer {
     /**
      * The `name` property represents the name of an image transformer. It is a
