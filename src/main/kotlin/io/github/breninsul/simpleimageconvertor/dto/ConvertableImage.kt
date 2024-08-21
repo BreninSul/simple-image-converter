@@ -2,6 +2,7 @@ package io.github.breninsul.simpleimageconvertor.dto
 
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
+import io.github.breninsul.simpleimageconvertor.exception.ImageException
 
 open class ConvertableImage(
     val animation: AnimatedGifWithDelay?,
@@ -9,10 +10,10 @@ open class ConvertableImage(
 ) {
     init {
         if (animation == null && image == null) {
-            throw IllegalStateException("Both animation and image is null")
+            throw ImageException("Both animation and image is null")
         }
         if (animation != null && image != null) {
-            throw IllegalStateException("Both animation and image not null")
+            throw ImageException("Both animation and image not null")
         }
     }
 

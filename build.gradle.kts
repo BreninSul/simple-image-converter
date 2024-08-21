@@ -5,8 +5,6 @@ plugins {
     val springBootVersion = "3.3.2"
     id("java")
     id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.1.1"
-    id("org.springframework.boot") version springBootVersion
-    id("io.spring.dependency-management") version "1.1.5"
     id("org.jetbrains.kotlin.jvm") version kotlinVersion
     id("org.jetbrains.kotlin.plugin.spring") version kotlinVersion
     id("org.jetbrains.kotlin.kapt") version kotlinVersion
@@ -48,6 +46,7 @@ dependencies {
     api("com.sksamuel.scrimage:scrimage-webp:4.2.0")
     api("com.twelvemonkeys.imageio:imageio-jpeg:3.11.0")
     api("com.twelvemonkeys.imageio:imageio-core:3.11.0")
+    api("com.twelvemonkeys.imageio:imageio-metadata:3.11.0")
     api("com.twelvemonkeys.imageio:imageio-webp:3.11.0")
     api("com.twelvemonkeys.imageio:imageio-bmp:3.11.0")
     api("com.twelvemonkeys.imageio:imageio-iff:3.11.0")
@@ -56,11 +55,26 @@ dependencies {
     api("com.twelvemonkeys.imageio:imageio-sgi:3.11.0")
     api("com.twelvemonkeys.imageio:imageio-tga:3.11.0")
     api("com.twelvemonkeys.imageio:imageio-tiff:3.11.0")
+    api("com.twelvemonkeys.imageio:imageio-batik:3.11.0")
+    api("com.twelvemonkeys.imageio:imageio-pict:3.11.0")
+    api("com.twelvemonkeys.imageio:imageio-psd:3.11.0")
+    api("com.twelvemonkeys.imageio:imageio-icns:3.11.0")
+    api("com.twelvemonkeys.imageio:imageio-pdf:3.11.0")
+    api("com.twelvemonkeys.imageio:imageio-thumbsdb:3.11.0")
+    api("com.twelvemonkeys.imageio:imageio-hdr:3.11.0")
+    api("com.twelvemonkeys.imageio:imageio-clippath:3.11.0")
+    api("com.twelvemonkeys.imageio:imageio-xwd:3.11.0")
+    api("org.apache.xmlgraphics:batik-transcoder:1.17")
+    api("org.apache.xmlgraphics:batik-rasterizer-ext:1.17")
+    api("org.apache.xmlgraphics:batik-extension:1.17")
+    api("org.apache.xmlgraphics:batik-anim:1.17")
+    api("org.apache.xmlgraphics:batik-svggen:1.17")
+
     api("com.madgag:animated-gif-lib:1.4")
     api("net.java.dev.jna:jna:5.13.0")
-    implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
+
 }
 
 tasks.withType<KotlinCompile> {

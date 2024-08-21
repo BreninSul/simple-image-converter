@@ -17,9 +17,10 @@ open class AnimationToStaticSettings(
      * Represents the strategy used for converting an animation to a static image.
      */
     open val strategy:StrategyEnum=StrategyEnum.FIRST_FRAME
-):Settings {
+):WriterSettings {
     enum class StrategyEnum {
         FIRST_FRAME,
+        MIDDLE_FRAME,
         LAST_FRAME,
         SPECIFIC_FRAME,
     }
