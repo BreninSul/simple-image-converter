@@ -2,24 +2,26 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     val kotlinVersion = "1.9.23"
-    val springBootVersion = "3.3.2"
     id("java")
     id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.1.1"
     id("org.jetbrains.kotlin.jvm") version kotlinVersion
     id("org.jetbrains.kotlin.plugin.spring") version kotlinVersion
     id("org.jetbrains.kotlin.kapt") version kotlinVersion
+    id("org.jetbrains.dokka") version "1.9.20"
 }
 
 group = "io.github.breninsul"
-version = "1.0.1"
+version = "1.0.0"
 
-val javaVersion = JavaVersion.VERSION_21
+val javaVersion = JavaVersion.VERSION_17
 
+
+tasks.named<Jar>("javadocJar") {
+    from(tasks.named("dokkaJavadoc"))
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
 java {
     sourceCompatibility = javaVersion
-}
-
-java {
     withJavadocJar()
     withSourcesJar()
 }
