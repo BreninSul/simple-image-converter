@@ -158,12 +158,6 @@ Can be usefully for dynamic conversion (where settings and operations list will 
 - ico
 - pdf
 
-It provides:
-- Named threads in executor service
-- Limited by semaphore parallel jobs executor service
-- Main thread blocking limited by queue executor service (parent thread will wait  till queue will have empty space for task)
-
-
 
 #### WEBP restrictions:
 Libwebp native library (JNA) is used to read WEBP https://github.com/BreninSul/WebPDecoderJN (fork of https://github.com/tduva/WebPDecoderJN)
