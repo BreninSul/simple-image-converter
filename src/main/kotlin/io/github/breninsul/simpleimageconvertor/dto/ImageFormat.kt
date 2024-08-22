@@ -1,6 +1,6 @@
 package io.github.breninsul.simpleimageconvertor.dto
 
-open class ImageFormat(val name:String ,val supportsAnimation:Boolean=false) {
+open class ImageFormat(val name: String, val supportsAnimation: Boolean = false) {
     override fun equals(other: Any?): Boolean {
         return name == (other as? ImageFormat)?.name
     }
@@ -12,18 +12,22 @@ open class ImageFormat(val name:String ,val supportsAnimation:Boolean=false) {
     override fun toString(): String {
         return name
     }
-    companion object{
-       val  WEBP=ImageFormat("WEBP",true)
-       val  GIF=ImageFormat("GIF",true)
-       val  PNG=ImageFormat("PNG")
-       val  JPEG=ImageFormat("JPEG")
-       val  PDF=ImageFormat("PDF")
-       val  BMP=ImageFormat("BMP")
-       val  WBMP=ImageFormat("WBMP")
-       val  TIFF=ImageFormat("TIFF")
-       val  TGA=ImageFormat("TGA")
-       val  PNM=ImageFormat("PNM")
-       val  PICT=ImageFormat("PICT")
-       val  IFF=ImageFormat("IFF")
+
+    companion object {
+        val WEBP = ImageFormat("WEBP", true)
+        val GIF = ImageFormat("GIF", true)
+        val PNG = ImageFormat("PNG")
+        val JPEG = ImageFormat("JPEG")
+        val PDF = ImageFormat("PDF")
+        val BMP = ImageFormat("BMP")
+        val WBMP = ImageFormat("WBMP")
+        val TIFF = ImageFormat("TIFF")
+        val TGA = ImageFormat("TGA")
+        val PNM = ImageFormat("PNM")
+        val PICT = ImageFormat("PICT")
+        val PSD = ImageFormat("PSD")
+        val ICNS = ImageFormat("ICNS")
+        val ICO = ImageFormat("ICO")
+        val IFF = ImageFormat("IFF")
     }
 }

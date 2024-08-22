@@ -1,6 +1,5 @@
 package io.github.breninsul.simpleimageconvertor.service.convert
 
-import com.sksamuel.scrimage.nio.PcxWriter
 import io.github.breninsul.simpleimageconvertor.dto.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.dto.ConvertableImage
 import io.github.breninsul.simpleimageconvertor.dto.Settings
@@ -26,8 +25,11 @@ open class DefaultImageConverter(
         TgaWriter(),
         TiffWriter(),
         WbmpWriter(),
-        WebpWriter()
-    ).let { it + PdfWriter(it) }
+        WebpWriter(),
+        PsdWriter(),
+        IcnsWriter(),
+        IcoWriter(),
+        ).let { it + PdfWriter(it) }
 ) : ImageConverter {
 
     override fun convert(

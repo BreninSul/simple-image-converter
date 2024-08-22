@@ -72,6 +72,18 @@ class TestWrite {
     fun writeAnimatedToStaticTIFF() {
         animatedToStatic(ImageFormat.TIFF)
     }
+    @Test
+    fun writeAnimatedToStaticPSD() {
+        animatedToStatic(ImageFormat.PSD)
+    }
+    @Test
+    fun writeIconICNS() {
+        icon(ImageFormat.ICNS)
+    }
+    @Test
+    fun writeIconICO() {
+        icon(ImageFormat.ICO)
+    }
     fun writeStatic(format: ImageFormat) {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/IMG20240804175503.jpg").toURI())
@@ -90,7 +102,15 @@ class TestWrite {
         writer.convert(image, listOf(ConvertSettings(format = format), AnimationToStaticSettings(strategy = AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME)), { outFile.outputStream() })
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
-
+    protected open fun icon(format: ImageFormat) {
+        val time = System.currentTimeMillis()
+        val file = File(javaClass.classLoader.getResource("images/icon.png").toURI())
+        val image = reader.read({ file.inputStream() }, listOf())
+        val outFile = File("testwrite/animated-to-static.${format.name.lowercase()}")
+        outFile.createNewFile()
+        writer.convert(image, listOf(ConvertSettings(format = format), AnimationToStaticSettings(strategy = AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME)), { outFile.outputStream() })
+        println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
+    }
     protected open fun animated(format: ImageFormat) {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/animated-webp-supported.webp").toURI())

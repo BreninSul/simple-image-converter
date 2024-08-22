@@ -8,20 +8,21 @@ import java.util.function.Supplier
 
 open class AbstractTwelveMonkeysWriterWriter(
     protected open val supportedImageTypes : Set<ImageFormat>,
-    protected open val writerFormatName : String
+    protected open val writerFormatName : String,
+    private val order:Int = 1,
+    protected open val delegatedWriter:ParametrizedTwelveMonkeysWriter =  ParametrizedTwelveMonkeysWriter(writerFormatName)
 ) : StaticImageWriter {
-    val delegatedWriter =  ParametrizedTwelveMonkeysWriter(writerFormatName)
 
     override fun supportedTypes(): Set<ImageFormat> {
         return supportedImageTypes
     }
     override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: Supplier<OutputStream>) {
         val params = settings.getSetting<ImageIOWriterSettings>()
-        delegatedWriter.write(image, image.metadata, out.get(), params)
+        delegatedWriter.write(image.awt(), image.metadata, out.get(), params)
     }
 
     override fun getOrder(): Int {
-        return 1
+        return order
     }
 
 }
