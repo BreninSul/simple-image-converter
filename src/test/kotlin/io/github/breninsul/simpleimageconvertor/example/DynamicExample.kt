@@ -20,7 +20,7 @@ open class DynamicExample {
         processor.process({ file.inputStream() }, { outFile.outputStream() },
             listOf(ConvertSettings(format = ImageFormat.GIF)),
             listOf(ScaleTransformer(), ImageTransformer{ img, st->img.rotate(Degrees(90))}),
-            listOf(ScaleSettings(Resolution(100, 100), ScaleMethod.FastScale))
+            listOf(ScaleSettings(Resolution(100, 100), ScaleMethod.FastScale)),
         )
     }
 }

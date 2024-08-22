@@ -81,7 +81,7 @@ interface ImageProcessorService {
         transformers: List<ImageTransformer> = listOf(),
         transformSettings: List<TransformSettings> = listOf(),
         readerSettings: List<ReaderSettings> = listOf(),
-        mimeType: String?,
+        mimeType: String?  = null,
         id: String? = null,
     ): String? {
         return process(inputStreamSupplier, outputStreamSupplier, readerSettings + writerSettings + transformSettings, transformers,mimeType, id)
@@ -102,7 +102,7 @@ interface ImageProcessorService {
         outputStreamSupplier: Supplier<OutputStream>,
         settings: List<Settings>,
         transformers: List<ImageTransformer>,
-        mimeType: String?,
+        mimeType: String?  = null,
         id: String? = null,
     ): String?
 
@@ -122,7 +122,7 @@ interface ImageProcessorService {
         transformers: List<ImageTransformer> = listOf(),
         transformSettings: List<TransformSettings> = listOf(),
         readerSettings: List<ReaderSettings> = listOf(),
-        mimeType: String?,
+        mimeType: String?  = null,
         id: String? = null,
     ): ImageOrAnimation {
         return performImageTransformation(inputStreamSupplier, transformers, readerSettings + transformSettings,mimeType, id)
