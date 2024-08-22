@@ -80,7 +80,6 @@ open class DynamicExample {
     val processor = ImageProcessorService.Default
 
     fun convertWebpToGif() {
-        val format = ImageFormat.WEBP
         val file = File(javaClass.classLoader.getResource("dir/animated-webp.webp").toURI())
         val outFile = File("dir/animated.gif")
         outFile.createNewFile()
