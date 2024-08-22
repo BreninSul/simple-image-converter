@@ -42,7 +42,7 @@ fun interface ImageTransformer {
      * @return The processed image as an instance of [ConvertableImage].
      * @throws Exception if an error occurs during image processing.
      */
-    fun process(image: ConvertableImage, settings: List<Settings>): ConvertableImage {
+    fun process(image: ConvertableImage, settings: List<Settings> = listOf()): ConvertableImage {
         try {
             val processed = if (image.isAnimation()) {
                 ConvertableImage(image.animation!!.processAnimation(settings), null)

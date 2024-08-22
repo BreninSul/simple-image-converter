@@ -1,30 +1,27 @@
+package io.github.breninsul.simpleimageconvertor.example
+
 import com.sksamuel.scrimage.ScaleMethod
 import com.sksamuel.scrimage.angles.Degrees
-import io.github.breninsul.simpleimageconvertor.dto.*
 import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
+import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
+import io.github.breninsul.simpleimageconvertor.dto.Resolution
+import io.github.breninsul.simpleimageconvertor.dto.ScaleSettings
 import io.github.breninsul.simpleimageconvertor.service.processor.ImageProcessorService
 import io.github.breninsul.simpleimageconvertor.service.transformer.ImageTransformer
 import io.github.breninsul.simpleimageconvertor.service.transformer.ScaleTransformer
-import org.junit.jupiter.api.Test
 import java.io.File
-
-class TestTransform {
+open class DynamicExample {
     val processor = ImageProcessorService.Default
 
-    @Test
-    fun scaleAnimation() {
+    fun convertWebpToGif() {
         val format = ImageFormat.WEBP
-        val time = System.currentTimeMillis()
-        val file = File(javaClass.classLoader.getResource("images/animated-webp-supported.webp").toURI())
-        val outFile = File("testtransform/animated.${format.name.lowercase()}")
+        val file = File(javaClass.classLoader.getResource("dir/animated-webp.webp").toURI())
+        val outFile = File("dir/animated.gif")
         outFile.createNewFile()
         processor.process({ file.inputStream() }, { outFile.outputStream() },
-            listOf(ConvertSettings(format = format)),
+            listOf(ConvertSettings(format = ImageFormat.WEBP)),
             listOf(ScaleTransformer(), ImageTransformer{ img, st->img.rotate(Degrees(90))}),
             listOf(ScaleSettings(Resolution(100, 100), ScaleMethod.FastScale))
         )
-        println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
-
-
 }

@@ -7,6 +7,14 @@ class TestRead {
     val writer = WebpWriter()
     val reader = DefaultImageConsumer()
     @Test
+    fun printSupportedFormats() {
+        val consumer = DefaultImageConsumer()
+        val types=consumer.supportedTypes()
+        types.forEach {
+            println(" - $it")
+        }
+    }
+    @Test
     fun readAnimatedWebp() {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/animated-webp-supported.webp").toURI())

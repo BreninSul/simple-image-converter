@@ -1,5 +1,5 @@
 import io.github.breninsul.simpleimageconvertor.dto.AnimationToStaticSettings
-import io.github.breninsul.simpleimageconvertor.dto.ConvertSettings
+import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageConsumer
 import io.github.breninsul.simpleimageconvertor.service.convert.DefaultImageConverter
@@ -9,6 +9,13 @@ import java.io.File
 class TestWrite {
     val writer = DefaultImageConverter()
     val reader = DefaultImageConsumer()
+    @Test
+    fun printSupportedFormats() {
+        val types=writer.supportedTypes()
+        types.forEach {
+            println(" - ${it.name.lowercase()}")
+        }
+    }
     @Test
     fun writeAnimatedWebp() {
         animated(ImageFormat.WEBP)

@@ -1,9 +1,7 @@
 package io.github.breninsul.simpleimageconvertor.service.convert
 
-import io.github.breninsul.simpleimageconvertor.dto.ConvertSettings
-import io.github.breninsul.simpleimageconvertor.dto.ConvertableImage
-import io.github.breninsul.simpleimageconvertor.dto.Settings
-import io.github.breninsul.simpleimageconvertor.dto.getSetting
+import io.github.breninsul.simpleimageconvertor.dto.*
+import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.exception.ImageConvertingException
 import io.github.breninsul.simpleimageconvertor.exception.ImageException
 import io.github.breninsul.simpleimageconvertor.exception.ImageWritingException
@@ -14,7 +12,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 open class DefaultImageConverter(
-    protected open val writers: List<ImageWriter> = listOf(
+    writers: List<ImageWriter> = listOf(
         BmpWriter(),
         GifWriter(),
         IffWriter(),
@@ -31,6 +29,7 @@ open class DefaultImageConverter(
         IcoWriter(),
         ).let { it + PdfWriter(it) }
 ) : ImageConverter {
+    protected open val imageWriters:List<ImageWriter> = writers.sortedBy { it.getOrder() }
 
     override fun convert(
         image: ConvertableImage,
@@ -52,8 +51,9 @@ open class DefaultImageConverter(
     }
 
     protected open  fun List<Settings>.getConvertSetting() = this.getSetting<ConvertSettings>() ?: throw ImageConvertingException("No converter settings provided")
+    open fun supportedTypes():Set<ImageFormat> = imageWriters.map { it.supportedTypes() }.flatten().toSet()
 
-    protected open fun getWriter(setting: ConvertSettings) = writers.firstOrNull { it.supports(setting.format) } ?: throw ImageConvertingException("No writer exist for ${setting.format}")
+    protected open fun getWriter(setting: ConvertSettings) = imageWriters.firstOrNull { it.supports(setting.format) } ?: throw ImageConvertingException("No writer exist for ${setting.format}")
     companion object {
         val logger = Logger.getLogger(this::class.java.name)
     }

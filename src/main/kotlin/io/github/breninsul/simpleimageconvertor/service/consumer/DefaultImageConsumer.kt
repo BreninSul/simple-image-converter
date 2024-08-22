@@ -30,7 +30,7 @@ open class  DefaultImageConsumer(
             throw if (e is ImageException)  e else ImageReadingException(e.message,e)
         }
     }
-
+    open fun supportedTypes():Set<String> = imageReaders.map { it.supportedTypes() }.flatten().toSet()
     protected open fun getSuitableReader(mimeType: String) = imageReaders.firstOrNull { it.supports(mimeType) }?:throw ImageReadingException("No Suitable Reader for $mimeType")
 
 
