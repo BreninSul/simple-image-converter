@@ -27,6 +27,7 @@ open class DefaultImageProcessorService(
         outputStreamSupplier: Supplier<OutputStream>,
         settings: List<Settings>,
         transformers: List<ImageTransformer>,
+        mimeType: String?,
         id: String?,
     ): CompletableFuture<String?> {
         if (executorService == null) {
@@ -35,7 +36,7 @@ open class DefaultImageProcessorService(
         converter.checkSettings(settings)
         val result =
             CompletableFuture.supplyAsync(
-                { process(inputStreamSupplier, outputStreamSupplier, settings, transformers, id) },
+                { process(inputStreamSupplier, outputStreamSupplier, settings, transformers,mimeType, id) },
                 executorService,
             )
         return result
@@ -47,11 +48,12 @@ open class DefaultImageProcessorService(
         outputStreamSupplier: Supplier<OutputStream>,
         settings: List<Settings>,
         transformers: List<ImageTransformer>,
+        mimeType: String?,
         id: String?,
     ): String? {
         try {
             val time = System.currentTimeMillis()
-            val processed = performImageTransformation(inputStreamSupplier, transformers, settings, id)
+            val processed = performImageTransformation(inputStreamSupplier, transformers, settings,mimeType, id)
             val afterProcessTime = System.currentTimeMillis()
             converter.convert(processed, settings, outputStreamSupplier)
             logger.log(loggingLevel, "Image write $id took ${System.currentTimeMillis() - afterProcessTime} ms. Total time ${System.currentTimeMillis() - time} ms")
@@ -66,11 +68,12 @@ open class DefaultImageProcessorService(
         inputStreamSupplier: Supplier<InputStream>,
         transformers: List<ImageTransformer>,
         settings: List<Settings>,
+        mimeType: String?,
         id: String?,
-    ): ConvertableImage {
+    ): ImageOrAnimation {
         try {
             val time = System.currentTimeMillis()
-            val image = consumer.read(inputStreamSupplier, settings)
+            val image = consumer.read(inputStreamSupplier, settings,mimeType)
             val afterReadTime = System.currentTimeMillis()
             logger.log(loggingLevel, "Image read $id took ${System.currentTimeMillis() - time} ms")
             val processed = transformers.fold(image) { img, transformer ->

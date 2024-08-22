@@ -3,7 +3,7 @@ package io.github.breninsul.simpleimageconvertor.service.writer
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.AnimatedGif
 import io.github.breninsul.simpleimageconvertor.dto.AnimationToStaticSettings
-import io.github.breninsul.simpleimageconvertor.dto.ConvertableImage
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.Settings
 import java.io.OutputStream
 import java.util.function.Supplier
@@ -22,7 +22,7 @@ interface StaticImageWriter:ImageWriter {
         return this.firstOrNull{it is AnimationToStaticSettings} as AnimationToStaticSettings?
     }
 
-    override fun write(image: ConvertableImage, settings: List<Settings>, out: Supplier<OutputStream>) {
+    override fun write(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>) {
         if (image.isAnimation()){
             writeAnimationToStatic(image.animation!!,settings.getAnimationToStaticSettings()?: AnimationToStaticSettings(),settings,out)
         } else {

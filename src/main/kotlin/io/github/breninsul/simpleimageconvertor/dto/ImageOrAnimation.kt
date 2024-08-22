@@ -4,7 +4,7 @@ import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
 import io.github.breninsul.simpleimageconvertor.exception.ImageException
 
-open class ConvertableImage(
+open class ImageOrAnimation(
     val animation: AnimatedGifWithDelay?,
     val image: ImmutableImage?
 ) {

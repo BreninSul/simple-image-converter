@@ -9,7 +9,7 @@ open class Resolution(
     open val keepAspectRatio: Boolean = true,
 )  {
 
-    open fun ConvertableImage.resolveResolutionWithOriginalAspectRate(): Resolution {
+    open fun ImageOrAnimation.resolveResolutionWithOriginalAspectRate(): Resolution {
         if (!keepAspectRatio) return Resolution(width, height)
         val destinationAspectRatio = width.toDouble() / height.toDouble()
         val originalAspectRatio = if (this.isAnimation()) {

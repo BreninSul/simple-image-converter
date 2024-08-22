@@ -55,7 +55,7 @@ open class PdfWriter(
         val page = PDPage(rectangle);
         document.addPage(page)
         val outputStream = ByteArrayOutputStream()
-        writer.write(ConvertableImage(null, image), settings) { outputStream }
+        writer.write(ImageOrAnimation(null, image), settings) { outputStream }
         val pdfImage = PDImageXObject.createFromByteArray(document, outputStream.toByteArray(), null)
         PDPageContentStream(document, page, pdfSetting.appendMode, pdfSetting.compress).use {contents->
             contents.drawImage(pdfImage, 0F, 0F, rectangle.width, rectangle.height)

@@ -1,7 +1,7 @@
 package io.github.breninsul.simpleimageconvertor.service.writer
 
 import com.sksamuel.scrimage.nio.AnimatedGif
-import io.github.breninsul.simpleimageconvertor.dto.ConvertableImage
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.Settings
 import java.io.OutputStream
 import java.util.function.Supplier
@@ -11,7 +11,7 @@ import java.util.function.Supplier
  * It extends the StaticImageWriter interface and provides additional functionality for writing animated images.
  */
 interface AnimationImageWriter:StaticImageWriter {
-    override fun write(image: ConvertableImage, settings: List<Settings>, out: Supplier<OutputStream>) {
+    override fun write(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>) {
         if (image.isAnimation()){
             val animationToStaticSetting=settings.getAnimationToStaticSettings()
             if (animationToStaticSetting!=null) {

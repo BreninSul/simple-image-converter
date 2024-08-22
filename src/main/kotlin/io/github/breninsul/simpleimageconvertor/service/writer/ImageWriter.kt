@@ -1,7 +1,7 @@
 package io.github.breninsul.simpleimageconvertor.service.writer
 
 import io.github.breninsul.simpleimageconvertor.dto.Ordered
-import io.github.breninsul.simpleimageconvertor.dto.ConvertableImage
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.Settings
 import java.io.OutputStream
@@ -35,7 +35,7 @@ interface ImageWriter : Ordered {
      * @param settings the list of Settings to apply during the writing process
      * @param out the Supplier of OutputStream to write the image to
      */
-    fun write(image: ConvertableImage, settings: List<Settings>, out: Supplier<OutputStream>)
+    fun write(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>)
 
     /**
      * Checks if the image writer supports animation.

@@ -32,7 +32,7 @@ open class DefaultImageConverter(
     protected open val imageWriters:List<ImageWriter> = writers.sortedBy { it.getOrder() }
 
     override fun convert(
-        image: ConvertableImage,
+        image: ImageOrAnimation,
         settings: List<Settings>,
         outputSupplier: Supplier<OutputStream>
     ) {

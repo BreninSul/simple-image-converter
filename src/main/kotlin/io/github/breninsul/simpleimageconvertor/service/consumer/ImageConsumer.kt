@@ -1,6 +1,6 @@
 package io.github.breninsul.simpleimageconvertor.service.consumer
 
-import io.github.breninsul.simpleimageconvertor.dto.ConvertableImage
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.Settings
 import java.io.InputStream
 import java.util.function.Supplier
@@ -20,5 +20,6 @@ interface ImageConsumer {
     fun read(
         inputStreamSupplier: Supplier<InputStream>,
         settings: List<Settings>,
-    ): ConvertableImage
+        mimeType: String? = null,
+    ): ImageOrAnimation
 }

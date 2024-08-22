@@ -57,7 +57,7 @@ open class SimpleExample {
     }
 }
 ````
-Such way we have our ConvertableImage object and transform it any way (by creating ImageTransformer implementations) we want before saving.
+Such way we have our ImageOrAnimation object and transform it any way (by creating ImageTransformer implementations) we want before saving.
 
 #### Dynamic processing using 
 

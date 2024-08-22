@@ -2,7 +2,7 @@ package io.github.breninsul.simpleimageconvertor.service.transformer
 
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
-import io.github.breninsul.simpleimageconvertor.dto.ConvertableImage
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.Settings
 import io.github.breninsul.simpleimageconvertor.service.transformer.ScaleTransformer.Companion.logger
 import java.util.logging.Level
@@ -37,17 +37,17 @@ fun interface ImageTransformer {
     /**
      * Processes an image using the provided settings.
      *
-     * @param image The image to process. It must be an instance of [ConvertableImage].
+     * @param image The image to process. It must be an instance of [ImageOrAnimation].
      * @param settings The list of settings to apply during image processing. Each setting must implement the [Settings] interface.
-     * @return The processed image as an instance of [ConvertableImage].
+     * @return The processed image as an instance of [ImageOrAnimation].
      * @throws Exception if an error occurs during image processing.
      */
-    fun process(image: ConvertableImage, settings: List<Settings> = listOf()): ConvertableImage {
+    fun process(image: ImageOrAnimation, settings: List<Settings> = listOf()): ImageOrAnimation {
         try {
             val processed = if (image.isAnimation()) {
-                ConvertableImage(image.animation!!.processAnimation(settings), null)
+                ImageOrAnimation(image.animation!!.processAnimation(settings), null)
             } else {
-                ConvertableImage(null, processStatic(image.image!!, settings))
+                ImageOrAnimation(null, processStatic(image.image!!, settings))
             }
             return processed
         } catch (e: Exception) {

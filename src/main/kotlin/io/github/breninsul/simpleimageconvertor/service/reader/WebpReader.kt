@@ -4,7 +4,7 @@ import com.madgag.gif.fmsware.AnimatedGifEncoder
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay.GifSequenceReaderWithDelay
-import io.github.breninsul.simpleimageconvertor.dto.ConvertableImage
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.Settings
 import webpdecoderjn.WebPDecoder
 import java.io.InputStream
@@ -21,13 +21,13 @@ open class WebpReader(private val order:Int=1) : ImageReader {
     }
     protected open val supportedImageTypes = setOf("webp")
 
-    override fun read(fileStream: Supplier<InputStream>,settings: List<Settings>): ConvertableImage {
+    override fun read(fileStream: Supplier<InputStream>,settings: List<Settings>): ImageOrAnimation {
         val originalBytes=fileStream.get().use {  it.readAllBytes()}
         val isAnimation=originalBytes.inputStream().isWebpAnimated()
         val decodedImage: WebPDecoder.WebPImage = fileStream.get().use { WebPDecoder.decode(originalBytes) }
 
         if (!isAnimation) {
-            return ConvertableImage(null, ImmutableImage.fromAwt(decodedImage.frames.first().img))
+            return ImageOrAnimation(null, ImmutableImage.fromAwt(decodedImage.frames.first().img))
         } else {
             val encoder = AnimatedGifEncoder()
             val tempFile= Files.createTempFile("AnimationReaderWebp",".gif")
@@ -49,7 +49,7 @@ open class WebpReader(private val order:Int=1) : ImageReader {
             }
             tempFile.deleteIfExists()
             val gif=AnimatedGifWithDelay(reader)
-            return ConvertableImage(gif,null)
+            return ImageOrAnimation(gif,null)
         }
     }
     protected open fun InputStream.isWebpAnimated(): Boolean {

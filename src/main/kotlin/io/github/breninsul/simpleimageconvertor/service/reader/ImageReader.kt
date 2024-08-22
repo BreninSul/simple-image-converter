@@ -1,7 +1,7 @@
 package io.github.breninsul.simpleimageconvertor.service.reader
 
 import io.github.breninsul.simpleimageconvertor.dto.Ordered
-import io.github.breninsul.simpleimageconvertor.dto.ConvertableImage
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.Settings
 import java.io.InputStream
 import java.util.function.Supplier
@@ -18,9 +18,9 @@ interface ImageReader : Ordered {
      * @return A ConvertableImage object that represents the converted image.
      *
      * @see ImageReader
-     * @see ConvertableImage
+     * @see ImageOrAnimation
      */
-    fun read(fileStream: Supplier<InputStream>,settings: List<Settings>): ConvertableImage
+    fun read(fileStream: Supplier<InputStream>,settings: List<Settings>): ImageOrAnimation
 
     /**
      * Determines whether the given media type is supported by this image reader.
