@@ -20,9 +20,9 @@ dependencies {
 There is 5 main classes yor need to start working with lib
 - DefaultImageConsumer : Used to read image (resolves the best reader for image by it's type)
 - DefaultImageConverter : Used to write image to destination format (resolves the best write for image by it's type)
-- ImageTransformer : Functional interface to edit image
+- ImageTransformer : Functional interface to edit image. There is some ready implementations like ScaleTransformer (will be added more in some time)
 - Settings : Interface, implementations used to pass some special properties to reader/writers/transformers. As example ConvertSettings - used to pass image format for conversion
-- DefaultImageProcessorService : Makes possible multiply dynamic transform operations. There is some ready implementations like ScaleTransformer (will be added more in some time)
+- DefaultImageProcessorService : Makes possible multiply dynamic transform operations. 
 
 
 #### Simple conversion (Conversion animation to static with scaling and rotating)
