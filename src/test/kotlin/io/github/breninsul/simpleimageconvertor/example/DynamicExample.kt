@@ -14,12 +14,11 @@ open class DynamicExample {
     val processor = ImageProcessorService.Default
 
     fun convertWebpToGif() {
-        val format = ImageFormat.WEBP
         val file = File(javaClass.classLoader.getResource("dir/animated-webp.webp").toURI())
         val outFile = File("dir/animated.gif")
         outFile.createNewFile()
         processor.process({ file.inputStream() }, { outFile.outputStream() },
-            listOf(ConvertSettings(format = ImageFormat.WEBP)),
+            listOf(ConvertSettings(format = ImageFormat.GIF)),
             listOf(ScaleTransformer(), ImageTransformer{ img, st->img.rotate(Degrees(90))}),
             listOf(ScaleSettings(Resolution(100, 100), ScaleMethod.FastScale))
         )
