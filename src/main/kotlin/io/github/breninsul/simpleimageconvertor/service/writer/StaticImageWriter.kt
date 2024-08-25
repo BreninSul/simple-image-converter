@@ -2,9 +2,9 @@ package io.github.breninsul.simpleimageconvertor.service.writer
 
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.AnimatedGif
-import io.github.breninsul.simpleimageconvertor.dto.AnimationToStaticSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.AnimationToStaticSettings
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
-import io.github.breninsul.simpleimageconvertor.dto.Settings
+import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import java.io.OutputStream
 import java.util.function.Supplier
 
@@ -18,8 +18,8 @@ interface StaticImageWriter:ImageWriter {
      *
      * @return the AnimationToStaticSettings object, or null if it does not exist in the list of settings
      */
-    fun List<Settings>.getAnimationToStaticSettings():AnimationToStaticSettings?{
-        return this.firstOrNull{it is AnimationToStaticSettings} as AnimationToStaticSettings?
+    fun List<Settings>.getAnimationToStaticSettings(): AnimationToStaticSettings?{
+        return this.firstOrNull{it is AnimationToStaticSettings } as AnimationToStaticSettings?
     }
 
     override fun write(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>) {
@@ -48,7 +48,7 @@ interface StaticImageWriter:ImageWriter {
      * @param settings the list of Settings to apply during the writing process
      * @param out the Supplier of OutputStream to write the static image to
      */
-    fun writeAnimationToStatic(animation: AnimatedGif, animationSettings:AnimationToStaticSettings, settings: List<Settings>, out: Supplier<OutputStream>){
+    fun writeAnimationToStatic(animation: AnimatedGif, animationSettings: AnimationToStaticSettings, settings: List<Settings>, out: Supplier<OutputStream>){
         when(animationSettings.strategy){
             AnimationToStaticSettings.StrategyEnum.FIRST_FRAME->writeStatic(animation.frames.first(),settings, out)
             AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME->writeStatic(animation.frames.middle(),settings, out)

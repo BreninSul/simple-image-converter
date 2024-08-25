@@ -1,7 +1,7 @@
 package io.github.breninsul.simpleimageconvertor.service.consumer
 
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
-import io.github.breninsul.simpleimageconvertor.dto.Settings
+import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.exception.ImageException
 import io.github.breninsul.simpleimageconvertor.exception.ImageReadingException
 import io.github.breninsul.simpleimageconvertor.service.reader.*
@@ -19,7 +19,7 @@ open class  DefaultImageConsumer(
     override fun read(
         inputStreamSupplier: Supplier<InputStream>,
         settings: List<Settings>,
-        mimeType: String? ,
+        mimeType: String?,
     ): ImageOrAnimation {
         try {
             val resolvedMimeType: String = mimeType?:inputStreamSupplier.get().use { tika.detect(it) }

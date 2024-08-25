@@ -1,6 +1,7 @@
 package io.github.breninsul.simpleimageconvertor.service.processor
 
 import io.github.breninsul.simpleimageconvertor.dto.*
+import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.exception.ImageException
 import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageConsumer
 import io.github.breninsul.simpleimageconvertor.service.consumer.ImageConsumer

@@ -1,6 +1,8 @@
 package io.github.breninsul.simpleimageconvertor.service.convert
 
 import io.github.breninsul.simpleimageconvertor.dto.*
+import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
+import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
 import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.exception.ImageConvertingException
 import io.github.breninsul.simpleimageconvertor.exception.ImageException

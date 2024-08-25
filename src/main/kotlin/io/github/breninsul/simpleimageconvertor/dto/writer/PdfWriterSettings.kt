@@ -1,7 +1,7 @@
 package io.github.breninsul.simpleimageconvertor.dto.writer
 
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
-import io.github.breninsul.simpleimageconvertor.dto.WriterSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.WriterSettings
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode
 import org.apache.pdfbox.pdmodel.common.PDRectangle
 

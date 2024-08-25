@@ -2,7 +2,7 @@ package io.github.breninsul.simpleimageconvertor.service.reader
 
 import io.github.breninsul.simpleimageconvertor.dto.Ordered
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
-import io.github.breninsul.simpleimageconvertor.dto.Settings
+import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import java.io.InputStream
 import java.util.function.Supplier
 

@@ -1,6 +1,7 @@
-package io.github.breninsul.simpleimageconvertor.dto
+package io.github.breninsul.simpleimageconvertor.dto.settings.transformation
 
 import com.sksamuel.scrimage.AwtImage
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import kotlin.math.roundToInt
 
 open class Resolution(

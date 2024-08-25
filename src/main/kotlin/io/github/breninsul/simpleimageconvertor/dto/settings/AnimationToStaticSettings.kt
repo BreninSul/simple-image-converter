@@ -1,4 +1,4 @@
-package io.github.breninsul.simpleimageconvertor.dto
+package io.github.breninsul.simpleimageconvertor.dto.settings
 
 /**
  * AnimationToStaticSettings is a class that represents the settings for converting an animation to a static image.
@@ -16,8 +16,8 @@ open class AnimationToStaticSettings(
     /**
      * Represents the strategy used for converting an animation to a static image.
      */
-    open val strategy:StrategyEnum=StrategyEnum.FIRST_FRAME
-):WriterSettings {
+    open val strategy: StrategyEnum = StrategyEnum.FIRST_FRAME
+): WriterSettings {
     enum class StrategyEnum {
         FIRST_FRAME,
         MIDDLE_FRAME,

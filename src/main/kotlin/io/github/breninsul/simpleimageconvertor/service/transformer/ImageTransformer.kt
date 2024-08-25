@@ -3,9 +3,9 @@ package io.github.breninsul.simpleimageconvertor.service.transformer
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
-import io.github.breninsul.simpleimageconvertor.dto.Settings
-import io.github.breninsul.simpleimageconvertor.service.transformer.ScaleTransformer.Companion.logger
+import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import java.util.logging.Level
+import java.util.logging.Logger
 
 /** Represents an interface for image transformation operations. */
 fun interface ImageTransformer {
@@ -62,4 +62,9 @@ fun interface ImageTransformer {
      * @return `true` if all settings in the list support the operation, `false` otherwise.
      */
     fun List<Settings>.supports(): Boolean =true
+
+
+    companion object {
+        val logger = Logger.getLogger(this::class.java.name)
+    }
 }

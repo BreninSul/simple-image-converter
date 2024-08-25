@@ -6,8 +6,8 @@ import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay.GifSequenceReaderWithDelay
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.reader.PdfReaderSettings
-import io.github.breninsul.simpleimageconvertor.dto.Settings
-import io.github.breninsul.simpleimageconvertor.dto.getSetting
+import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
+import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
 import io.github.breninsul.simpleimageconvertor.exception.ImageReadingException
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument

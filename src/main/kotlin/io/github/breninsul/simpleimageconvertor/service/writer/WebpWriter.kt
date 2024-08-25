@@ -4,6 +4,8 @@ import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.AnimatedGif
 import com.sksamuel.scrimage.webp.Gif2WebpWriter
 import io.github.breninsul.simpleimageconvertor.dto.*
+import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
+import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
 import io.github.breninsul.simpleimageconvertor.dto.writer.WebpWriterSettings
 import java.io.OutputStream
 import java.util.function.Supplier
