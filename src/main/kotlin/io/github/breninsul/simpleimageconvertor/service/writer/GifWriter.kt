@@ -8,6 +8,15 @@ import java.io.OutputStream
 import java.util.function.Supplier
 import javax.imageio.ImageIO
 
+/**
+ * GifWriter is a class that extends the AnimationImageWriter interface and represents a GIF image writer.
+ * It provides functionality for writing animated GIF images.
+ *
+ * @property supportedImageTypes A set of supported image formats, which in this case is only GIF.
+ *
+ * @see AnimationImageWriter
+ * @see ImageFormat
+ */
 open class GifWriter : AnimationImageWriter {
     protected open val supportedImageTypes = setOf(ImageFormat.GIF)
 

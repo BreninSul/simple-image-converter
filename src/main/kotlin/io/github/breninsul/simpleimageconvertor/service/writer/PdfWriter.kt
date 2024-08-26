@@ -15,7 +15,15 @@ import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 import java.util.function.Supplier
 
-
+/**
+ * PdfWriter is a class responsible for writing PDF files.
+ *
+ * @param writers The list of ImageWriters to be used for writing images.
+ * @property supportedImageTypes The set of ImageFormats supported by this PdfWriter.
+ *
+ * @see ImageWriter
+ * @see AnimationImageWriter
+ */
 open class PdfWriter(
     protected open val writers: List<ImageWriter>
 ) : AnimationImageWriter {

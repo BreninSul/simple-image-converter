@@ -8,6 +8,14 @@ import io.github.breninsul.simpleimageconvertor.dto.writer.TiffWriterSettings
 import java.io.OutputStream
 import java.util.function.Supplier
 
+/**
+ * The `TiffWriter` class is a concrete implementation of the `StaticImageWriter` interface.
+ * It provides functionality to write static images in the TIFF format.
+ *
+ * @property supportedImageTypes The set of supported image formats, which includes only the TIFF format.
+ *
+ * @see StaticImageWriter
+ */
 open class TiffWriter : StaticImageWriter {
     protected open val supportedImageTypes = setOf(ImageFormat.TIFF)
 

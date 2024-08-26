@@ -10,6 +10,14 @@ import io.github.breninsul.simpleimageconvertor.dto.writer.WebpWriterSettings
 import java.io.OutputStream
 import java.util.function.Supplier
 
+/**
+ * The WebpWriter class is an implementation of the AnimationImageWriter interface for writing animated WebP images.
+ * It supports writing both animation and static images in the WebP format.
+ *
+ * @constructor Creates a new instance of the WebpWriter class.
+ *
+ * @see AnimationImageWriter
+ */
 open class WebpWriter:AnimationImageWriter {
     protected open val supportedImageTypes = setOf(ImageFormat.WEBP)
 

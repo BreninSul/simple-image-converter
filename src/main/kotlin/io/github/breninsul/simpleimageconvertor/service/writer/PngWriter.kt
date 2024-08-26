@@ -8,6 +8,14 @@ import io.github.breninsul.simpleimageconvertor.dto.writer.PngWriterSettings
 import java.io.OutputStream
 import java.util.function.Supplier
 
+/**
+ * The `PngWriter` class is a concrete implementation of the `StaticImageWriter` interface
+ * that is responsible for writing static PNG images.
+ *
+ * @property supportedImageTypes The set of supported image formats by this PNG writer, which only includes PNG.
+ *
+ * @see StaticImageWriter
+ */
 open class PngWriter : StaticImageWriter {
     protected open val supportedImageTypes = setOf(ImageFormat.PNG)
 

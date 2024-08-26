@@ -8,6 +8,18 @@ import io.github.breninsul.simpleimageconvertor.dto.writer.JpegWriterSettings
 import java.io.OutputStream
 import java.util.function.Supplier
 
+/**
+ * The `JpegWriter` class is an implementation of the `StaticImageWriter` interface for writing JPEG images.
+ * It provides a method to write a static image to an output stream using the specified settings.
+ * The class overrides the `supportedTypes` from the `StaticImageWriter` superclass to specify that it supports the JPEG image format.
+ * The class also overrides the `getOrder` method to specify the order in which this writer should be used in an image conversion process.
+ *
+ * @see StaticImageWriter
+ * @see ImageFormat
+ * @see Settings
+ * @see JpegWriterSettings
+ * @see com.sksamuel.scrimage.nio.JpegWriter
+ */
 open class JpegWriter : StaticImageWriter {
     protected open val supportedImageTypes = setOf(ImageFormat.JPEG)
 
