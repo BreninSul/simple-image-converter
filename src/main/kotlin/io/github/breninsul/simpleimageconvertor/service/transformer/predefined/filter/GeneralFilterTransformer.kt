@@ -6,7 +6,13 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.filt
 import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.PredefinedTransformer
 import kotlin.reflect.KClass
 
-
+/**
+ * The `GeneralFilterTransformer` class is an open class that represents a transformer for applying a filter to an image.
+ * It extends the abstract class `PredefinedTransformer` and implements the `ImageTransformer` interface.
+ *
+ * @param name The name of the transformer.
+ * @param filter The filter to apply to the image.
+ */
 open class GeneralFilterTransformer(
     override val name: String,
     protected open val filter: Filter,
