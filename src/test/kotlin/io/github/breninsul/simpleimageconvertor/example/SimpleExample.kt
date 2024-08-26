@@ -5,12 +5,12 @@ import com.sksamuel.scrimage.angles.Degrees
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
-import io.github.breninsul.simpleimageconvertor.dto.Resolution
-import io.github.breninsul.simpleimageconvertor.dto.ScaleSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Resolution
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.ScaleToSettings
 import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageConsumer
 import io.github.breninsul.simpleimageconvertor.service.convert.DefaultImageConverter
 import io.github.breninsul.simpleimageconvertor.service.transformer.ImageTransformer
-import io.github.breninsul.simpleimageconvertor.service.transformer.ScaleTransformer
+import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.ScaleToTransformer
 import java.io.File
 open class SimpleExample {
     protected open val writer = DefaultImageConverter()
@@ -19,7 +19,7 @@ open class SimpleExample {
     fun convertWebpToGif() {
         val file = File(javaClass.classLoader.getResource("dir/animated-webp.webp").toURI())
         val image: ImageOrAnimation = reader.read({ file.inputStream() }, listOf())
-        val scaledImage=ScaleTransformer().process(image, listOf(ScaleSettings(Resolution(100, 100), ScaleMethod.FastScale)))
+        val scaledImage= ScaleToTransformer().process(image, listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale)))
         val rotatedImage =ImageTransformer{ img, st->img.rotate(Degrees(90))}.process(scaledImage)
         val outFile = File("dir/animated.gif")
         outFile.createNewFile()

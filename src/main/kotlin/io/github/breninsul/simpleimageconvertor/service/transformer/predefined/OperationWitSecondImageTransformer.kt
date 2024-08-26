@@ -47,7 +47,8 @@ abstract class OperationWitSecondImageTransformer<T:OperationWithImageSettings> 
                 return resolveAnimationToStaticImage(settings.animationToStaticSettings!!, destinationAnimation)
             }
 
-            val destinationAnimationTotalDuration = destinationAnimation.getFramesWithDelay().sumOf { it.delay.toMillis() }
+            val destFrames = destinationAnimation.getFramesWithDelay()
+            val destinationAnimationTotalDuration = destFrames.sumOf { it.delay.toMillis() }
             //No delays, return with default animation to static settings
             if (destinationAnimationTotalDuration < 1) {
                 return resolveAnimationToStaticImage(AnimationToStaticSettings(),destinationAnimation)
@@ -58,7 +59,7 @@ abstract class OperationWitSecondImageTransformer<T:OperationWithImageSettings> 
             if (delaySrcImage.last < 1) {
                 return destinationAnimation.frames.first()
             }
-            val destFrameInTeSameDelay= srcFrames.fold(0L to srcFrames.first()) {
+            val destFrameInTeSameDelay= destFrames.fold(0L to destFrames.first()) {
                 oldFrame,newFrame->
                 if (delaySrcImage.contains(oldFrame.first)){
                     return@fold oldFrame
