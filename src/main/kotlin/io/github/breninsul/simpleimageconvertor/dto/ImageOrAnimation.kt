@@ -4,6 +4,17 @@ import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
 import io.github.breninsul.simpleimageconvertor.exception.ImageException
 
+/**
+ * Represents an image or animation. It contains either an AnimatedGifWithDelay object or an ImmutableImage object.
+ *
+ * @property animation The AnimatedGifWithDelay object representing an animation. Null if the object represents an image.
+ * @property image The ImmutableImage object representing an image. Null if the object represents an animation.
+ *
+ * @throws ImageException if both animation and image are null or not null
+ *
+ * @see AnimatedGifWithDelay
+ * @see ImmutableImage
+ */
 open class ImageOrAnimation(
     val animation: AnimatedGifWithDelay?,
     val image: ImmutableImage?

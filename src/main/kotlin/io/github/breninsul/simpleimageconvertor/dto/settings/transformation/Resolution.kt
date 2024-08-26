@@ -4,6 +4,19 @@ import com.sksamuel.scrimage.AwtImage
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import kotlin.math.roundToInt
 
+/**
+ * The `Resolution` class represents the resolution of an image or animation.
+ * It stores the width and height of the resolution and has an optional flag for maintaining aspect ratio.
+ *
+ * @property width The width of the resolution.
+ * @property height The height of the resolution.
+ * @property keepAspectRatio Flag indicating whether to maintain the aspect ratio when resolving the resolution.
+ *
+ * @constructor Creates a new instance of `Resolution` with the specified width and height.
+ *
+ * @see ImageOrAnimation
+ * @see AwtImage
+ */
 open class Resolution(
     open val width: Int,
     open val height: Int,
