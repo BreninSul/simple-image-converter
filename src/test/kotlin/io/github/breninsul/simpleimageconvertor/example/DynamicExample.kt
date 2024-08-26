@@ -6,9 +6,8 @@ import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Resolution
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.ScaleToSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.TransformFunctionSettings
 import io.github.breninsul.simpleimageconvertor.service.processor.ImageProcessorService
-import io.github.breninsul.simpleimageconvertor.service.transformer.ImageTransformer
-import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.ScaleTransformer
 import java.io.File
 open class DynamicExample {
     val processor = ImageProcessorService.Default
@@ -19,8 +18,7 @@ open class DynamicExample {
         outFile.createNewFile()
         processor.process({ file.inputStream() }, { outFile.outputStream() },
            writerSettings =  listOf(ConvertSettings(format = ImageFormat.GIF)),
-            transformers = listOf(ScaleTransformer(), ImageTransformer{ img, st->img.rotate(Degrees(90))}),
-            transformSettings = listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale)),
+            transformSettings = listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale), TransformFunctionSettings{ img, st -> img.rotate(Degrees(90))}),
             mimeType = null
         )
     }

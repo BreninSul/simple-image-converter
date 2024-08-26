@@ -7,6 +7,15 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.comp
 import io.github.breninsul.simpleimageconvertor.exception.ImageTransformerException
 import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.OperationWitSecondImageTransformer
 
+/**
+ * This class represents a transformer that applies the alpha composite operation on images.
+ * It extends the `OperationWitSecondImageTransformer` class and provides implementations for mapping options to frames and performing the transformation.
+ *
+ * @property name The name of the transformer, which is "AlphaComposite".
+ *
+ * @constructor Creates an instance of the `AlphaCompositeTransformer` class.
+ * @see [link](https://sksamuel.github.io/scrimage/transforms/)
+ */
 open class AlphaCompositeTransformer : OperationWitSecondImageTransformer<AlphaCompositeSettings>(AlphaCompositeSettings::class) {
     override val name: String="AlphaComposite"
 

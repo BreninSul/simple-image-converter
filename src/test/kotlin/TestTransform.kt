@@ -7,12 +7,10 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Scal
 import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageConsumer
 import io.github.breninsul.simpleimageconvertor.service.processor.ImageProcessorService
-import io.github.breninsul.simpleimageconvertor.service.transformer.ImageTransformer
-import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.OverlayTransformer
-import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.ScaleToTransformer
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream
 import java.io.File
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.TransformFunctionSettings
 
 class TestTransform {
     val processor = ImageProcessorService.Default
@@ -27,9 +25,8 @@ class TestTransform {
         outFile.createNewFile()
         processor.process({ file.inputStream() }, { outFile.outputStream() },
             writerSettings = listOf(ConvertSettings(format = format)),
-            transformSettings = listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale)),
+            transformSettings = listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale), TransformFunctionSettings{img, st -> img.rotate(Degrees(90))}),
             readerSettings = listOf(),
-            transformers = listOf(ScaleToTransformer(), ImageTransformer { img, st -> img.rotate(Degrees(90)) }),
         )
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
@@ -44,9 +41,8 @@ class TestTransform {
         processor.process(
             { file.inputStream() }, { secondAnimationOutputStream },
             writerSettings = listOf(ConvertSettings(format = format)),
-            transformSettings = listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale)),
+            transformSettings = listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale), TransformFunctionSettings{img, st -> img.rotate(Degrees(90))}),
             readerSettings = listOf(),
-            transformers = listOf(ScaleToTransformer(), ImageTransformer { img, st -> img.rotate(Degrees(90)) }),
         )
         val secondAnimationBytes = secondAnimationOutputStream.toByteArray()
         val secondAnimation = reader.read({ secondAnimationBytes.inputStream() }, listOf())

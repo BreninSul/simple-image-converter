@@ -1,7 +1,8 @@
 package io.github.breninsul.simpleimageconvertor.service.processor
 
-import io.github.breninsul.simpleimageconvertor.dto.*
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.TransformSettings
 import io.github.breninsul.simpleimageconvertor.exception.ImageException
 import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageConsumer
 import io.github.breninsul.simpleimageconvertor.service.consumer.ImageConsumer
@@ -21,13 +22,12 @@ open class DefaultImageProcessorService(
     protected open val converter: ImageConverter = DefaultImageConverter(),
     protected open val executorService: Executor? = null,
     protected open val loggingLevel: Level = Level.INFO,
-): ImageProcessorService {
+) : ImageProcessorService {
 
     override fun processFuture(
         inputStreamSupplier: Supplier<InputStream>,
         outputStreamSupplier: Supplier<OutputStream>,
         settings: List<Settings>,
-        transformers: List<ImageTransformer>,
         mimeType: String?,
         id: String?,
     ): CompletableFuture<String?> {
@@ -37,7 +37,7 @@ open class DefaultImageProcessorService(
         converter.checkSettings(settings)
         val result =
             CompletableFuture.supplyAsync(
-                { process(inputStreamSupplier, outputStreamSupplier, settings, transformers,mimeType, id) },
+                { process(inputStreamSupplier, outputStreamSupplier, settings, mimeType, id) },
                 executorService,
             )
         return result
@@ -48,13 +48,12 @@ open class DefaultImageProcessorService(
         inputStreamSupplier: Supplier<InputStream>,
         outputStreamSupplier: Supplier<OutputStream>,
         settings: List<Settings>,
-        transformers: List<ImageTransformer>,
         mimeType: String?,
         id: String?,
     ): String? {
         try {
             val time = System.currentTimeMillis()
-            val processed = performImageTransformation(inputStreamSupplier, settings,transformers,mimeType, id)
+            val processed = performImageTransformation(inputStreamSupplier, settings, mimeType, id)
             val afterProcessTime = System.currentTimeMillis()
             converter.convert(processed, settings, outputStreamSupplier)
             logger.log(loggingLevel, "Image write $id took ${System.currentTimeMillis() - afterProcessTime} ms. Total time ${System.currentTimeMillis() - time} ms")
@@ -68,13 +67,13 @@ open class DefaultImageProcessorService(
     override fun performImageTransformation(
         inputStreamSupplier: Supplier<InputStream>,
         settings: List<Settings>,
-        transformers: List<ImageTransformer>,
         mimeType: String?,
         id: String?,
     ): ImageOrAnimation {
+        val transformers: List<ImageTransformer> = settings.filterIsInstance<TransformSettings>().map { it.createTransformer() }
         try {
             val time = System.currentTimeMillis()
-            val image = consumer.read(inputStreamSupplier, settings,mimeType)
+            val image = consumer.read(inputStreamSupplier, settings, mimeType)
             val afterReadTime = System.currentTimeMillis()
             logger.log(loggingLevel, "Image read $id took ${System.currentTimeMillis() - time} ms")
             val processed = transformers.fold(image) { img, transformer ->

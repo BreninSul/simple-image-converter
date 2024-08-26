@@ -6,7 +6,7 @@ import java.awt.Color
 
 open class AutocropSettings(
     open val backgroundColour: Color = Colors.Transparent.awt(),
-    open val colorTolerance: Int = 0,
+    open val colourTolerance: Int = 0,
     ) : TransformSettings {
     override fun createTransformer()= transformer
     companion object{

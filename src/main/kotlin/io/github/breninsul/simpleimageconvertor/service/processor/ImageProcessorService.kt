@@ -26,7 +26,6 @@ interface ImageProcessorService {
      * @param writerSettings A list of writer settings to be applied during the image processing.
      * @param transformSettings A list of transform settings to be applied during the image processing. Defaults to an empty list.
      * @param readerSettings A list of reader settings to be applied during the image processing. Defaults to an empty list.
-     * @param transformers A list of image transformers to be applied during the image processing. Defaults to the transformers created from the transform settings.
      * @param mimeType Image mime type. Will be resolved automatically if not provided.
      * @param id An optional identifier for the image processing operation.
      * @return A CompletableFuture that represents the asynchronous operation and contains the id.
@@ -37,11 +36,10 @@ interface ImageProcessorService {
         writerSettings: List<WriterSettings>,
         transformSettings: List<TransformSettings> = listOf(),
         readerSettings: List<ReaderSettings> = listOf(),
-        transformers: List<ImageTransformer> = transformSettings.map { it.createTransformer() },
         mimeType: String?=null,
         id: String? = null,
     ): CompletableFuture<String?>{
-        return processFuture(inputStreamSupplier, outputStreamSupplier, readerSettings + writerSettings + transformSettings, transformers,mimeType, id)
+        return processFuture(inputStreamSupplier, outputStreamSupplier, readerSettings + writerSettings + transformSettings,mimeType, id)
     }
 
     /**
@@ -50,7 +48,6 @@ interface ImageProcessorService {
      * @param inputStreamSupplier A supplier that provides the input stream for the image.
      * @param outputStreamSupplier A supplier that provides the output stream for the processed image.
      * @param settings A list of settings to be applied during the image processing.
-     * @param transformers A list of image transformers to be applied during the image processing.
      * @param mimeType Image mime type. Will be resolved automatically if not provided
      * @param id An optional identifier for the image processing operation.
      * @return A CompletableFuture that represents the asynchronous operation and contains the id.
@@ -59,7 +56,6 @@ interface ImageProcessorService {
         inputStreamSupplier: Supplier<InputStream>,
         outputStreamSupplier: Supplier<OutputStream>,
         settings: List<Settings>,
-        transformers: List<ImageTransformer> = settings.filterIsInstance<TransformSettings>().map { it.createTransformer() },
         mimeType: String? = null,
         id: String? = null,
     ): CompletableFuture<String?>
@@ -72,7 +68,6 @@ interface ImageProcessorService {
      * @param writerSettings A list of writer settings to be applied during the image processing.
      * @param transformSettings A list of transform settings to be applied during the image processing. Defaults to an empty list.
      * @param readerSettings A list of reader settings to be applied during the image processing. Defaults to an empty list.
-     * @param transformers A list of image transformers to be applied during the image processing. Defaults to the transformers created from the transform settings.
      * @param mimeType Image mime type. Will be resolved automatically if not provided.
      * @param id An optional identifier for the image processing operation.
      * @return The result of the image processing as a String. Returns null if an error occurs.
@@ -83,11 +78,10 @@ interface ImageProcessorService {
         writerSettings: List<WriterSettings>,
         transformSettings: List<TransformSettings> = listOf(),
         readerSettings: List<ReaderSettings> = listOf(),
-        transformers: List<ImageTransformer> = transformSettings.map { it.createTransformer() },
         mimeType: String?  = null,
         id: String? = null,
     ): String? {
-        return process(inputStreamSupplier, outputStreamSupplier, readerSettings + writerSettings + transformSettings, transformers,mimeType, id)
+        return process(inputStreamSupplier, outputStreamSupplier, readerSettings + writerSettings + transformSettings,mimeType, id)
     }
     /**
      * Processes an image and returns a CompletableFuture with the result.
@@ -95,7 +89,6 @@ interface ImageProcessorService {
      * @param inputStreamSupplier A supplier that provides the input stream for the image.
      * @param outputStreamSupplier A supplier that provides the output stream for the processed image.
      * @param settings A list of settings to be applied during the image processing.
-     * @param transformers A list of image transformers to be applied during the image processing.
      * @param mimeType Image mime type. Will be resolved automatically if not provided
      * @param id An optional identifier for the image processing operation.
      * @return id.
@@ -104,7 +97,6 @@ interface ImageProcessorService {
         inputStreamSupplier: Supplier<InputStream>,
         outputStreamSupplier: Supplier<OutputStream>,
         settings: List<Settings>,
-        transformers: List<ImageTransformer> = settings.filterIsInstance<TransformSettings>().map { it.createTransformer() },
         mimeType: String?  = null,
         id: String? = null,
     ): String?
@@ -117,8 +109,6 @@ interface ImageProcessorService {
      *                          Defaults to an empty list.
      * @param readerSettings A list of reader settings to be applied during the image processing.
      *                       Defaults to an empty list.
-     * @param transformers A list of image transformers to be applied during the image processing.
-     *                     Defaults to an empty list.
      * @param mimeType Image mime type. Will be resolved automatically if not provided.
      * @param id An optional identifier for the image processing operation.
      * @return The transformed image as a ConvertableImage object of type ImageOrAnimation.
@@ -127,18 +117,16 @@ interface ImageProcessorService {
         inputStreamSupplier: Supplier<InputStream>,
         transformSettings: List<TransformSettings> = listOf(),
         readerSettings: List<ReaderSettings> = listOf(),
-        transformers: List<ImageTransformer> = transformSettings.map { it.createTransformer() },
         mimeType: String?  = null,
         id: String? = null,
     ): ImageOrAnimation {
-        return performImageTransformation(inputStreamSupplier,readerSettings + transformSettings, transformers,mimeType, id)
+        return performImageTransformation(inputStreamSupplier,readerSettings + transformSettings,mimeType, id)
     }
 
     /**
      * Performs an image transformation based on the given parameters.
      *
      * @param inputStreamSupplier A supplier that provides the input stream for the image.
-     * @param transformers A list of image transformers to be applied during the image processing. Defaults to an empty list.
      * @param transformSettings A list of transform settings to be applied during the image processing. Defaults to an empty list.
      * @param readerSettings A list of reader settings to be applied during the image processing. Defaults to an empty list.
      * @param mimeType Image mime type. Will be resolved automatically if not provided.
@@ -148,7 +136,6 @@ interface ImageProcessorService {
     fun performImageTransformation(
         inputStreamSupplier: Supplier<InputStream>,
         settings: List<Settings>,
-        transformers: List<ImageTransformer> = settings.filterIsInstance<TransformSettings>().map { it.createTransformer() },
         mimeType: String? = null,
         id: String? = null,
     ): ImageOrAnimation

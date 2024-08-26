@@ -16,5 +16,5 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Auto
 open class AutocropTransformer : PredefinedTransformer<AutocropSettings>(AutocropSettings::class)  {
     override val name: String="Autocrop"
 
-    override fun processTransformation(image: ImmutableImage, settings: AutocropSettings):  ImmutableImage = image.autocrop(settings.backgroundColour,settings.colorTolerance)
+    override fun processTransformation(image: ImmutableImage, settings: AutocropSettings):  ImmutableImage = image.autocrop(settings.backgroundColour,settings.colourTolerance)
 }
