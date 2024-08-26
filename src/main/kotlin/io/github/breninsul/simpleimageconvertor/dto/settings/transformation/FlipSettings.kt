@@ -1,11 +1,13 @@
 package io.github.breninsul.simpleimageconvertor.dto.settings.transformation
 
-import com.sksamuel.scrimage.ScaleMethod
+
 import io.github.breninsul.simpleimageconvertor.dto.settings.TransformSettings
 
-open class ScaleSettings(
-    open val scaleFactor: Double =0.0,
-    open val scaleMethod: ScaleMethod = ScaleMethod.Bicubic,
+open class FlipSettings(
+    open val type: Type=Type.X,
 ) : TransformSettings {
+    enum class Type{
+        X,Y
+    }
     override fun getOrder(): Int = -10
 }

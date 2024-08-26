@@ -18,9 +18,21 @@ abstract class PredefinedTransformer<T: TransformSettings>(protected open val cl
 
 
     override fun processStatic(image:ImmutableImage,settings: List<Settings>): ImmutableImage {
-        val operationSettings = settings.firstOrNull { s-> clazz.isInstance(s) }.let { it as T } ?: throw ImageTransformerException("No settings for $name")
+        val operationSettings = getOperationSettings(settings)
         return processTransformation(image,operationSettings)
     }
+
+    /**
+     * Returns the operation settings of the transformer.
+     *
+     * This method retrieves the operation settings from the list of settings provided. It uses the class of the transform settings type specified in the [PredefinedTransformer] class
+     *  to identify and fetch the appropriate settings. If no settings of the specified type are found in the list, it throws an [ImageTransformerException].
+     *
+     * @param settings The list of settings to search for the operation settings. Each setting must implement the [Settings] interface.
+     * @return The operation settings as an instance of the transform settings type [T].
+     * @throws ImageTransformerException if no settings of type [T] are found in the list.
+     */
+    protected open fun getOperationSettings(settings: List<Settings>) = settings.firstOrNull { s -> clazz.isInstance(s) }?.let { it as T } ?: throw ImageTransformerException("No settings for $name")
 
     /**
      * Performs a transformation on an image using the provided settings.

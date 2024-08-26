@@ -10,6 +10,8 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Auto
  * @constructor Creates an instance of the `AutocropTransformer` class.
  *
  * @property name The name of the transformer, which is set to "Autocrop".
+ *
+ * @see [link](https://sksamuel.github.io/scrimage/autocrop/)
  */
 open class AutocropTransformer : PredefinedTransformer<AutocropSettings>(AutocropSettings::class)  {
     override val name: String="Autocrop"

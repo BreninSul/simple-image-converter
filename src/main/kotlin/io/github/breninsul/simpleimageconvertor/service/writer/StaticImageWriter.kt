@@ -5,6 +5,7 @@ import com.sksamuel.scrimage.nio.AnimatedGif
 import io.github.breninsul.simpleimageconvertor.dto.settings.AnimationToStaticSettings
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
+import io.github.breninsul.simpleimageconvertor.extensions.middle
 import java.io.OutputStream
 import java.util.function.Supplier
 
@@ -56,5 +57,4 @@ interface StaticImageWriter:ImageWriter {
             AnimationToStaticSettings.StrategyEnum.SPECIFIC_FRAME->writeStatic(animation.frames.getOrNull(animationSettings.useFrame.toInt())?:animation.frames.last(),settings, out)
         }
     }
-    fun <T> List<T>.middle() :T= this[(this.size /2) + (this.size % 2)]
 }

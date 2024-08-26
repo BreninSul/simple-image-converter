@@ -8,6 +8,8 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Boun
  *  the provided settings.
  *
  * @property name The name of the transformer, which is set to "Bound".
+ *
+ * @see [link](https://sksamuel.github.io/scrimage/bound/)
  */
 open class BoundTransformer : PredefinedTransformer<BoundSettings>(BoundSettings::class) {
     override val name: String="Bound"

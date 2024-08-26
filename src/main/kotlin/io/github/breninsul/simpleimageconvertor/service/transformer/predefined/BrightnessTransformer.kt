@@ -16,7 +16,7 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Brig
  * @see PredefinedTransformer
  * @see BrightnessSettings
  *
- * @since 1.0.0
+ * @see [link](https://sksamuel.github.io/scrimage/brightness/)
  */
 open class BrightnessTransformer : PredefinedTransformer<BrightnessSettings>(BrightnessSettings::class) {
     override val name: String = "Brightness"

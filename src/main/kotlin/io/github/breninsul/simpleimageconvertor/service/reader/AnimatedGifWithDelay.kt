@@ -113,6 +113,10 @@ open class AnimatedGifWithDelay(protected open val readerDelegate:GifSequenceRea
 
     open fun mapFramesWithDelay(mapper: (ImageWithDelay) -> ImageWithDelay):AnimatedGifWithDelay {
         val newFrames = getFramesWithDelay().map { mapper.invoke(it) }
+        return withFrames(newFrames)
+    }
+
+    open fun withFrames(newFrames:List<ImageWithDelay>):AnimatedGifWithDelay {
         return withReader(readerDelegate.withNewFrames(newFrames))
     }
 }
