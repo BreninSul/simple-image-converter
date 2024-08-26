@@ -12,6 +12,8 @@ import kotlin.reflect.KClass
  *
  * @param name The name of the transformer.
  * @param filter The filter to apply to the image.
+ *
+ * @see [link](https://sksamuel.github.io/scrimage/filters/)
  */
 open class GeneralFilterTransformer(
     override val name: String,

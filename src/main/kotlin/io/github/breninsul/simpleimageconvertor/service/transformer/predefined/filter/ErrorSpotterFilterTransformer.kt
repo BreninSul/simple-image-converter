@@ -13,6 +13,8 @@ import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.O
  * It provides methods to map options to a frame, process the transformation, and resolve destination frames.
  *
  * @constructor Creates an ErrorSpotterFilterTransformer instance.
+ *
+ * @see [link](https://sksamuel.github.io/scrimage/filters/)
  */
 open class ErrorSpotterFilterTransformer: OperationWitSecondImageTransformer<ErrorSpotterFilterSettings>(ErrorSpotterFilterSettings::class)  {
     override val name: String="ErrorSpotterFilter"
