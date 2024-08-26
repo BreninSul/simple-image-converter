@@ -1,4 +1,4 @@
-import io.github.breninsul.simpleimageconvertor.dto.settings.AnimationToStaticSettings
+import io.github.breninsul.simpleimageconvertor.dto.writer.AnimationToStaticSettings
 import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageConsumer

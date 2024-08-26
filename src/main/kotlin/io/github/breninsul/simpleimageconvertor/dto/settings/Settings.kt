@@ -1,8 +1,7 @@
 package io.github.breninsul.simpleimageconvertor.dto.settings
 
-import io.github.breninsul.simpleimageconvertor.dto.Ordered
 
-interface Settings: Ordered
+interface Settings
 
 inline fun <reified T : Settings> List<Settings>.getSetting(): T? {
     return this.getSettings<T>().firstOrNull()

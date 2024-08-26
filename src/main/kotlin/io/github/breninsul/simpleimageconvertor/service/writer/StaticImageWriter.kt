@@ -2,7 +2,7 @@ package io.github.breninsul.simpleimageconvertor.service.writer
 
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.AnimatedGif
-import io.github.breninsul.simpleimageconvertor.dto.settings.AnimationToStaticSettings
+import io.github.breninsul.simpleimageconvertor.dto.writer.AnimationToStaticSettings
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.extensions.middle

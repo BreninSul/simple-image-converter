@@ -1,7 +1,5 @@
 package io.github.breninsul.simpleimageconvertor.dto.writer
 
-import io.github.breninsul.simpleimageconvertor.dto.settings.WriterSettings
-
 open class TiffWriterSettings(
     /**
      * https://download.java.net/media/jai-imageio/javadoc/1.1/com/sun/media/imageio/plugins/tiff/TIFFImageWriteParam.html

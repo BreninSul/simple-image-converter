@@ -2,7 +2,7 @@ package io.github.breninsul.simpleimageconvertor.service.transformer.predefined
 
 import com.sksamuel.scrimage.ImmutableImage
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
-import io.github.breninsul.simpleimageconvertor.dto.settings.TransformSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.TransformSettings
 import io.github.breninsul.simpleimageconvertor.exception.ImageTransformerException
 import io.github.breninsul.simpleimageconvertor.service.transformer.ImageTransformer
 import kotlin.reflect.KClass

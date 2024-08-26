@@ -54,7 +54,7 @@ open class DefaultImageProcessorService(
     ): String? {
         try {
             val time = System.currentTimeMillis()
-            val processed = performImageTransformation(inputStreamSupplier, transformers, settings,mimeType, id)
+            val processed = performImageTransformation(inputStreamSupplier, settings,transformers,mimeType, id)
             val afterProcessTime = System.currentTimeMillis()
             converter.convert(processed, settings, outputStreamSupplier)
             logger.log(loggingLevel, "Image write $id took ${System.currentTimeMillis() - afterProcessTime} ms. Total time ${System.currentTimeMillis() - time} ms")
@@ -67,8 +67,8 @@ open class DefaultImageProcessorService(
 
     override fun performImageTransformation(
         inputStreamSupplier: Supplier<InputStream>,
-        transformers: List<ImageTransformer>,
         settings: List<Settings>,
+        transformers: List<ImageTransformer>,
         mimeType: String?,
         id: String?,
     ): ImageOrAnimation {

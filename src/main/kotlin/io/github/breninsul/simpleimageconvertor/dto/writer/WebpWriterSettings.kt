@@ -1,7 +1,5 @@
 package io.github.breninsul.simpleimageconvertor.dto.writer
 
-import io.github.breninsul.simpleimageconvertor.dto.settings.WriterSettings
-
 open class WebpWriterSettings(
     val z: Int = -1,
     val q: Int = -1,

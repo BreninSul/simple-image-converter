@@ -1,13 +1,18 @@
 package io.github.breninsul.simpleimageconvertor.dto.settings.transformation
 
+import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.FlipTransformer
 
-import io.github.breninsul.simpleimageconvertor.dto.settings.TransformSettings
 
 open class FlipSettings(
-    open val type: Type=Type.X,
+    open val type: Type = Type.X,
 ) : TransformSettings {
-    enum class Type{
-        X,Y
+    enum class Type {
+        X, Y
     }
-    override fun getOrder(): Int = -10
+
+    override fun createTransformer() = transformer
+
+    companion object {
+        protected val transformer = FlipTransformer()
+    }
 }

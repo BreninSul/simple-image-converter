@@ -1,4 +1,4 @@
-package io.github.breninsul.simpleimageconvertor.dto.settings
+package io.github.breninsul.simpleimageconvertor.dto.writer
 
 /**
  * AnimationToStaticSettings is a class that represents the settings for converting an animation to a static image.
