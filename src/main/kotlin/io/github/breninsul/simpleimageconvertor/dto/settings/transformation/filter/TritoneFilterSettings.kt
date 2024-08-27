@@ -8,7 +8,7 @@ open class TritoneFilterSettings(
     open val shadows: Color = Colors.Transparent.awt(),
     open val midtones: Color = Colors.Transparent.awt(),
     open val highlights: Color = Colors.Transparent.awt(),
-    ) : CommonTransformSettings {
+) : CommonTransformSettings {
     override fun toFilter() = TritoneFilter(shadows, midtones, highlights)
     override fun transformerName(): String = "TritoneFilter"
 }

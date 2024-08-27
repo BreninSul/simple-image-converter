@@ -8,19 +8,20 @@ import io.github.breninsul.simpleimageconvertor.exception.ImageTransformerExcept
 import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.OperationWitSecondImageTransformer
 
 /**
- * This class represents an implementation of the OperationWitSecondImageTransformer abstract class.
- * It performs image processing operations using the ErrorSpotterFilter.
- * It provides methods to map options to a frame, process the transformation, and resolve destination frames.
+ * This class represents an implementation of the
+ * OperationWitSecondImageTransformer abstract class. It performs image
+ * processing operations using the ErrorSpotterFilter. It provides methods
+ * to map options to a frame, process the transformation, and resolve
+ * destination frames.
  *
  * @constructor Creates an ErrorSpotterFilterTransformer instance.
- *
  * @see [link](https://sksamuel.github.io/scrimage/filters/)
  */
-open class ErrorSpotterFilterTransformer: OperationWitSecondImageTransformer<ErrorSpotterFilterSettings>(ErrorSpotterFilterSettings::class)  {
-    override val name: String="ErrorSpotterFilter"
+open class ErrorSpotterFilterTransformer : OperationWitSecondImageTransformer<ErrorSpotterFilterSettings>(ErrorSpotterFilterSettings::class) {
+    override val name: String = "ErrorSpotterFilter"
     override fun mapOptionsToFrame(settings: ErrorSpotterFilterSettings, frameImage: ImmutableImage): ErrorSpotterFilterSettings {
-        return  ErrorSpotterFilterSettings(settings.ratio, ImageOrAnimation(null, frameImage))
+        return ErrorSpotterFilterSettings(settings.ratio, ImageOrAnimation(null, frameImage))
     }
 
-    override fun processTransformation(image: ImmutableImage, settings: ErrorSpotterFilterSettings): ImmutableImage = image.filter(ErrorSpotterFilter(settings.image.image?: throw ImageTransformerException("Image should be static"),settings.ratio))
+    override fun processTransformation(image: ImmutableImage, settings: ErrorSpotterFilterSettings): ImmutableImage = image.filter(ErrorSpotterFilter(settings.image.image ?: throw ImageTransformerException("Image should be static"), settings.ratio))
 }

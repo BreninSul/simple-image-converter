@@ -7,7 +7,7 @@ open class ThresholdFilterSettings(
     open val threshold: Int = 127,
     open val white: Color = Color.WHITE,
     open val black: Color = Color.BLACK,
-    ) : CommonTransformSettings {
-    override fun toFilter() = ThresholdFilter(threshold,white.rgb,black.rgb)
+) : CommonTransformSettings {
+    override fun toFilter() = ThresholdFilter(threshold, white.rgb, black.rgb)
     override fun transformerName(): String = "ThresholdFilter"
 }

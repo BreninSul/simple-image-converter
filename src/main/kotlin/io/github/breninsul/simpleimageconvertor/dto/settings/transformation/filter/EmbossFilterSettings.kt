@@ -2,7 +2,7 @@ package io.github.breninsul.simpleimageconvertor.dto.settings.transformation.fil
 
 import com.sksamuel.scrimage.filter.EmbossFilter
 
-open class EmbossFilterSettings: CommonTransformSettings {
+open class EmbossFilterSettings : CommonTransformSettings {
     override fun toFilter() = EmbossFilter()
     override fun transformerName(): String = "EmbossFilter"
 }

@@ -2,7 +2,7 @@ package io.github.breninsul.simpleimageconvertor.dto.settings.transformation.fil
 
 import com.sksamuel.scrimage.filter.MaximumFilter
 
-open class MaximumFilterSettings: CommonTransformSettings {
+open class MaximumFilterSettings : CommonTransformSettings {
     override fun toFilter() = MaximumFilter()
     override fun transformerName(): String = "MaximumFilter"
 }

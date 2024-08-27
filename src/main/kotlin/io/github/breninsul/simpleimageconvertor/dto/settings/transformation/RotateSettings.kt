@@ -6,15 +6,16 @@ import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.R
 import java.awt.Color
 
 /**
- * The `RotateSettings` class is an open class that represents the settings for rotating images.
- * It extends the `TransformSettings` interface.
+ * The `RotateSettings` class is an open class that represents the settings
+ * for rotating images. It extends the `TransformSettings` interface.
  *
- * @property degree The degree of rotation as a double value. The default value is 0.0.
- * @property colour The color to fill the background with during rotation as an instance of the `Color` class. The default value is `Colors.Transparent.toAWT()`.
  * @constructor Creates an instance of the `RotateSettings` class.
- *
+ * @property degree The degree of rotation as a double value. The default
+ *    value is 0.0.
+ * @property colour The color to fill the background with during rotation
+ *    as an instance of the `Color` class. The default value is
+ *    `Colors.Transparent.toAWT()`.
  * @see [link](https://sksamuel.github.io/scrimage/rotate/)
- *
  */
 open class RotateSettings(
     open val degree: Double = 0.0,

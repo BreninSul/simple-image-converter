@@ -5,11 +5,11 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Tran
 import io.github.breninsul.simpleimageconvertor.service.transformer.ImageTransformer
 import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.filter.GeneralFilterTransformer
 
-interface CommonTransformSettings:TransformSettings {
-    fun toFilter():Filter
-    fun transformerName():String
+interface CommonTransformSettings : TransformSettings {
+    fun toFilter(): Filter
+    fun transformerName(): String
 
     override fun createTransformer(): ImageTransformer {
-        return GeneralFilterTransformer(transformerName(),toFilter())
+        return GeneralFilterTransformer(transformerName(), toFilter())
     }
 }

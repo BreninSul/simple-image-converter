@@ -2,7 +2,7 @@ package io.github.breninsul.simpleimageconvertor.dto.settings.transformation.fil
 
 import com.sksamuel.scrimage.filter.RobertsFilter
 
-open class RobertsFilterSettings: CommonTransformSettings {
+open class RobertsFilterSettings : CommonTransformSettings {
     override fun toFilter() = RobertsFilter()
     override fun transformerName(): String = "RobertsFilter"
 }

@@ -20,7 +20,7 @@ open class CaptionFilterSettings(
     open val captionAlpha: Double = 0.0,
     open val padding: Padding = Padding(0, 0, 0, 0)
 ) : CommonTransformSettings {
-    override fun toFilter()= CaptionFilter(this.text,this.x,this.y,this.font,this.textColor,this.textAlpha,this.antiAlias,this.fullWidth,this.captionBackground,this.captionAlpha,this.padding)
-    override fun transformerName(): String ="CaptionFilter"
+    override fun toFilter() = CaptionFilter(this.text, this.x, this.y, this.font, this.textColor, this.textAlpha, this.antiAlias, this.fullWidth, this.captionBackground, this.captionAlpha, this.padding)
+    override fun transformerName(): String = "CaptionFilter"
 }
 

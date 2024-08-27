@@ -6,7 +6,6 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Over
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Resolution
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.ScaleToSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.TransformFunctionSettings
-import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.filter.BlurFilterSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.filter.SnowFilterSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.filter.WatermarkStampFilterSettings
 import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings

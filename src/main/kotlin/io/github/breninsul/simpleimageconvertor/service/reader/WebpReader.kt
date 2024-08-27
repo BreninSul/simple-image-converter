@@ -15,45 +15,47 @@ import kotlin.io.path.inputStream
 import kotlin.io.path.outputStream
 
 
-open class WebpReader(private val order:Int=1) : ImageReader {
+open class WebpReader(private val order: Int = 1) : ImageReader {
     init {
         WebPDecoder.init()
     }
+
     protected open val supportedImageTypes = setOf("webp")
 
-    override fun read(fileStream: Supplier<InputStream>,settings: List<Settings>): ImageOrAnimation {
-        val originalBytes=fileStream.get().use {  it.readAllBytes()}
-        val isAnimation=originalBytes.inputStream().isWebpAnimated()
+    override fun read(fileStream: Supplier<InputStream>, settings: List<Settings>): ImageOrAnimation {
+        val originalBytes = fileStream.get().use { it.readAllBytes() }
+        val isAnimation = originalBytes.inputStream().isWebpAnimated()
         val decodedImage: WebPDecoder.WebPImage = fileStream.get().use { WebPDecoder.decode(originalBytes) }
 
         if (!isAnimation) {
             return ImageOrAnimation(null, ImmutableImage.fromAwt(decodedImage.frames.first().img))
         } else {
             val encoder = AnimatedGifEncoder()
-            val tempFile= Files.createTempFile("AnimationReaderWebp",".gif")
+            val tempFile = Files.createTempFile("AnimationReaderWebp", ".gif")
             tempFile.outputStream().use { outputStream ->
-                    encoder.start(outputStream)
-                    encoder.setRepeat(decodedImage.loopCount)
-                    encoder.setSize(decodedImage.canvasWidth, decodedImage.canvasHeight)
-                    encoder.setBackground(decodedImage.bgColor)
-                    decodedImage.frames.forEach {
-                        encoder.setDelay(it.delay)
-                        encoder.addFrame(it.img)
-                    }
-                    encoder.finish()
+                encoder.start(outputStream)
+                encoder.setRepeat(decodedImage.loopCount)
+                encoder.setSize(decodedImage.canvasWidth, decodedImage.canvasHeight)
+                encoder.setBackground(decodedImage.bgColor)
+                decodedImage.frames.forEach {
+                    encoder.setDelay(it.delay)
+                    encoder.addFrame(it.img)
                 }
-            val reader=tempFile.inputStream().use {
+                encoder.finish()
+            }
+            val reader = tempFile.inputStream().use {
                 val reader = GifSequenceReaderWithDelay()
                 reader.read(it)
                 reader
             }
             tempFile.deleteIfExists()
-            val gif=AnimatedGifWithDelay(reader)
-            return ImageOrAnimation(gif,null)
+            val gif = AnimatedGifWithDelay(reader)
+            return ImageOrAnimation(gif, null)
         }
     }
+
     protected open fun InputStream.isWebpAnimated(): Boolean {
-        this.use {inputStream->
+        this.use { inputStream ->
             var result = false
             inputStream.skip(12)
             val buf = ByteArray(4)
@@ -65,6 +67,7 @@ open class WebpReader(private val order:Int=1) : ImageReader {
             return result
         }
     }
+
     override fun supportedTypes(): Set<String> {
         return supportedImageTypes
     }

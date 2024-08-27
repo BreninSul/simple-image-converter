@@ -18,17 +18,22 @@ fun interface ImageTransformer {
     /**
      * Processes a static image using the provided settings.
      *
-     * @param image The static image to process. It must be an instance of [ImmutableImage].
-     * @param settings The list of settings to apply during image processing. Each setting must implement the [Settings] interface.
+     * @param image The static image to process. It must be an instance of
+     *    [ImmutableImage].
+     * @param settings The list of settings to apply during image processing.
+     *    Each setting must implement the [Settings] interface.
      * @return The processed static image as an instance of [ImmutableImage].
      */
     fun processStatic(image: ImmutableImage, settings: List<Settings>): ImmutableImage
 
     /**
-     * Process the animation frames of an AnimatedGifWithDelay object using the provided settings.
+     * Process the animation frames of an AnimatedGifWithDelay object using the
+     * provided settings.
      *
-     * @param settings The list of settings to apply during image processing. Each setting must implement the [Settings] interface.
-     * @return The processed AnimatedGifWithDelay object with updated animation frames as instances of [BufferedImage].
+     * @param settings The list of settings to apply during image processing.
+     *    Each setting must implement the [Settings] interface.
+     * @return The processed AnimatedGifWithDelay object with updated animation
+     *    frames as instances of [BufferedImage].
      */
     fun AnimatedGifWithDelay.processAnimation(settings: List<Settings>): AnimatedGifWithDelay {
         return this.mapFrames { i -> processStatic(i.toImmutableImage(), settings).awt() }
@@ -37,8 +42,10 @@ fun interface ImageTransformer {
     /**
      * Processes an image using the provided settings.
      *
-     * @param image The image to process. It must be an instance of [ImageOrAnimation].
-     * @param settings The list of settings to apply during image processing. Each setting must implement the [Settings] interface.
+     * @param image The image to process. It must be an instance of
+     *    [ImageOrAnimation].
+     * @param settings The list of settings to apply during image processing.
+     *    Each setting must implement the [Settings] interface.
      * @return The processed image as an instance of [ImageOrAnimation].
      * @throws Exception if an error occurs during image processing.
      */
@@ -59,9 +66,10 @@ fun interface ImageTransformer {
     /**
      * Checks if the list of [Settings] supports the given operation.
      *
-     * @return `true` if all settings in the list support the operation, `false` otherwise.
+     * @return `true` if all settings in the list support the operation,
+     *    `false` otherwise.
      */
-    fun List<Settings>.supports(): Boolean =true
+    fun List<Settings>.supports(): Boolean = true
 
 
     companion object {

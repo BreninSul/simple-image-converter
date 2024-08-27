@@ -1,6 +1,7 @@
 package io.github.breninsul.simpleimageconvertor.service.convert
 
-import io.github.breninsul.simpleimageconvertor.dto.*
+import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
 import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
@@ -29,9 +30,9 @@ open class DefaultImageConverter(
         PsdWriter(),
         IcnsWriter(),
         IcoWriter(),
-        ).let { it + PdfWriter(it) }
+    ).let { it + PdfWriter(it) }
 ) : ImageConverter {
-    protected open val imageWriters:List<ImageWriter> = writers.sortedBy { it.getOrder() }
+    protected open val imageWriters: List<ImageWriter> = writers.sortedBy { it.getOrder() }
 
     override fun convert(
         image: ImageOrAnimation,
@@ -48,14 +49,15 @@ open class DefaultImageConverter(
         }
     }
 
-    override fun checkSettings(settings:List<Settings>) {
+    override fun checkSettings(settings: List<Settings>) {
         settings.getConvertSetting()
     }
 
-    protected open  fun List<Settings>.getConvertSetting() = this.getSetting<ConvertSettings>() ?: throw ImageConvertingException("No converter settings provided")
-    open fun supportedTypes():Set<ImageFormat> = imageWriters.map { it.supportedTypes() }.flatten().toSet()
+    protected open fun List<Settings>.getConvertSetting() = this.getSetting<ConvertSettings>() ?: throw ImageConvertingException("No converter settings provided")
+    open fun supportedTypes(): Set<ImageFormat> = imageWriters.map { it.supportedTypes() }.flatten().toSet()
 
     protected open fun getWriter(setting: ConvertSettings) = imageWriters.firstOrNull { it.supports(setting.format) } ?: throw ImageConvertingException("No writer exist for ${setting.format}")
+
     companion object {
         val logger = Logger.getLogger(this::class.java.name)
     }

@@ -6,14 +6,15 @@ import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.R
 import java.awt.Color
 
 /**
- * The `ResizeSettings` class represents the settings for resizing an image.
+ * The `ResizeSettings` class represents the settings for resizing an
+ * image.
  *
- * @constructor Creates a new instance of `ResizeSettings`.
- *
- * @param scaleFactor The scale factor used to resize the image. Default value is 0.0.
+ * @param scaleFactor The scale factor used to resize the image. Default
+ *    value is 0.0.
  * @param position The position of the resized image.
- * @param colour The color of the resized image. Default value is transparent color.
- *
+ * @param colour The color of the resized image. Default value is
+ *    transparent color.
+ * @constructor Creates a new instance of `ResizeSettings`.
  * @see [link](https://sksamuel.github.io/scrimage/resize/)
  */
 open class ResizeSettings(

@@ -7,20 +7,22 @@ import java.io.OutputStream
 import java.util.function.Supplier
 
 /**
- * AnimationImageWriter is an interface that represents an image writer specifically designed for handling animations.
- * It extends the StaticImageWriter interface and provides additional functionality for writing animated images.
+ * AnimationImageWriter is an interface that represents an image writer
+ * specifically designed for handling animations. It extends the
+ * StaticImageWriter interface and provides additional functionality for
+ * writing animated images.
  */
-interface AnimationImageWriter:StaticImageWriter {
+interface AnimationImageWriter : StaticImageWriter {
     override fun write(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>) {
-        if (image.isAnimation()){
-            val animationToStaticSetting=settings.getAnimationToStaticSettings()
-            if (animationToStaticSetting!=null) {
+        if (image.isAnimation()) {
+            val animationToStaticSetting = settings.getAnimationToStaticSettings()
+            if (animationToStaticSetting != null) {
                 writeAnimationToStatic(image.animation!!, animationToStaticSetting, settings, out)
-            } else{
-                writeAnimation(image.animation!!,settings,out)
+            } else {
+                writeAnimation(image.animation!!, settings, out)
             }
         } else {
-            writeStatic(image.image!!,settings,out)
+            writeStatic(image.image!!, settings, out)
         }
     }
 

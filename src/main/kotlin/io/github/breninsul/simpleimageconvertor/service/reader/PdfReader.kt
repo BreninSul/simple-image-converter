@@ -29,7 +29,7 @@ open class PdfReader(private val order: Int = 1) : ImageReader {
         val setting = settings.getSetting<PdfReaderSettings>() ?: PdfReaderSettings()
         val pdfRenderer = PDFRenderer(document)
         val numberOfPages = document.numberOfPages
-        val count=document.pages.count
+        val count = document.pages.count
         if (numberOfPages < 1) {
             throw ImageReadingException("No pages!")
         }

@@ -7,7 +7,7 @@ open class MotionBlurFilterSettings(
     open val distance: Double = 0.0,
     open val rotation: Double = 0.0,
     open val zoom: Double = 0.0,
-    ) : CommonTransformSettings {
+) : CommonTransformSettings {
     override fun toFilter() = MotionBlurFilter(angle, distance, rotation, zoom)
     override fun transformerName(): String = "MotionBlurFilter"
 }

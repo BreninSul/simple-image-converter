@@ -2,7 +2,8 @@ package io.github.breninsul.simpleimageconvertor.service.writer
 
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.AnimatedGif
-import io.github.breninsul.simpleimageconvertor.dto.*
+import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
 import io.github.breninsul.simpleimageconvertor.dto.writer.PdfWriterSettings
@@ -19,8 +20,8 @@ import java.util.function.Supplier
  * PdfWriter is a class responsible for writing PDF files.
  *
  * @param writers The list of ImageWriters to be used for writing images.
- * @property supportedImageTypes The set of ImageFormats supported by this PdfWriter.
- *
+ * @property supportedImageTypes The set of ImageFormats supported by this
+ *    PdfWriter.
  * @see ImageWriter
  * @see AnimationImageWriter
  */
@@ -40,7 +41,7 @@ open class PdfWriter(
         animation.frames.forEach {
             writePage(setting, writer, it, settings, document)
         }
-        out.get().use {  document.save(it)}
+        out.get().use { document.save(it) }
     }
 
 
@@ -49,7 +50,7 @@ open class PdfWriter(
         val setting = settings.getSetting<PdfWriterSettings>() ?: PdfWriterSettings()
         val writer = getImageWriter(setting)
         writePage(setting, writer, image, settings, document)
-        out.get().use {  document.save(it)}
+        out.get().use { document.save(it) }
     }
 
     protected open fun getImageWriter(setting: PdfWriterSettings) = writers.firstOrNull { it.supportedTypes().contains(setting.imageFormat) } ?: throw ImageWritingException("Unsupported format ${setting.imageFormat}")
@@ -67,7 +68,7 @@ open class PdfWriter(
         val outputStream = ByteArrayOutputStream()
         writer.write(ImageOrAnimation(null, image), settings) { outputStream }
         val pdfImage = PDImageXObject.createFromByteArray(document, outputStream.toByteArray(), null)
-        PDPageContentStream(document, page, pdfSetting.appendMode, pdfSetting.compress).use {contents->
+        PDPageContentStream(document, page, pdfSetting.appendMode, pdfSetting.compress).use { contents ->
             contents.drawImage(pdfImage, 0F, 0F, rectangle.width, rectangle.height)
         }
     }

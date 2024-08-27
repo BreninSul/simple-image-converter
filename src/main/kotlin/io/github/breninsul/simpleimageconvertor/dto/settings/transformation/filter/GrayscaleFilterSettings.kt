@@ -2,7 +2,7 @@ package io.github.breninsul.simpleimageconvertor.dto.settings.transformation.fil
 
 import com.sksamuel.scrimage.filter.GrayscaleFilter
 
-open class GrayscaleFilterSettings: CommonTransformSettings {
+open class GrayscaleFilterSettings : CommonTransformSettings {
     override fun toFilter() = GrayscaleFilter()
     override fun transformerName(): String = "GrayscaleFilter"
 }

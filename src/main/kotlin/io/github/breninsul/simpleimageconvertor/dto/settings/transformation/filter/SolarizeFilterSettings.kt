@@ -2,7 +2,7 @@ package io.github.breninsul.simpleimageconvertor.dto.settings.transformation.fil
 
 import com.sksamuel.scrimage.filter.SolarizeFilter
 
-open class SolarizeFilterSettings: CommonTransformSettings {
+open class SolarizeFilterSettings : CommonTransformSettings {
     override fun toFilter() = SolarizeFilter()
     override fun transformerName(): String = "SolarizeFilter"
 }

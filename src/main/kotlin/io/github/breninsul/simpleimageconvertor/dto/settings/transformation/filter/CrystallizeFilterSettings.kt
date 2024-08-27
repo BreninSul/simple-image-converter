@@ -8,7 +8,7 @@ open class CrystallizeFilterSettings(
     open val edgeThickness: Double = 0.4,
     open val edgeColor: Color = Color.decode("0xff000000"),
     open val randomness: Double = 0.2,
-    ) : CommonTransformSettings {
-    override fun toFilter() = CrystallizeFilter(scale,edgeThickness,edgeColor.rgb,randomness)
+) : CommonTransformSettings {
+    override fun toFilter() = CrystallizeFilter(scale, edgeThickness, edgeColor.rgb, randomness)
     override fun transformerName(): String = "CrystallizeFilter"
 }

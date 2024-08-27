@@ -8,6 +8,6 @@ open class BorderFilterSettings(
     open val borderWidth: Int = 0,
     open val colour: Color = Colors.Transparent.awt()
 ) : CommonTransformSettings {
-    override fun toFilter()= BorderFilter(borderWidth,colour)
-    override fun transformerName(): String ="BorderFilter"
+    override fun toFilter() = BorderFilter(borderWidth, colour)
+    override fun transformerName(): String = "BorderFilter"
 }

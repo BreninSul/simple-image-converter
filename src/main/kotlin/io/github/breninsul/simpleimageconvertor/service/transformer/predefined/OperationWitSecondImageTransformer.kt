@@ -3,9 +3,9 @@ package io.github.breninsul.simpleimageconvertor.service.transformer.predefined
 import com.sksamuel.scrimage.DisposeMethod
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
-import io.github.breninsul.simpleimageconvertor.dto.writer.AnimationToStaticSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.OperationWithImageSettings
+import io.github.breninsul.simpleimageconvertor.dto.writer.AnimationToStaticSettings
 import io.github.breninsul.simpleimageconvertor.extensions.middle
 import io.github.breninsul.simpleimageconvertor.service.transformer.ImageTransformer.Companion.logger
 import java.time.Duration
@@ -13,74 +13,97 @@ import java.util.logging.Level
 import kotlin.reflect.KClass
 
 /**
- * This abstract class represents a transformer that performs image processing operations using a second image as part of the transformation.
- * It extends the `PredefinedTransformer` class and provides implementations for processing animated GIFs with delays and static images.
+ * This abstract class represents a transformer that performs
+ * image processing operations using a second image as part of the
+ * transformation. It extends the `PredefinedTransformer` class and
+ * provides implementations for processing animated GIFs with delays and
+ * static images.
  *
- * @param T The type of the operation settings. It must extend the `OperationWithImageSettings` class.
- * @property clazz The class of the operation settings type. It is used to identify and fetch the appropriate settings from the list of settings.
+ * @param T The type of the operation settings. It must extend the
+ *    `OperationWithImageSettings` class.
+ * @property clazz The class of the operation settings type. It is used to
+ *    identify and fetch the appropriate settings from the list of
+ *    settings.
  */
-abstract class OperationWitSecondImageTransformer<T:OperationWithImageSettings> (clazz:KClass<T>): PredefinedTransformer<T>(clazz) {
+abstract class OperationWitSecondImageTransformer<T : OperationWithImageSettings>(clazz: KClass<T>) : PredefinedTransformer<T>(clazz) {
 
     override fun AnimatedGifWithDelay.processAnimation(settings: List<Settings>): AnimatedGifWithDelay {
         val srcFrames = getFramesWithDelay()
-        val operationSettings=getOperationSettings(settings)
+        val operationSettings = getOperationSettings(settings)
         val newFrames = srcFrames.mapIndexed { index, imageWithDelay ->
-            val destFrame=resolveDestinationFrame(srcFrames,index,imageWithDelay,operationSettings)
-            AnimatedGifWithDelay.ImageWithDelay(processTransformation(imageWithDelay.toImmutableImage(), mapOptionsToFrame(operationSettings,destFrame)).awt(),imageWithDelay.delay,imageWithDelay.disposeMethod)
+            val destFrame = resolveDestinationFrame(srcFrames, index, imageWithDelay, operationSettings)
+            AnimatedGifWithDelay.ImageWithDelay(processTransformation(imageWithDelay.toImmutableImage(), mapOptionsToFrame(operationSettings, destFrame)).awt(), imageWithDelay.delay, imageWithDelay.disposeMethod)
         }
         return this.withFrames(newFrames)
     }
 
     override fun processStatic(image: ImmutableImage, settings: List<Settings>): ImmutableImage {
-        val destFrame=resolveDestinationFrame(image,getOperationSettings(settings))
-        return processTransformation(image, mapOptionsToFrame(getOperationSettings(settings),destFrame))
+        val destFrame = resolveDestinationFrame(image, getOperationSettings(settings))
+        return processTransformation(image, mapOptionsToFrame(getOperationSettings(settings), destFrame))
     }
 
     /**
-     * This protected abstract method is used to map the options to a frame in image processing operations.
-     * The options are represented by the settings of type T, and the frame image is represented by the frameImage parameter of type ImmutableImage.
-     * The method returns an instance of the transform settings type T.
+     * This protected abstract method is used to map the options to a frame
+     * in image processing operations. The options are represented by the
+     * settings of type T, and the frame image is represented by the frameImage
+     * parameter of type ImmutableImage. The method returns an instance of the
+     * transform settings type T.
      *
-     * @param settings The settings of type T representing the options to be mapped to the frame.
-     * @param frameImage The frame image to which the options need to be mapped.
-     * @return An instance of the transform settings type T after mapping the options to the frame.
+     * @param settings The settings of type T representing the options to be
+     *    mapped to the frame.
+     * @param frameImage The frame image to which the options need to be
+     *    mapped.
+     * @return An instance of the transform settings type T after mapping the
+     *    options to the frame.
      */
-    protected abstract fun mapOptionsToFrame(settings: T,frameImage:ImmutableImage):T
+    protected abstract fun mapOptionsToFrame(settings: T, frameImage: ImmutableImage): T
 
     /**
      * Resolves the destination frame for image processing operations.
      *
-     * This method takes a source image and a settings object of type T. It creates a no-delay frame from the source image and passes it along with the settings to the overloaded
-     *  version of the function, [resolveDestinationFrame].
+     * This method takes a source image and a settings object of type T.
+     * It creates a no-delay frame from the source image and passes it
+     * along with the settings to the overloaded version of the function,
+     * [resolveDestinationFrame].
      *
-     * @param sourceImage The source image for which the destination frame needs to be resolved.
-     * @param settings The settings object of type T representing the options for image processing.
-     * @return The resolved destination frame as an instance of [ImmutableImage].
+     * @param sourceImage The source image for which the destination frame
+     *    needs to be resolved.
+     * @param settings The settings object of type T representing the options
+     *    for image processing.
+     * @return The resolved destination frame as an instance of
+     *    [ImmutableImage].
      */
-    protected open fun resolveDestinationFrame(  sourceImage:ImmutableImage, settings: T): ImmutableImage {
-        val noDelayFrame=AnimatedGifWithDelay.ImageWithDelay(sourceImage.awt(), Duration.ZERO,DisposeMethod.NONE)
-        return resolveDestinationFrame(listOf(noDelayFrame),0,noDelayFrame,settings)
+    protected open fun resolveDestinationFrame(sourceImage: ImmutableImage, settings: T): ImmutableImage {
+        val noDelayFrame = AnimatedGifWithDelay.ImageWithDelay(sourceImage.awt(), Duration.ZERO, DisposeMethod.NONE)
+        return resolveDestinationFrame(listOf(noDelayFrame), 0, noDelayFrame, settings)
     }
 
     /**
      * Resolves the destination frame for image processing operations.
      *
-     * This method takes a list of source frames, the index of the source frame to be processed, the source image with delay,
-     * and the settings object of type T. It calculates the destination frame based on the source frame's delay,
-     * the destination animation's frames and delays, and the given settings. If the source image is not an animation,
-     * it returns the original image from the settings. If the destination animation has no delays, it applies default animation
-     * to static settings and returns the corresponding frame. Otherwise, it determines the adopted source animation's total duration,
-     * calculates the delay for the source image, and finds the corresponding destination frame using the calculated delay.
-     * Finally, it returns the resolved destination frame.
+     * This method takes a list of source frames, the index of the source frame
+     * to be processed, the source image with delay, and the settings object
+     * of type T. It calculates the destination frame based on the source
+     * frame's delay, the destination animation's frames and delays, and the
+     * given settings. If the source image is not an animation, it returns
+     * the original image from the settings. If the destination animation
+     * has no delays, it applies default animation to static settings and
+     * returns the corresponding frame. Otherwise, it determines the adopted
+     * source animation's total duration, calculates the delay for the
+     * source image, and finds the corresponding destination frame using the
+     * calculated delay. Finally, it returns the resolved destination frame.
      *
-     * @param srcFrames The list of source frames as instances of [AnimatedGifWithDelay.ImageWithDelay].
+     * @param srcFrames The list of source frames as instances of
+     *    [AnimatedGifWithDelay.ImageWithDelay].
      * @param index The index of the source frame to be processed.
-     * @param sourceImageWithDelay The source image with delay as an instance of [AnimatedGifWithDelay.ImageWithDelay].
-     * @param settings The settings object of type T representing the options for image processing.
-     *
-     * @return The resolved destination frame as an instance of [ImmutableImage].
+     * @param sourceImageWithDelay The source image with delay as an instance
+     *    of [AnimatedGifWithDelay.ImageWithDelay].
+     * @param settings The settings object of type T representing the options
+     *    for image processing.
+     * @return The resolved destination frame as an instance of
+     *    [ImmutableImage].
      */
-    protected open fun resolveDestinationFrame(srcFrames: List<AnimatedGifWithDelay.ImageWithDelay>, index: Int, sourceImageWithDelay: AnimatedGifWithDelay.ImageWithDelay,  settings: T): ImmutableImage {
+    protected open fun resolveDestinationFrame(srcFrames: List<AnimatedGifWithDelay.ImageWithDelay>, index: Int, sourceImageWithDelay: AnimatedGifWithDelay.ImageWithDelay, settings: T): ImmutableImage {
         if (settings.image.isAnimation()) {
             val destinationAnimation = settings.image.animation!!
             if (settings.animationToStaticSettings != null) {
@@ -91,23 +114,22 @@ abstract class OperationWitSecondImageTransformer<T:OperationWithImageSettings> 
             val destinationAnimationTotalDuration = destFrames.sumOf { it.delay.toMillis() }
             //No delays, return with default animation to static settings
             if (destinationAnimationTotalDuration < 1) {
-                return resolveAnimationToStaticImage(AnimationToStaticSettings(),destinationAnimation)
+                return resolveAnimationToStaticImage(AnimationToStaticSettings(), destinationAnimation)
             }
             val delayBeforeSrcImage = srcFrames.filterIndexed { idx, _ -> idx < index }.sumOf { it.delay.toMillis() }
-            val adoptedSrcAnimationTotalDuration =if (delayBeforeSrcImage > destinationAnimationTotalDuration)  delayBeforeSrcImage % destinationAnimationTotalDuration  else delayBeforeSrcImage
+            val adoptedSrcAnimationTotalDuration = if (delayBeforeSrcImage > destinationAnimationTotalDuration) delayBeforeSrcImage % destinationAnimationTotalDuration else delayBeforeSrcImage
             val delaySrcImage = adoptedSrcAnimationTotalDuration..adoptedSrcAnimationTotalDuration + sourceImageWithDelay.delay.toMillis()
             if (delaySrcImage.last < 1) {
                 return destinationAnimation.frames.first()
             }
-            val destFrameInTeSameDelay= destFrames.fold(0L to destFrames.first()) {
-                oldFrame,newFrame->
-                if (delaySrcImage.contains(oldFrame.first)){
+            val destFrameInTeSameDelay = destFrames.fold(0L to destFrames.first()) { oldFrame, newFrame ->
+                if (delaySrcImage.contains(oldFrame.first)) {
                     return@fold oldFrame
-                } else{
-                    return@fold oldFrame.first+newFrame.delay.toMillis() to newFrame
+                } else {
+                    return@fold oldFrame.first + newFrame.delay.toMillis() to newFrame
                 }
             }
-            logger.log(Level.FINER,"Dest frame with delay ${destFrameInTeSameDelay.first} (total $destinationAnimationTotalDuration) was chosen for src image with delay $delayBeforeSrcImage")
+            logger.log(Level.FINER, "Dest frame with delay ${destFrameInTeSameDelay.first} (total $destinationAnimationTotalDuration) was chosen for src image with delay $delayBeforeSrcImage")
             return destFrameInTeSameDelay.second.toImmutableImage()
         } else {
             return settings.image.image!!
@@ -116,10 +138,14 @@ abstract class OperationWitSecondImageTransformer<T:OperationWithImageSettings> 
 
 
     /**
-     * Resolves the destination frame for image processing operations by converting an animation to a static image.
+     * Resolves the destination frame for image processing operations by
+     * converting an animation to a static image.
      *
-     * @param settings The settings object of type AnimationToStaticSettings representing the options for converting the animation to a static image.
-     * @param destinationAnimation The destination animation as an instance of AnimatedGifWithDelay.
+     * @param settings The settings object of type AnimationToStaticSettings
+     *    representing the options for converting the animation to a static
+     *    image.
+     * @param destinationAnimation The destination animation as an instance of
+     *    AnimatedGifWithDelay.
      * @return The resolved destination frame as an instance of ImmutableImage.
      */
     protected open fun resolveAnimationToStaticImage(

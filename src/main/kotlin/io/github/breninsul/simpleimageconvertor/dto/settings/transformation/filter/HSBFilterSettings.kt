@@ -6,7 +6,7 @@ open class HSBFilterSettings(
     open val hue: Double = 0.0,
     open val saturation: Double = 0.0,
     open val brightness: Double = 0.0,
-    ) : CommonTransformSettings {
-    override fun toFilter() = HSBFilter(hue.toFloat(),saturation.toFloat(),brightness.toFloat())
+) : CommonTransformSettings {
+    override fun toFilter() = HSBFilter(hue.toFloat(), saturation.toFloat(), brightness.toFloat())
     override fun transformerName(): String = "HSBFilter"
 }

@@ -14,6 +14,6 @@ open class PointillizeFilterSettings(
     open val gridType: PointillizeGridType = PointillizeGridType.Random,
 
     ) : CommonTransformSettings {
-    override fun toFilter() = PointillizeFilter(angle.toFloat(),scale,edgeThickness.toFloat(),edgeColor.rgb,fadeEdges,fuzziness.toFloat(),gridType)
+    override fun toFilter() = PointillizeFilter(angle.toFloat(), scale, edgeThickness.toFloat(), edgeColor.rgb, fadeEdges, fuzziness.toFloat(), gridType)
     override fun transformerName(): String = "PointillizeFilter"
 }

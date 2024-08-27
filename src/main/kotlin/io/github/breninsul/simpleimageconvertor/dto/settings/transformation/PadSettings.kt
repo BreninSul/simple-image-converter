@@ -5,15 +5,20 @@ import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.P
 import java.awt.Color
 
 /**
- * The `PadSettings` class represents the settings for adding padding to an image.
+ * The `PadSettings` class represents the settings for adding padding to an
+ * image.
  *
- * @param left The amount of padding to add to the left side of the image. Default is 0.
- * @param top The amount of padding to add to the top of the image. Default is 0.
- * @param right The amount of padding to add to the right side of the image. Default is 0.
- * @param bottom The amount of padding to add to the bottom of the image. Default is 0.
+ * @param left The amount of padding to add to the left side of the image.
+ *    Default is 0.
+ * @param top The amount of padding to add to the top of the image. Default
+ *    is 0.
+ * @param right The amount of padding to add to the right side of the
+ *    image. Default is 0.
+ * @param bottom The amount of padding to add to the bottom of the image.
+ *    Default is 0.
  * @param colour The color of the padding. Default is transparent.
- * @constructor Creates a `PadSettings` object with the specified parameters.
- *
+ * @constructor Creates a `PadSettings` object with the specified
+ *    parameters.
  * @see [link](https://sksamuel.github.io/scrimage/pad/)
  */
 open class PadSettings(

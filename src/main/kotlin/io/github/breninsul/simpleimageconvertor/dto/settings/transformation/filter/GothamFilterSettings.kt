@@ -2,7 +2,7 @@ package io.github.breninsul.simpleimageconvertor.dto.settings.transformation.fil
 
 import com.sksamuel.scrimage.filter.GothamFilter
 
-open class GothamFilterSettings: CommonTransformSettings {
+open class GothamFilterSettings : CommonTransformSettings {
     override fun toFilter() = GothamFilter()
     override fun transformerName(): String = "GothamFilter"
 }

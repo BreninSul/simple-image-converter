@@ -4,13 +4,14 @@ import com.sksamuel.scrimage.ScaleMethod
 import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.ZoomTransformer
 
 /**
- * The `ZoomSettings` class represents the settings for zooming an image. It is a subclass of `TransformSettings`.
+ * The `ZoomSettings` class represents the settings for zooming an image.
+ * It is a subclass of `TransformSettings`.
  *
  * @constructor Creates a `ZoomSettings` instance.
- *
- * @property scaleFactor The scale factor for zooming the image. The default value is 0.0.
- * @property scaleMethod The scale method to use for zooming the image. The default value is `ScaleMethod.Bicubic`.
- *
+ * @property scaleFactor The scale factor for zooming the image. The
+ *    default value is 0.0.
+ * @property scaleMethod The scale method to use for zooming the image. The
+ *    default value is `ScaleMethod.Bicubic`.
  * @see [link](https://sksamuel.github.io/scrimage/zoom/)
  */
 open class ZoomSettings(

@@ -2,7 +2,7 @@ package io.github.breninsul.simpleimageconvertor.dto.settings.transformation.fil
 
 import com.sksamuel.scrimage.filter.NashvilleFilter
 
-open class NashvilleFilterSettings: CommonTransformSettings {
+open class NashvilleFilterSettings : CommonTransformSettings {
     override fun toFilter() = NashvilleFilter()
     override fun transformerName(): String = "NashvilleFilter"
 }

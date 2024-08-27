@@ -10,14 +10,13 @@ import javax.imageio.ImageWriter
 /**
  * Represents a class for writing ICO (Windows Icon) images.
  *
- * This class extends the AbstractTwelveMonkeysWriterWriter class and provides ICO-specific functionality for writing images.
+ * This class extends the AbstractTwelveMonkeysWriterWriter class and
+ * provides ICO-specific functionality for writing images.
  *
  * @param order The order of the writer. The default value is 1.
- *
  * @see AbstractTwelveMonkeysWriterWriter
  * @see ImageWriter
  * @see ImageWriteParam
- *
  */
 open class IcoWriter(order: Int = 1) : AbstractTwelveMonkeysWriterWriter(setOf(ImageFormat.ICO), "ico", order,
     object : ParametrizedTwelveMonkeysWriter("ico") {

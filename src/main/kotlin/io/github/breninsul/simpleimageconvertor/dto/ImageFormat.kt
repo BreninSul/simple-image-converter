@@ -4,13 +4,13 @@ package io.github.breninsul.simpleimageconvertor.dto
  * Represent a specific image format.
  *
  * @param name The name of the image format.
- * @param supportsAnimation Indicates whether the image format supports animation. Default value is false.
- *
- * @constructor Creates a new instance of the ImageFormat class with the given name and animation support.
- *
+ * @param supportsAnimation Indicates whether the image format supports
+ *    animation. Default value is false.
+ * @constructor Creates a new instance of the ImageFormat class with the
+ *    given name and animation support.
  * @property name The name of the image format.
- * @property supportsAnimation Indicates whether the image format supports animation.
- *
+ * @property supportsAnimation Indicates whether the image format supports
+ *    animation.
  * @see ImageFormat.WEBP
  * @see ImageFormat.GIF
  * @see ImageFormat.PNG

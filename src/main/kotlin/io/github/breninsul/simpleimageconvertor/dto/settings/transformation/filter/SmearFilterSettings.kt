@@ -10,7 +10,7 @@ open class SmearFilterSettings(
     open val scatter: Double = 0.0,
     open val distance: Int = 3,
     open val mix: Double = 0.4,
-    ) : CommonTransformSettings {
-    override fun toFilter() = SmearFilter(smearType,angle.toFloat(),density.toFloat(),scatter.toFloat(),distance,mix.toFloat())
+) : CommonTransformSettings {
+    override fun toFilter() = SmearFilter(smearType, angle.toFloat(), density.toFloat(), scatter.toFloat(), distance, mix.toFloat())
     override fun transformerName(): String = "SmearFilter"
 }

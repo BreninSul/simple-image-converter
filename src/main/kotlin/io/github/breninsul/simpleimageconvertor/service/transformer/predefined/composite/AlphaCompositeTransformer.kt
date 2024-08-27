@@ -8,20 +8,22 @@ import io.github.breninsul.simpleimageconvertor.exception.ImageTransformerExcept
 import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.OperationWitSecondImageTransformer
 
 /**
- * This class represents a transformer that applies the alpha composite operation on images.
- * It extends the `OperationWitSecondImageTransformer` class and provides implementations for mapping options to frames and performing the transformation.
+ * This class represents a transformer that applies the alpha composite
+ * operation on images. It extends the `OperationWitSecondImageTransformer`
+ * class and provides implementations for mapping options to frames and
+ * performing the transformation.
  *
+ * @constructor Creates an instance of the `AlphaCompositeTransformer`
+ *    class.
  * @property name The name of the transformer, which is "AlphaComposite".
- *
- * @constructor Creates an instance of the `AlphaCompositeTransformer` class.
  * @see [link](https://sksamuel.github.io/scrimage/transforms/)
  */
 open class AlphaCompositeTransformer : OperationWitSecondImageTransformer<AlphaCompositeSettings>(AlphaCompositeSettings::class) {
-    override val name: String="AlphaComposite"
+    override val name: String = "AlphaComposite"
 
     override fun mapOptionsToFrame(settings: AlphaCompositeSettings, frameImage: ImmutableImage): AlphaCompositeSettings {
-      return  AlphaCompositeSettings(settings.alpha, ImageOrAnimation(null, frameImage))
+        return AlphaCompositeSettings(settings.alpha, ImageOrAnimation(null, frameImage))
     }
 
-    override fun processTransformation(image: ImmutableImage, settings: AlphaCompositeSettings): ImmutableImage = image.composite(AlphaComposite(settings.alpha),settings.image.image?: throw ImageTransformerException("Image should be static"))
+    override fun processTransformation(image: ImmutableImage, settings: AlphaCompositeSettings): ImmutableImage = image.composite(AlphaComposite(settings.alpha), settings.image.image ?: throw ImageTransformerException("Image should be static"))
 }
