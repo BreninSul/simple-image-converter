@@ -29,6 +29,7 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Tran
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.filter.SnowFilterSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.filter.WatermarkStampFilterSettings
 import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
+import io.github.breninsul.simpleimageconvertor.dto.writer.WebpWriterSettings
 import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageConsumer
 import io.github.breninsul.simpleimageconvertor.service.processor.ImageProcessorService
 import org.junit.jupiter.api.Test
@@ -48,6 +49,7 @@ class TestTransform {
         val file = File(javaClass.classLoader.getResource("images/animated-webp-supported.webp").toURI())
         val outFile = File("testtransform/animated-scaled.${format.name.lowercase()}")
         outFile.createNewFile()
+
         processor.process(
             { file.inputStream() }, { outFile.outputStream() },
             writerSettings = listOf(ConvertSettings(format = format)),
@@ -57,6 +59,13 @@ class TestTransform {
                 WatermarkStampFilterSettings("Test!!!", alpha = 0.9, colour = Color.RED, font = FontUtils.createFont(Font.SANS_SERIF, 60))
             ),
             readerSettings = listOf(),
+        )
+        processor.process({ file.inputStream() }, { outFile.outputStream() },
+            listOf(
+                ScaleToSettings(Resolution(640, 640, true)),
+                WebpWriterSettings(z = 100, lossless = false),
+                ConvertSettings(format = ImageFormat.WEBP)
+            )
         )
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
