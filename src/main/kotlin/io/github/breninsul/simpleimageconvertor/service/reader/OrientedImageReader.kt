@@ -53,7 +53,7 @@ interface OrientedImageReader : ImageReader {
         val time=System.currentTimeMillis()
         try {
             val exifMetadata = fileStream.get().use { ImageMetadataReader.readMetadata(it) }?.getFirstDirectoryOfType(ExifDirectoryBase::class.java)
-            return exifMetadata?.getInt(ExifIFD0Directory.TAG_ORIENTATION)
+            return exifMetadata?.getInt(ExifDirectoryBase.TAG_ORIENTATION)
         } catch (t: Throwable) {
             logger.log(Level.WARNING, "Error read image orientation  ${t.javaClass}:${t.message}")
             return null
