@@ -34,5 +34,8 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.PadT
 open class PadToTransformer : PredefinedTransformer<PadToSettings>(PadToSettings::class) {
     override val name: String = "PadTo"
 
-    override fun processTransformation(image: ImmutableImage, settings: PadToSettings): ImmutableImage = image.padTo(settings.resolution.width, settings.resolution.height, settings.colour)
+    override fun processTransformation(image: ImmutableImage, settings: PadToSettings): ImmutableImage {
+        val resolution = settings.resolution.resolveResolutionWithOriginalAspectRate(image)
+        return image.padTo(resolution.width,resolution.height, settings.colour)
+    }
 }

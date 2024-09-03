@@ -34,5 +34,8 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Resi
 open class ResizeToTransformer : PredefinedTransformer<ResizeToSettings>(ResizeToSettings::class) {
     override val name: String = "ResizeTo"
 
-    override fun processTransformation(image: ImmutableImage, settings: ResizeToSettings): ImmutableImage = image.resizeTo(settings.resolution.width, settings.resolution.height, settings.position, settings.colour)
+    override fun processTransformation(image: ImmutableImage, settings: ResizeToSettings): ImmutableImage {
+        val resolution = settings.resolution.resolveResolutionWithOriginalAspectRate(image)
+        return image.resizeTo(resolution.width, resolution.height, settings.position, settings.colour)
+    }
 }

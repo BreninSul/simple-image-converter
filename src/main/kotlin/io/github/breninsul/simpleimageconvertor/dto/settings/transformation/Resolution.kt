@@ -21,6 +21,7 @@
 package io.github.breninsul.simpleimageconvertor.dto.settings.transformation
 
 import com.sksamuel.scrimage.AwtImage
+import com.sksamuel.scrimage.ImmutableImage
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import kotlin.math.roundToInt
 
@@ -63,7 +64,21 @@ open class Resolution(
             Resolution(width.roundToInt(), height)
         }
     }
-
+    open fun resolveResolutionWithOriginalAspectRate(image:ImmutableImage): Resolution {
+        if (!keepAspectRatio) return Resolution(width, height)
+        val destinationAspectRatio = width.toDouble() / height.toDouble()
+        val originalAspectRatio = image.countAspectRatio()
+        if (originalAspectRatio == null) return this@Resolution
+        return if (destinationAspectRatio == originalAspectRatio) {
+            Resolution(width, height)
+        } else if (destinationAspectRatio < originalAspectRatio) {
+            val height = width / originalAspectRatio
+            Resolution(width, height.roundToInt())
+        } else {
+            val width = height * originalAspectRatio
+            Resolution(width.roundToInt(), height)
+        }
+    }
     open fun AwtImage.countAspectRatio(): Double = this.width.toDouble() / this.height.toDouble()
 
 }

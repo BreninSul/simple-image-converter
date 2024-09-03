@@ -40,5 +40,8 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.FitS
 open class FitTransformer : PredefinedTransformer<FitSettings>(FitSettings::class) {
     override val name: String = "Fit"
 
-    override fun processTransformation(image: ImmutableImage, settings: FitSettings): ImmutableImage = image.fit(settings.resolution.width, settings.resolution.height, settings.colour, settings.scaleMethod, settings.position)
+    override fun processTransformation(image: ImmutableImage, settings: FitSettings): ImmutableImage {
+        val resolution = settings.resolution.resolveResolutionWithOriginalAspectRate(image)
+        return image.fit(resolution.width,resolution.height, settings.colour, settings.scaleMethod, settings.position)
+    }
 }

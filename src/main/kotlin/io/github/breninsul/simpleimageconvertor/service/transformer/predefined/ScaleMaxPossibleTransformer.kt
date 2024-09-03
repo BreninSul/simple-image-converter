@@ -34,5 +34,8 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Scal
 open class ScaleMaxPossibleTransformer : PredefinedTransformer<ScaleToSettings>(ScaleToSettings::class) {
     override val name: String = "ScaleMaxPossible"
 
-    override fun processTransformation(image: ImmutableImage, settings: ScaleToSettings): ImmutableImage = image.max(settings.resolution.width, settings.resolution.height, settings.scaleMethod)
+    override fun processTransformation(image: ImmutableImage, settings: ScaleToSettings): ImmutableImage {
+        val resolution = settings.resolution.resolveResolutionWithOriginalAspectRate(image)
+        return   image.max(resolution.width, resolution.height, settings.scaleMethod)
+    }
 }

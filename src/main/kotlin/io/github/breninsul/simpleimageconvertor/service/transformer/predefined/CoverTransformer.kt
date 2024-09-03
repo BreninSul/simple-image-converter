@@ -36,5 +36,8 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Cove
 open class CoverTransformer : PredefinedTransformer<CoverSettings>(CoverSettings::class) {
     override val name: String = "Cover"
 
-    override fun processTransformation(image: ImmutableImage, settings: CoverSettings): ImmutableImage = image.cover(settings.resolution.width, settings.resolution.height, settings.position)
+    override fun processTransformation(image: ImmutableImage, settings: CoverSettings): ImmutableImage {
+        val resolution = settings.resolution.resolveResolutionWithOriginalAspectRate(image)
+        return image.cover(resolution.width, resolution.height, settings.position)
+    }
 }

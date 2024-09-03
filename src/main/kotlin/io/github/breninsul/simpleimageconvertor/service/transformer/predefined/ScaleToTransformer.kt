@@ -35,5 +35,9 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Scal
 open class ScaleToTransformer : PredefinedTransformer<ScaleToSettings>(ScaleToSettings::class) {
     override val name: String = "ScaleTo"
 
-    override fun processTransformation(image: ImmutableImage, settings: ScaleToSettings): ImmutableImage = image.scaleTo(settings.resolution.width, settings.resolution.height, settings.scaleMethod)
+    override fun processTransformation(image: ImmutableImage, settings: ScaleToSettings): ImmutableImage {
+        val resolution = settings.resolution.resolveResolutionWithOriginalAspectRate(image)
+        return image.scaleTo(resolution.width, resolution.height, settings.scaleMethod)
+    }
+}
 }

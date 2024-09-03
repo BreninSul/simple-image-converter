@@ -34,5 +34,8 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Boun
 open class BoundTransformer : PredefinedTransformer<BoundSettings>(BoundSettings::class) {
     override val name: String = "Bound"
 
-    override fun processTransformation(image: ImmutableImage, settings: BoundSettings): ImmutableImage = image.bound(settings.resolution.width, settings.resolution.height, settings.method)
+    override fun processTransformation(image: ImmutableImage, settings: BoundSettings): ImmutableImage {
+        val resolution = settings.resolution.resolveResolutionWithOriginalAspectRate(image)
+        return image.bound(resolution.width, resolution.height, settings.method)
+    }
 }
