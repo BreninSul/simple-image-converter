@@ -40,4 +40,4 @@ open class ScaleToTransformer : PredefinedTransformer<ScaleToSettings>(ScaleToSe
         return image.scaleTo(resolution.width, resolution.height, settings.scaleMethod)
     }
 }
-}
+
