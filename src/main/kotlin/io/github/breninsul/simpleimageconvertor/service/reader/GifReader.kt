@@ -28,10 +28,10 @@ import java.io.InputStream
 import java.util.function.Supplier
 
 
-open class GifReader(private val order: Int = 1) : ImageReader {
+open class GifReader(private val order: Int = 1) : OrientedImageReader {
     protected open val supportedImageTypes = setOf("gif")
 
-    override fun read(fileStream: Supplier<InputStream>, settings: List<Settings>): ImageOrAnimation {
+    override fun readInternal(fileStream: Supplier<InputStream>, settings: List<Settings>): ImageOrAnimation {
         val reader = fileStream.get().use {
             val reader = GifSequenceReaderWithDelay()
             reader.read(it)

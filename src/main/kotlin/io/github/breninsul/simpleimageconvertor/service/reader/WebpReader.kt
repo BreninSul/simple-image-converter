@@ -35,14 +35,14 @@ import kotlin.io.path.inputStream
 import kotlin.io.path.outputStream
 
 
-open class WebpReader(private val order: Int = 1) : ImageReader {
+open class WebpReader(private val order: Int = 1) : OrientedImageReader {
     init {
         WebPDecoder.init()
     }
 
     protected open val supportedImageTypes = setOf("webp")
 
-    override fun read(fileStream: Supplier<InputStream>, settings: List<Settings>): ImageOrAnimation {
+    override fun readInternal(fileStream: Supplier<InputStream>, settings: List<Settings>): ImageOrAnimation {
         val originalBytes = fileStream.get().use { it.readAllBytes() }
         val isAnimation = originalBytes.inputStream().isWebpAnimated()
         val decodedImage: WebPDecoder.WebPImage = fileStream.get().use { WebPDecoder.decode(originalBytes) }

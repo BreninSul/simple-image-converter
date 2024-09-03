@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "io.github.breninsul"
-version = "1.0.4"
+version = "1.0.5"
 
 val javaVersion = JavaVersion.VERSION_17
 
@@ -71,7 +71,7 @@ dependencies {
     api("org.apache.xmlgraphics:batik-extension:1.17")
     api("org.apache.xmlgraphics:batik-anim:1.17")
     api("org.apache.xmlgraphics:batik-svggen:1.17")
-
+    api("com.drewnoakes:metadata-extractor:2.19.0")
     api("com.madgag:animated-gif-lib:1.4")
     api("net.java.dev.jna:jna:5.13.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

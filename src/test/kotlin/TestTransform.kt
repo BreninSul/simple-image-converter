@@ -19,13 +19,11 @@
  */
 
 import com.sksamuel.scrimage.FontUtils
+import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.ScaleMethod
 import com.sksamuel.scrimage.angles.Degrees
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
-import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.OverlaySettings
-import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Resolution
-import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.ScaleToSettings
-import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.TransformFunctionSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.*
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.filter.SnowFilterSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.filter.WatermarkStampFilterSettings
 import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
@@ -35,8 +33,13 @@ import io.github.breninsul.simpleimageconvertor.service.processor.ImageProcessor
 import org.junit.jupiter.api.Test
 import java.awt.Color
 import java.awt.Font
+import java.awt.Image
+import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.IOException
+import javax.imageio.ImageIO
+
 
 class TestTransform {
     val processor = ImageProcessorService.Default
@@ -97,5 +100,41 @@ class TestTransform {
             ),
         )
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
+    }
+
+
+
+
+
+    @Test
+    fun tstAnimation() {
+        val format = ImageFormat.WEBP
+        val time = System.currentTimeMillis()
+        val file = File(javaClass.classLoader.getResource("images/tst.jpg").toURI())
+        val img=ImageIO.read(file)
+        val image = ImmutableImage.fromAwt(img)
+        val resolution=Resolution(1920,1080,true).resolveResolutionWithOriginalAspectRate(image)
+        val new=resizeImage(img, resolution.width, resolution.height)
+        val outFile2 = File("testtransform/tst2.jpg")
+        ImageIO.write(new, "jpg", outFile2);
+        val outFile = File("testtransform/tst.${format.name.lowercase()}")
+        processor.process(
+            {file.inputStream()},
+            { outFile.outputStream() },
+            listOf(ConvertSettings(format = ImageFormat(format.name.uppercase()))),
+            listOf(ScaleToSettings(Resolution(1920,1080,true),ScaleMethod.FastScale)),
+        )
+        val new2=ImageIO.read(outFile)
+        val l= listOf(img.width,img.height,image.width,image.height,new.width,new.height,new2.width,new2.height)
+//        println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
+        println(l)
+    }
+
+    @Throws(IOException::class)
+    fun resizeImage(originalImage: BufferedImage, targetWidth: Int, targetHeight: Int): BufferedImage {
+        val resultingImage: Image = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_DEFAULT)
+        val outputImage = BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB)
+        outputImage.graphics.drawImage(resultingImage, 0, 0, null)
+        return outputImage
     }
 }

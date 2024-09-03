@@ -32,10 +32,10 @@ import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.F
  * @see [link](https://sksamuel.github.io/scrimage/flip/)
  */
 open class FlipSettings(
-    open val type: Type = Type.X,
+    open val type: Type = Type.HORIZONTAL,
 ) : TransformSettings {
     enum class Type {
-        X, Y
+        HORIZONTAL, VERTICAL
     }
 
     override fun createTransformer() = transformer

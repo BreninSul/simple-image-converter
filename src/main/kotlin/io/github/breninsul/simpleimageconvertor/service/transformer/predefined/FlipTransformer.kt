@@ -35,7 +35,7 @@ open class FlipTransformer : PredefinedTransformer<FlipSettings>(FlipSettings::c
     override val name: String = "Flip"
 
     override fun processTransformation(image: ImmutableImage, settings: FlipSettings): ImmutableImage = when (settings.type) {
-        FlipSettings.Type.X -> image.flipX()
-        FlipSettings.Type.Y -> image.flipY()
+        FlipSettings.Type.HORIZONTAL -> image.flipX()
+        FlipSettings.Type.VERTICAL -> image.flipY()
     }
 }
