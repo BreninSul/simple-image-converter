@@ -42,7 +42,7 @@ import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.O
 open class AlphaMaskFilterTransformer : OperationWitSecondImageTransformer<AlphaMaskFilterSettings>(AlphaMaskFilterSettings::class) {
     override val name: String = "AlphaMaskFilter"
     override fun mapOptionsToFrame(settings: AlphaMaskFilterSettings, frameImage: ImmutableImage): AlphaMaskFilterSettings {
-        return AlphaMaskFilterSettings(settings.channel, ImageOrAnimation(null, frameImage))
+        return AlphaMaskFilterSettings(settings.channel, ImageOrAnimation(null, frameImage,null))
     }
 
     override fun processTransformation(image: ImmutableImage, settings: AlphaMaskFilterSettings): ImmutableImage = image.filter(AlphaMaskFilter(settings.image.image ?: throw ImageTransformerException("Image should be static"), settings.channel))

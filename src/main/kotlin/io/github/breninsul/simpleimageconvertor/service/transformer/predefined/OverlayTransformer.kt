@@ -42,7 +42,7 @@ import io.github.breninsul.simpleimageconvertor.exception.ImageTransformerExcept
 open class OverlayTransformer : OperationWitSecondImageTransformer<OverlaySettings>(OverlaySettings::class) {
     override val name: String = "Overlay"
 
-    override fun mapOptionsToFrame(settings: OverlaySettings, frameImage: ImmutableImage) = OverlaySettings(settings.x, settings.y, ImageOrAnimation(null, frameImage))
+    override fun mapOptionsToFrame(settings: OverlaySettings, frameImage: ImmutableImage) = OverlaySettings(settings.x, settings.y, ImageOrAnimation(null, frameImage,null))
 
     override fun processTransformation(image: ImmutableImage, settings: OverlaySettings): ImmutableImage = image.overlay(settings.image.image ?: throw ImageTransformerException("Image should be static"), settings.x, settings.y)
 }

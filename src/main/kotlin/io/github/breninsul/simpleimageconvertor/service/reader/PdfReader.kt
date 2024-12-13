@@ -20,6 +20,7 @@
 
 package io.github.breninsul.simpleimageconvertor.service.reader
 
+import com.ashampoo.kim.format.ImageMetadata
 import com.madgag.gif.fmsware.AnimatedGifEncoder
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
@@ -44,8 +45,8 @@ import kotlin.io.path.outputStream
 open class PdfReader(private val order: Int = 1) : ImageReader {
     protected open val supportedImageTypes = setOf("pdf")
     override fun supportedTypes() = supportedImageTypes
-    override fun read(fileStream: Supplier<InputStream>, settings: List<Settings>): ImageOrAnimation {
-        val document: PDDocument = fileStream.get().use { Loader.loadPDF(it.readAllBytes()) }
+    override fun readInternal(fileStream: InputStream, settings: List<Settings>,metadata: ImageMetadata?): ImageOrAnimation {
+        val document: PDDocument = Loader.loadPDF(fileStream.readAllBytes())
         val setting = settings.getSetting<PdfReaderSettings>() ?: PdfReaderSettings()
         val pdfRenderer = PDFRenderer(document)
         val numberOfPages = document.numberOfPages
@@ -56,7 +57,7 @@ open class PdfReader(private val order: Int = 1) : ImageReader {
         val firstImage: BufferedImage = pdfRenderer.renderImage(0, setting.scale, setting.imageType, setting.destination)
         if (numberOfPages == 1) {
             val originalImage = ImmutableImage.fromAwt(firstImage)
-            return ImageOrAnimation(null, originalImage)
+            return ImageOrAnimation(null, originalImage,metadata)
         } else {
             val encoder = AnimatedGifEncoder()
             val tempFile = Files.createTempFile("AnimationReaderPdf", ".gif")
@@ -78,7 +79,7 @@ open class PdfReader(private val order: Int = 1) : ImageReader {
             }
             tempFile.deleteIfExists()
             val gif = AnimatedGifWithDelay(reader)
-            return ImageOrAnimation(gif, null)
+            return ImageOrAnimation(gif, null,metadata)
         }
     }
 

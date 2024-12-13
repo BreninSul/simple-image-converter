@@ -20,12 +20,27 @@
 
 package io.github.breninsul.simpleimageconvertor.service.writer
 
+import com.ashampoo.kim.Kim
+import com.ashampoo.kim.format.tiff.constant.TiffTag
+import com.ashampoo.kim.input.ByteReader
+import com.ashampoo.kim.input.JvmInputStreamByteReader
+import com.ashampoo.kim.model.MetadataUpdate
+import com.ashampoo.kim.model.TiffOrientation
+import com.ashampoo.kim.output.OutputStreamByteWriter
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.Ordered
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.FlipSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.RotateSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.TransformSettings
+import io.github.breninsul.simpleimageconvertor.dto.supportsKimMetadataWrite
+import org.apache.commons.io.output.QueueOutputStream
 import java.io.OutputStream
 import java.util.function.Supplier
+import java.util.logging.Level
+import java.util.logging.Logger
+
 
 /** An interface for writing images in various formats. */
 interface ImageWriter : Ordered {
@@ -36,7 +51,7 @@ interface ImageWriter : Ordered {
      * @return `true` if the media type is supported, `false` otherwise
      */
     fun supports(mediaType: ImageFormat): Boolean {
-        return supportedTypes().any { mediaType.equals(it) }
+        return supportedTypes().any { mediaType == it }
     }
 
     /**
@@ -47,6 +62,16 @@ interface ImageWriter : Ordered {
     fun supportedTypes(): Set<ImageFormat>
 
     /**
+     * Retrieves the first supported image format for this image writer.
+     *
+     * @return the first supported image format if available
+     * @throws IllegalStateException if no supported image formats are found
+     */
+    fun getImageFormat(): ImageFormat{
+        return supportedTypes().firstOrNull()?:throw IllegalStateException("No supported types")
+    }
+
+    /**
      * Writes the given ConvertableImage using the specified Settings and
      * outputs the result to the provided OutputStream.
      *
@@ -54,7 +79,95 @@ interface ImageWriter : Ordered {
      * @param settings the list of Settings to apply during the writing process
      * @param out the Supplier of OutputStream to write the image to
      */
-    fun write(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>)
+    fun write(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>){
+        //No need to rotate anything
+        val orientationValue = image.originalMetadata?.findShortValue(TiffTag.TIFF_TAG_ORIENTATION)?.toInt()
+        if (orientationValue==null||!orientationValue.isRotatedOrientation()){
+            writeInternal(image,settings,out)
+            return
+        }
+        //Can't just set orientation tag, have to rotate image
+        if (!getImageFormat().supportsKimMetadataWrite()){
+            rotateAndWriteImageFile(orientationValue, image, settings, out)
+            return
+        }
+        //Set original orientation tag
+        rewriteOrientationTagToOutputStream(image, settings, out, orientationValue)
+    }
+
+    /**
+     * Rewrites the orientation metadata tag for an image or animation and outputs the modified data to the specified output stream.
+     *
+     * This function takes an input image or animation, applies specified settings, and writes the output with the updated orientation metadata.
+     *
+     * @param image The image or animation to process. It must be an instance of `ImageOrAnimation`.
+     * @param settings A list of `Settings` to apply during the writing process.
+     * @param out A supplier function that provides the `OutputStream` where the modified image data should be written.
+     * @param orientationValue An integer representing the new orientation value to set in the image metadata.
+     */
+    fun ImageWriter.rewriteOrientationTagToOutputStream(
+        image: ImageOrAnimation,
+        settings: List<Settings>,
+        out: Supplier<OutputStream>,
+        orientationValue: Int
+    ) {
+        //Create wrapper for output stream
+        val queueOutputStream = QueueOutputStream()
+        val queueInputStream = queueOutputStream.newQueueInputStream()
+        //write bytes there
+        writeInternal(image, settings) { queueOutputStream }
+        val byteReader: ByteReader = JvmInputStreamByteReader(queueInputStream, queueInputStream.available().toLong())
+        //set real output stream to write result
+        val byteWriter = OutputStreamByteWriter(out.get())
+        //Update metadata
+        Kim.update(byteReader, byteWriter, MetadataUpdate.Orientation(TiffOrientation.of(orientationValue)!!))
+    }
+
+    /**
+     * Rotates an image or animation to the correct orientation based on the provided orientation value
+     * and writes the result to the specified output stream using the given settings.
+     *
+     * This method determines the necessary transformations (e.g., rotation or flipping) for the image
+     * based on the orientation value and applies them. The transformed image is then written to the
+     * output stream supplied by the `out` parameter with the applied settings.
+     *
+     * @param orientationValue The orientation value representing how the image should be rotated or flipped.
+     *                         Acceptable values range from 2 to 8:
+     *                         - 2: Flip horizontal
+     *                         - 3: Rotate 180 degrees clockwise
+     *                         - 4: Flip vertical
+     *                         - 5: Flip horizontal and rotate 270 degrees clockwise (90 degrees counterclockwise)
+     *                         - 6: Rotate 90 degrees clockwise
+     *                         - 7: Flip horizontal and rotate 90 degrees clockwise
+     *                         - 8: Rotate 270 degrees clockwise
+     * @param image The image or animation to be processed. It can be an instance of `ImageOrAnimation`
+     *              representing either a static image or an animation.
+     * @param settings A list of settings to be applied during the writing process. These settings
+     *                 define specific configurations for handling the image or animation.
+     * @param out A supplier function that provides the output stream to which the processed image
+     *            will be written.
+     */
+    fun ImageWriter.rotateAndWriteImageFile(
+        orientationValue: Int,
+        image: ImageOrAnimation,
+        settings: List<Settings>,
+        out: Supplier<OutputStream>
+    ) {
+        val rotatedImage = tryRotateImageToRightOrientation(orientationValue, image)
+        writeInternal(rotatedImage, settings, out)
+        return
+    }
+
+    /**
+     * Writes the given image or animation to an output stream using the provided settings.
+     *
+     * @param image The image or animation to be written. It must be an instance of `ImageOrAnimation`.
+     * @param settings A list of `Settings` to apply during the writing process. These settings
+     *                 define specific configurations for handling the image or animation.
+     * @param out A supplier function that provides the `OutputStream` to which the processed
+     *            image or animation will be written.
+     */
+    fun writeInternal(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>)
 
     /**
      * Checks if the image writer supports animation.
@@ -63,6 +176,52 @@ interface ImageWriter : Ordered {
      */
     fun supportsAnimation(): Boolean = false
 
-
+    /**
+     * Attempts to rotate the given image to the correct orientation based on the specified orientation value.
+     * If the orientation is null or outside the range of 2-8, the original image is returned unaltered.
+     *
+     * @param orientation The orientation value representing how the image should be rotated or flipped.
+     *                    Acceptable values range from 2 to 8:
+     *                    - 2: Flip horizontal
+     *                    - 3: Rotate 180 degrees clockwise
+     *                    - 4: Flip vertical
+     *                    - 5: Flip horizontal and rotate 270 degrees clockwise (90 degrees counterclockwise)
+     *                    - 6: Rotate 90 degrees clockwise
+     *                    - 7: Flip horizontal and rotate 90 degrees clockwise
+     *                    - 8: Rotate 270 degrees clockwise
+     * @param image The image or animation to be rotated or transformed. It must be an instance of `ImageOrAnimation`.
+     * @return The rotated or transformed image as an instance of `ImageOrAnimation`.
+     *         If an error occurs or the orientation is invalid, the original image is returned.
+     */
+    fun ImageWriter.tryRotateImageToRightOrientation(
+        orientation: Int,
+        image: ImageOrAnimation
+    ): ImageOrAnimation {
+        //Not rotated
+        val time=System.currentTimeMillis()
+        if ( !orientation.isRotatedOrientation() ) return image
+        try {
+            val settings = when (orientation) {
+                2 -> listOf(FlipSettings(FlipSettings.Type.HORIZONTAL))// Flip Horizontal
+                3 -> listOf(RotateSettings(180.0)) // Rotate 180 CW
+                4 -> listOf(FlipSettings(FlipSettings.Type.VERTICAL)) // Flip Vertical
+                5 -> listOf(FlipSettings(FlipSettings.Type.HORIZONTAL), RotateSettings(270.0)) // Flip Horizontal and Rotate 270 CW (90 CCW)
+                6 -> listOf(RotateSettings(90.0)) // Rotate 90 CW
+                7 -> listOf(FlipSettings(FlipSettings.Type.HORIZONTAL), RotateSettings(90.0)) // Flip Horizontal and Rotate 90 CW
+                8 -> listOf(RotateSettings(270.0)) // Rotate 270 CW
+                else -> listOf<TransformSettings>() // Default case
+            }
+            return settings.fold(image) { acc, setting -> setting.createTransformer().process(acc, listOf(setting)) }
+        } catch (t: Throwable) {
+            logger.log(Level.WARNING, "Error rotating image to right orientation $orientation ${t.javaClass}:${t.message}")
+            return image
+        } finally {
+            logger.log(Level.FINEST,"Rotating image to original orientation took ${System.currentTimeMillis()-time}ms")
+        }
+    }
+    fun Int?.isRotatedOrientation(): Boolean = this!=null && this in 2..8
+    companion object {
+        private val logger = Logger.getLogger(this::class.java.name)
+    }
 }
 

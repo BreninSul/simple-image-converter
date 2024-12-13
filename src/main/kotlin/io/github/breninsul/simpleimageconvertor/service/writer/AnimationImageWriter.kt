@@ -33,7 +33,7 @@ import java.util.function.Supplier
  * writing animated images.
  */
 interface AnimationImageWriter : StaticImageWriter {
-    override fun write(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>) {
+    override fun writeInternal(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>) {
         if (image.isAnimation()) {
             val animationToStaticSetting = settings.getAnimationToStaticSettings()
             if (animationToStaticSetting != null) {

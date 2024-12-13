@@ -18,28 +18,16 @@
  * SOFTWARE.
  */
 
-package io.github.breninsul.simpleimageconvertor.service.reader
+package io.github.breninsul.simpleimageconvertor.dto
 
-import com.ashampoo.kim.format.ImageMetadata
-import com.sksamuel.scrimage.ImmutableImage
-import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
-import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
-import java.awt.image.BufferedImage
-import java.io.InputStream
-import java.util.function.Supplier
-import javax.imageio.ImageIO
-
-open class ImageIOReader(private val order: Int = Int.MAX_VALUE) : ImageReader {
-    protected open val supportedImageTypes = ImageIO.getReaderFormatNames().map { it.lowercase() }.toSet() + setOf("svg+xml")
-    override fun supportedTypes() = supportedImageTypes
-
-    override fun readInternal(fileStream: InputStream, settings: List<Settings>, metadata: ImageMetadata?): ImageOrAnimation{
-        val bufferedImage: BufferedImage = ImageIO.read(fileStream)
-        val originalImage = ImmutableImage.fromAwt(bufferedImage)
-        return ImageOrAnimation(null, originalImage,metadata)
-    }
-
-    override fun getOrder(): Int {
-        return order
-    }
+fun ImageFormat.toKimImageFormat() = when (this) {
+    ImageFormat.JPEG -> com.ashampoo.kim.model.ImageFormat.JPEG
+    ImageFormat.GIF -> com.ashampoo.kim.model.ImageFormat.GIF
+    ImageFormat.PNG -> com.ashampoo.kim.model.ImageFormat.PNG
+    ImageFormat.WEBP -> com.ashampoo.kim.model.ImageFormat.WEBP
+    ImageFormat.TIFF -> com.ashampoo.kim.model.ImageFormat.TIFF
+    else -> null
 }
+
+
+fun ImageFormat.supportsKimMetadataWrite() = this.toKimImageFormat()?.isMetadataEmbeddable()?:false

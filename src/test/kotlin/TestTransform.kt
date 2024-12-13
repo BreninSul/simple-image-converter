@@ -107,15 +107,15 @@ class TestTransform {
 
 
     @Test
-    fun tstAnimation() {
-        val format = ImageFormat.WEBP
+    fun testOrientationTag() {
+        val format = ImageFormat.JPEG
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/tst.jpg").toURI())
         val img=ImageIO.read(file)
         val image = ImmutableImage.fromAwt(img)
         val resolution=Resolution(1920,1080,true).resolveResolutionWithOriginalAspectRate(image)
         val new=resizeImage(img, resolution.width, resolution.height)
-        val outFile2 = File("testtransform/tst2.jpg")
+        val outFile2 = File("testtransform/tst.jpg")
         ImageIO.write(new, "jpg", outFile2);
         val outFile = File("testtransform/tst.${format.name.lowercase()}")
         processor.process(

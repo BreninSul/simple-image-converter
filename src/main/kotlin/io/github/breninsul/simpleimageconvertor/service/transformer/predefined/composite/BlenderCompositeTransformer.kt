@@ -40,7 +40,7 @@ import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.O
 open class BlenderCompositeTransformer : OperationWitSecondImageTransformer<BlenderCompositeSettings>(BlenderCompositeSettings::class) {
     override val name: String = "BlenderComposite"
     override fun mapOptionsToFrame(settings: BlenderCompositeSettings, frameImage: ImmutableImage): BlenderCompositeSettings {
-        return BlenderCompositeSettings(settings.alpha, settings.mode, ImageOrAnimation(null, frameImage))
+        return BlenderCompositeSettings(settings.alpha, settings.mode, ImageOrAnimation(null, frameImage,null))
     }
 
     override fun processTransformation(image: ImmutableImage, settings: BlenderCompositeSettings): ImmutableImage =

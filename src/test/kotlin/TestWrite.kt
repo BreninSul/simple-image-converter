@@ -135,8 +135,8 @@ class TestWrite {
         outFile.createNewFile()
         writer.convert(image, listOf(
             ScaleToSettings(Resolution(640, 640, true)),
-            WebpWriterSettings(z = 100, lossless = false),
-            ConvertSettings(format = ImageFormat.WEBP)
+            WebpWriterSettings(z = 99, lossless = false),
+            ConvertSettings(format = format)
         ), { outFile.outputStream() })
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }

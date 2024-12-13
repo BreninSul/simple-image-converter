@@ -20,6 +20,7 @@
 
 package io.github.breninsul.simpleimageconvertor.service.reader
 
+import com.ashampoo.kim.format.ImageMetadata
 import com.madgag.gif.fmsware.AnimatedGifEncoder
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
@@ -35,20 +36,20 @@ import kotlin.io.path.inputStream
 import kotlin.io.path.outputStream
 
 
-open class WebpReader(private val order: Int = 1) : OrientedImageReader {
+open class WebpReader(private val order: Int = 1) : ImageReader {
     init {
         WebPDecoder.init()
     }
 
     protected open val supportedImageTypes = setOf("webp")
 
-    override fun readInternal(fileStream: Supplier<InputStream>, settings: List<Settings>): ImageOrAnimation {
-        val originalBytes = fileStream.get().use { it.readAllBytes() }
+    override fun readInternal(fileStream: InputStream, settings: List<Settings>,metadata: ImageMetadata?): ImageOrAnimation{
+        val originalBytes =  fileStream.readAllBytes()
         val isAnimation = originalBytes.inputStream().isWebpAnimated()
-        val decodedImage: WebPDecoder.WebPImage = fileStream.get().use { WebPDecoder.decode(originalBytes) }
+        val decodedImage: WebPDecoder.WebPImage =  WebPDecoder.decode(originalBytes)
 
         if (!isAnimation) {
-            return ImageOrAnimation(null, ImmutableImage.fromAwt(decodedImage.frames.first().img))
+            return ImageOrAnimation(null, ImmutableImage.fromAwt(decodedImage.frames.first().img),metadata)
         } else {
             val encoder = AnimatedGifEncoder()
             val tempFile = Files.createTempFile("AnimationReaderWebp", ".gif")
@@ -70,7 +71,7 @@ open class WebpReader(private val order: Int = 1) : OrientedImageReader {
             }
             tempFile.deleteIfExists()
             val gif = AnimatedGifWithDelay(reader)
-            return ImageOrAnimation(gif, null)
+            return ImageOrAnimation(gif, null,metadata)
         }
     }
 

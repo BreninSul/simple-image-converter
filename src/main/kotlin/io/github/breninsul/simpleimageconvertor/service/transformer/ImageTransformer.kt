@@ -72,9 +72,9 @@ fun interface ImageTransformer {
     fun process(image: ImageOrAnimation, settings: List<Settings> = listOf()): ImageOrAnimation {
         try {
             val processed = if (image.isAnimation()) {
-                ImageOrAnimation(image.animation!!.processAnimation(settings), null)
+                ImageOrAnimation(image.animation!!.processAnimation(settings), null,image.originalMetadata)
             } else {
-                ImageOrAnimation(null, processStatic(image.image!!, settings))
+                ImageOrAnimation(null, processStatic(image.image!!, settings),image.originalMetadata)
             }
             return processed
         } catch (e: Exception) {

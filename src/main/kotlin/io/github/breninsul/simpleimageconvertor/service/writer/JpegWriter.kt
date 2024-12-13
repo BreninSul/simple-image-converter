@@ -20,6 +20,7 @@
 
 package io.github.breninsul.simpleimageconvertor.service.writer
 
+import com.ashampoo.kim.Kim
 import com.sksamuel.scrimage.ImmutableImage
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings

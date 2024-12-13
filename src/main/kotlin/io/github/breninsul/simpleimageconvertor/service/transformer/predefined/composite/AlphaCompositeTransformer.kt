@@ -42,7 +42,7 @@ open class AlphaCompositeTransformer : OperationWitSecondImageTransformer<AlphaC
     override val name: String = "AlphaComposite"
 
     override fun mapOptionsToFrame(settings: AlphaCompositeSettings, frameImage: ImmutableImage): AlphaCompositeSettings {
-        return AlphaCompositeSettings(settings.alpha, ImageOrAnimation(null, frameImage))
+        return AlphaCompositeSettings(settings.alpha, ImageOrAnimation(null, frameImage,null))
     }
 
     override fun processTransformation(image: ImmutableImage, settings: AlphaCompositeSettings): ImmutableImage = image.composite(AlphaComposite(settings.alpha), settings.image.image ?: throw ImageTransformerException("Image should be static"))

@@ -46,7 +46,7 @@ interface StaticImageWriter : ImageWriter {
         return this.firstOrNull { it is AnimationToStaticSettings } as AnimationToStaticSettings?
     }
 
-    override fun write(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>) {
+    override fun writeInternal(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>) {
         if (image.isAnimation()) {
             writeAnimationToStatic(image.animation!!, settings.getAnimationToStaticSettings() ?: AnimationToStaticSettings(), settings, out)
         } else {

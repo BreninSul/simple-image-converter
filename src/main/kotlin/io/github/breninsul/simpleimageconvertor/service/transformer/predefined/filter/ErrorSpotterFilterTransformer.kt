@@ -40,7 +40,7 @@ import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.O
 open class ErrorSpotterFilterTransformer : OperationWitSecondImageTransformer<ErrorSpotterFilterSettings>(ErrorSpotterFilterSettings::class) {
     override val name: String = "ErrorSpotterFilter"
     override fun mapOptionsToFrame(settings: ErrorSpotterFilterSettings, frameImage: ImmutableImage): ErrorSpotterFilterSettings {
-        return ErrorSpotterFilterSettings(settings.ratio, ImageOrAnimation(null, frameImage))
+        return ErrorSpotterFilterSettings(settings.ratio, ImageOrAnimation(null, frameImage,null))
     }
 
     override fun processTransformation(image: ImmutableImage, settings: ErrorSpotterFilterSettings): ImmutableImage = image.filter(ErrorSpotterFilter(settings.image.image ?: throw ImageTransformerException("Image should be static"), settings.ratio))

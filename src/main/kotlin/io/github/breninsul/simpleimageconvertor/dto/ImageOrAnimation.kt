@@ -20,6 +20,7 @@
 
 package io.github.breninsul.simpleimageconvertor.dto
 
+import com.ashampoo.kim.format.ImageMetadata
 import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
 import io.github.breninsul.simpleimageconvertor.exception.ImageException
@@ -32,13 +33,15 @@ import io.github.breninsul.simpleimageconvertor.exception.ImageException
  *    animation. Null if the object represents an image.
  * @property image The ImmutableImage object representing an image. Null if
  *    the object represents an animation.
- * @throws ImageException if both animation and image are null or not null
+ * @property originalMetadata The metadata associated with the image or animation.
+ * @throws ImageException if both animation and image are null or both are not null
  * @see AnimatedGifWithDelay
  * @see ImmutableImage
  */
 open class ImageOrAnimation(
     val animation: AnimatedGifWithDelay?,
-    val image: ImmutableImage?
+    val image: ImmutableImage?,
+    val originalMetadata: ImageMetadata?
 ) {
     init {
         if (animation == null && image == null) {

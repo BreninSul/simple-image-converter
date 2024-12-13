@@ -20,25 +20,27 @@
 
 package io.github.breninsul.simpleimageconvertor.service.reader
 
+import com.ashampoo.kim.format.ImageMetadata
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay.GifSequenceReaderWithDelay
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import java.io.InputStream
-import java.util.function.Supplier
 
 
-open class GifReader(private val order: Int = 1) : OrientedImageReader {
+open class GifReader(private val order: Int = 1) : ImageReader {
     protected open val supportedImageTypes = setOf("gif")
 
-    override fun readInternal(fileStream: Supplier<InputStream>, settings: List<Settings>): ImageOrAnimation {
-        val reader = fileStream.get().use {
-            val reader = GifSequenceReaderWithDelay()
-            reader.read(it)
-            reader
-        }
-        val gif = AnimatedGifWithDelay(reader)
-        return ImageOrAnimation(gif, null)
+    override fun readInternal(fileStream: InputStream, settings: List<Settings>, metadata: ImageMetadata?): ImageOrAnimation {
+        val gifReader = GifSequenceReaderWithDelay()
+        //Hook to fix incorrect GIF metadata read
+        val buffStream=fileStream.buffered(DEFAULT_BUFFER_SIZE)
+        buffStream.mark(DEFAULT_BUFFER_SIZE)
+        buffStream.readNBytes(DEFAULT_BUFFER_SIZE)
+        buffStream.reset()
+        gifReader.read(fileStream)
+        val gif = AnimatedGifWithDelay(gifReader)
+        return ImageOrAnimation(gif, null, metadata)
     }
 
     override fun supportedTypes(): Set<String> {
