@@ -18,7 +18,7 @@
  * SOFTWARE.
  */
 
-package io.github.breninsul.simpleimageconvertor.dto.writer
+package io.github.breninsul.simpleimageconvertor.dto.settings.writer
 
 /**
  * The `JpegWriterSettings` class represents the settings for writing JPEG

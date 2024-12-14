@@ -26,8 +26,8 @@ import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.*
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.filter.SnowFilterSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.filter.WatermarkStampFilterSettings
-import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
-import io.github.breninsul.simpleimageconvertor.dto.writer.WebpWriterSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.ConvertSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.WebpWriterSettings
 import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageConsumer
 import io.github.breninsul.simpleimageconvertor.service.processor.ImageProcessorService
 import org.junit.jupiter.api.Test

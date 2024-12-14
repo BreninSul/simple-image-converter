@@ -21,7 +21,7 @@
 package io.github.breninsul.simpleimageconvertor.dto.settings.transformation
 
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
-import io.github.breninsul.simpleimageconvertor.dto.writer.AnimationToStaticSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.AnimationToStaticSettings
 
 /**
  * The `OperationWithImageSettings` class is an abstract class that

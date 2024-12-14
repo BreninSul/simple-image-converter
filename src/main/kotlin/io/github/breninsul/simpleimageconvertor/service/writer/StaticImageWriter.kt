@@ -24,7 +24,7 @@ import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.AnimatedGif
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
-import io.github.breninsul.simpleimageconvertor.dto.writer.AnimationToStaticSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.AnimationToStaticSettings
 import io.github.breninsul.simpleimageconvertor.extensions.middle
 import java.io.OutputStream
 import java.util.function.Supplier

@@ -24,7 +24,7 @@ import com.sksamuel.scrimage.ImmutableImage
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
-import io.github.breninsul.simpleimageconvertor.dto.writer.ImageIOWriterSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.ImageIOWriterSettings
 import java.io.OutputStream
 import java.util.function.Supplier
 

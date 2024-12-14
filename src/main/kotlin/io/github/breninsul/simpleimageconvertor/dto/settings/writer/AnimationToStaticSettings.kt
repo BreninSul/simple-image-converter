@@ -18,7 +18,7 @@
  * SOFTWARE.
  */
 
-package io.github.breninsul.simpleimageconvertor.dto.writer
+package io.github.breninsul.simpleimageconvertor.dto.settings.writer
 
 /**
  * AnimationToStaticSettings is a class that represents the settings for

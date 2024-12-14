@@ -18,21 +18,24 @@
  * SOFTWARE.
  */
 
-package io.github.breninsul.simpleimageconvertor.dto.settings.transformation.filter
+package io.github.breninsul.simpleimageconvertor.dto.settings.writer
 
-import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
-import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.OperationWithImageSettings
-import io.github.breninsul.simpleimageconvertor.dto.settings.writer.AnimationToStaticSettings
-import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.filter.AlphaMaskFilterTransformer
+import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 
-open class AlphaMaskFilterSettings(
-    open val channel: Int = 0,
-    image: ImageOrAnimation,
-    animationToStaticSettings: AnimationToStaticSettings? = null,
-) : OperationWithImageSettings(image, animationToStaticSettings) {
-    override fun createTransformer() = transformer
-
-    companion object {
-        protected val transformer = AlphaMaskFilterTransformer()
-    }
-}
+/**
+ * The `ConvertSettings` class represents the settings for converting an
+ * image to a specific format. It is an open class that can be extended to
+ * provide additional functionality.
+ *
+ * @param format The desired image format for conversion. The default
+ *    format is WEBP.
+ * @constructor Creates a new instance of `ConvertSettings` with the
+ *    specified format.
+ * @property format The desired image format for conversion. The default
+ *    format is WEBP.
+ * @see ImageFormat
+ * @see WriterSettings
+ */
+open class ConvertSettings(
+    open val format: ImageFormat = ImageFormat.WEBP,
+) : WriterSettings

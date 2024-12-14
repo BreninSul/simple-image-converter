@@ -21,9 +21,9 @@
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Resolution
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.ScaleToSettings
-import io.github.breninsul.simpleimageconvertor.dto.writer.AnimationToStaticSettings
-import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
-import io.github.breninsul.simpleimageconvertor.dto.writer.WebpWriterSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.AnimationToStaticSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.ConvertSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.WebpWriterSettings
 import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageConsumer
 import io.github.breninsul.simpleimageconvertor.service.convert.DefaultImageConverter
 import org.junit.jupiter.api.Test

@@ -23,7 +23,7 @@ package io.github.breninsul.simpleimageconvertor.example
 import com.sksamuel.scrimage.ScaleMethod
 import com.sksamuel.scrimage.angles.Degrees
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
-import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Resolution
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.ScaleToSettings

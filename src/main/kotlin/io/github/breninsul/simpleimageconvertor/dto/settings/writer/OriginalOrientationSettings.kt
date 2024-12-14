@@ -18,14 +18,13 @@
  * SOFTWARE.
  */
 
-package io.github.breninsul.simpleimageconvertor.dto.writer
+package io.github.breninsul.simpleimageconvertor.dto.settings.writer
 
-import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
-
-/**
- * The `WriterSettings` interface represents the settings for various file
- * writers. Implementations of this interface provide specific settings
- * for different types of files. It extends the `Settings` interface.
- */
-interface WriterSettings : Settings {
+open class OriginalOrientationSettings(val mode: Mode = Mode.DEFAULT) : WriterSettings {
+    enum class Mode {
+        DEFAULT,
+        WRITE_EXIF_METADATA_TAG,
+        ROTATE_IMAGE,
+        IGNORE
+    }
 }

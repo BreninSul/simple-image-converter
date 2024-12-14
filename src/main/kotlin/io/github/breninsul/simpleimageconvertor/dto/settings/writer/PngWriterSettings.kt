@@ -18,24 +18,16 @@
  * SOFTWARE.
  */
 
-package io.github.breninsul.simpleimageconvertor.dto.writer
-
-import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
+package io.github.breninsul.simpleimageconvertor.dto.settings.writer
 
 /**
- * The `ConvertSettings` class represents the settings for converting an
- * image to a specific format. It is an open class that can be extended to
- * provide additional functionality.
+ * The `PngWriterSettings` class represents the settings for writing PNG
+ * files using the `PngWriter` class. It extends the `WriterSettings`
+ * interface.
  *
- * @param format The desired image format for conversion. The default
- *    format is WEBP.
- * @constructor Creates a new instance of `ConvertSettings` with the
- *    specified format.
- * @property format The desired image format for conversion. The default
- *    format is WEBP.
- * @see ImageFormat
- * @see WriterSettings
+ * @property compressionLevel The compression level to use when writing the
+ *    PNG file. Default is 9.
  */
-open class ConvertSettings(
-    open val format: ImageFormat = ImageFormat.WEBP,
+open class PngWriterSettings(
+    val compressionLevel: Int = 9,
 ) : WriterSettings

@@ -31,9 +31,12 @@ import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.Ordered
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
+import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
+import io.github.breninsul.simpleimageconvertor.dto.settings.getSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.FlipSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.RotateSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.TransformSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.OriginalOrientationSettings
 import io.github.breninsul.simpleimageconvertor.dto.supportsKimMetadataWrite
 import org.apache.commons.io.output.QueueOutputStream
 import java.io.OutputStream
@@ -80,14 +83,30 @@ interface ImageWriter : Ordered {
      * @param out the Supplier of OutputStream to write the image to
      */
     fun write(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>){
-        //No need to rotate anything
         val orientationValue = image.originalMetadata?.findShortValue(TiffTag.TIFF_TAG_ORIENTATION)?.toInt()
-        if (orientationValue==null||!orientationValue.isRotatedOrientation()){
-            writeInternal(image,settings,out)
+        //No need to rotate anything
+        if (orientationValue == null || !orientationValue.isRotatedOrientation()) {
+            writeInternal(image, settings, out)
             return
         }
+        val rotateSetting=settings.getSetting<OriginalOrientationSettings>()?: OriginalOrientationSettings()
+        when(rotateSetting.mode){
+            OriginalOrientationSettings.Mode.DEFAULT->processOrientationDefaultMode(image, settings, out,orientationValue)
+            OriginalOrientationSettings.Mode.WRITE_EXIF_METADATA_TAG->rewriteOrientationTagToOutputStream(image, settings, out, orientationValue)
+            OriginalOrientationSettings.Mode.ROTATE_IMAGE->rotateAndWriteImageFile(orientationValue, image, settings, out)
+            OriginalOrientationSettings.Mode.IGNORE -> { writeInternal(image, settings, out) }
+        }
+    }
+
+    fun processOrientationDefaultMode(
+        image: ImageOrAnimation,
+        settings: List<Settings>,
+        out: Supplier<OutputStream>,
+        orientationValue: Int
+    ) {
+
         //Can't just set orientation tag, have to rotate image
-        if (!getImageFormat().supportsKimMetadataWrite()){
+        if (!getImageFormat().supportsKimMetadataWrite()) {
             rotateAndWriteImageFile(orientationValue, image, settings, out)
             return
         }

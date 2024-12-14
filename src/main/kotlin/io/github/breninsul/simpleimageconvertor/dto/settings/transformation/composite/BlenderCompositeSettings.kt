@@ -22,7 +22,7 @@ package io.github.breninsul.simpleimageconvertor.dto.settings.transformation.com
 
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.OperationWithImageSettings
-import io.github.breninsul.simpleimageconvertor.dto.writer.AnimationToStaticSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.AnimationToStaticSettings
 import io.github.breninsul.simpleimageconvertor.service.transformer.predefined.composite.AlphaCompositeTransformer
 import thirdparty.romainguy.BlendingMode
 

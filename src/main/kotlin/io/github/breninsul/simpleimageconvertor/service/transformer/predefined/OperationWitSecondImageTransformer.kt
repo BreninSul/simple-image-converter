@@ -25,7 +25,7 @@ import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.OperationWithImageSettings
-import io.github.breninsul.simpleimageconvertor.dto.writer.AnimationToStaticSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.AnimationToStaticSettings
 import io.github.breninsul.simpleimageconvertor.extensions.middle
 import io.github.breninsul.simpleimageconvertor.service.transformer.ImageTransformer.Companion.logger
 import java.time.Duration

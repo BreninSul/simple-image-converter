@@ -18,7 +18,7 @@
  * SOFTWARE.
  */
 
-package io.github.breninsul.simpleimageconvertor.dto.writer
+package io.github.breninsul.simpleimageconvertor.dto.settings.writer
 
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode
