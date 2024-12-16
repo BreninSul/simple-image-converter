@@ -25,8 +25,8 @@ package io.github.breninsul.simpleimageconvertor.dto.settings.writer
  * files. It extends the `WriterSettings` interface.
  *
  * @property compressionLevel The compression level of the JPEG file,
- *    ranging from 0 to 100. Higher values result in smaller file sizes but
- *    lower image quality.
+ *    ranging from 0 to 99. Higher values result in lower file sizes but
+ *    higher image quality. Not percentage
  * @property progressive Indicates whether the JPEG file should be saved in
  *    progressive mode. Progressive mode allows partial rendering of the
  *    image when it is being loaded, giving the appearance of a faster
