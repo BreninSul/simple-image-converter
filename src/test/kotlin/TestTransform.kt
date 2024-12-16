@@ -66,8 +66,7 @@ class TestTransform {
         processor.process({ file.inputStream() }, { outFile.outputStream() },
             listOf(
                 ScaleToSettings(Resolution(640, 640, true)),
-                WebpWriterSettings(z = 100, lossless = false),
-                ConvertSettings(format = ImageFormat.WEBP)
+                WebpWriterSettings(z = 100, lossless = false)
             )
         )
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")

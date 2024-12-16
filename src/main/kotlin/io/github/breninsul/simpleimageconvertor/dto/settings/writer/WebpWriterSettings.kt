@@ -20,6 +20,8 @@
 
 package io.github.breninsul.simpleimageconvertor.dto.settings.writer
 
+import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
+
 /**
  * A class that represents the settings for writing WebP files.
  *
@@ -41,4 +43,4 @@ open class WebpWriterSettings(
     val lossless: Boolean = false,
     val noAlpha: Boolean = false,
     val multiThread: Boolean = false,
-) : WriterSettings
+) : ConvertSettings(format = ImageFormat.WEBP)

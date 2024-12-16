@@ -20,6 +20,8 @@
 
 package io.github.breninsul.simpleimageconvertor.dto.settings.writer
 
+import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
+
 /**
  * The `JpegWriterSettings` class represents the settings for writing JPEG
  * files. It extends the `WriterSettings` interface.
@@ -35,4 +37,4 @@ package io.github.breninsul.simpleimageconvertor.dto.settings.writer
 open class JpegWriterSettings(
     val compressionLevel: Int = 80,
     val progressive: Boolean = false,
-) : WriterSettings
+) : ConvertSettings(format = ImageFormat.JPEG)

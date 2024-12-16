@@ -32,11 +32,10 @@ import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.Ordered
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
-import io.github.breninsul.simpleimageconvertor.dto.settings.getSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.FlipSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.RotateSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.TransformSettings
-import io.github.breninsul.simpleimageconvertor.dto.settings.writer.OriginalOrientationSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.dto.supportsKimMetadataWrite
 import org.apache.commons.io.output.QueueOutputStream
 import java.io.OutputStream
@@ -89,12 +88,12 @@ interface ImageWriter : Ordered {
             writeInternal(image, settings, out)
             return
         }
-        val rotateSetting=settings.getSetting<OriginalOrientationSettings>()?: OriginalOrientationSettings()
-        when(rotateSetting.mode){
-            OriginalOrientationSettings.Mode.DEFAULT->processOrientationDefaultMode(image, settings, out,orientationValue)
-            OriginalOrientationSettings.Mode.WRITE_EXIF_METADATA_TAG->rewriteOrientationTagToOutputStream(image, settings, out, orientationValue)
-            OriginalOrientationSettings.Mode.ROTATE_IMAGE->rotateAndWriteImageFile(orientationValue, image, settings, out)
-            OriginalOrientationSettings.Mode.IGNORE -> { writeInternal(image, settings, out) }
+        val rotateSetting=settings.getSetting<ConvertSettings>()?: ConvertSettings()
+        when(rotateSetting.originalOrientationProcessingMode){
+            ConvertSettings.OriginalOrientationProcessingMode.DEFAULT->processOrientationDefaultMode(image, settings, out,orientationValue)
+            ConvertSettings.OriginalOrientationProcessingMode.WRITE_EXIF_METADATA_TAG->rewriteOrientationTagToOutputStream(image, settings, out, orientationValue)
+            ConvertSettings.OriginalOrientationProcessingMode.ROTATE_IMAGE->rotateAndWriteImageFile(orientationValue, image, settings, out)
+            ConvertSettings.OriginalOrientationProcessingMode.IGNORE -> { writeInternal(image, settings, out) }
         }
     }
 

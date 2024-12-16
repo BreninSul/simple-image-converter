@@ -53,4 +53,4 @@ open class PdfWriterSettings(
     val imageFormat: ImageFormat = ImageFormat.PNG,
     val compress: Boolean = false,
     val appendMode: AppendMode = AppendMode.APPEND,
-) : WriterSettings
+) : ConvertSettings(format = ImageFormat.PDF)

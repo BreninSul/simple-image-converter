@@ -1,17 +1,22 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "1.9.23"
+    val kotlinVersion = "2.1.0"
     id("java")
-    id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.1.1"
+    id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.2.4"
     id("org.jetbrains.kotlin.jvm") version kotlinVersion
     id("org.jetbrains.kotlin.plugin.spring") version kotlinVersion
     id("org.jetbrains.kotlin.kapt") version kotlinVersion
-    id("org.jetbrains.dokka") version "1.9.20"
+    id("org.jetbrains.dokka") version "2.0.0"
 }
 
 group = "io.github.breninsul"
-version = "1.0.8"
+version = "1.1.0"
+
+val scrimageVersion = "4.3.0"
+val twelvemonkeysVersion = "3.12.0"
+val batikVersion = "1.18"
+
 
 val javaVersion = JavaVersion.VERSION_17
 
@@ -37,43 +42,42 @@ tasks.compileKotlin {
 
 dependencies {
     api("io.github.breninsul:WebPDecoderJN:1.3-b")
-    api("io.github.breninsul:named-limited-virtual-thread-executor:1.0.2")
-    api("org.apache.pdfbox:pdfbox:3.0.2")
-    api("org.apache.tika:tika-core:2.9.2")
-    api("com.sksamuel.scrimage:scrimage-core:4.2.0")
-    api("com.sksamuel.scrimage:scrimage-format-png:4.2.0")
-    api("com.sksamuel.scrimage:scrimage-formats-extra:4.2.0")
-    api("com.sksamuel.scrimage:scrimage-hash:4.2.0")
-    api("com.sksamuel.scrimage:scrimage-filters:4.2.0")
-    api("com.sksamuel.scrimage:scrimage-webp:4.2.0")
-    api("com.twelvemonkeys.imageio:imageio-jpeg:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-core:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-metadata:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-webp:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-bmp:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-iff:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-pcx:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-pnm:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-sgi:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-tga:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-tiff:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-batik:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-pict:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-psd:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-icns:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-pdf:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-thumbsdb:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-hdr:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-clippath:3.11.0")
-    api("com.twelvemonkeys.imageio:imageio-xwd:3.11.0")
-    api("org.apache.xmlgraphics:batik-transcoder:1.17")
-    api("org.apache.xmlgraphics:batik-rasterizer-ext:1.17")
-    api("org.apache.xmlgraphics:batik-extension:1.17")
-    api("org.apache.xmlgraphics:batik-anim:1.17")
-    api("org.apache.xmlgraphics:batik-svggen:1.17")
+    api("org.apache.pdfbox:pdfbox:3.0.3")
+    api("org.apache.tika:tika-core:3.0.0")
+    api("com.sksamuel.scrimage:scrimage-core:$scrimageVersion")
+    api("com.sksamuel.scrimage:scrimage-format-png:$scrimageVersion")
+    api("com.sksamuel.scrimage:scrimage-formats-extra:$scrimageVersion")
+    api("com.sksamuel.scrimage:scrimage-hash:$scrimageVersion")
+    api("com.sksamuel.scrimage:scrimage-filters:$scrimageVersion")
+    api("com.sksamuel.scrimage:scrimage-webp:$scrimageVersion")
+    api("com.twelvemonkeys.imageio:imageio-jpeg:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-core:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-metadata:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-webp:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-bmp:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-iff:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-pcx:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-pnm:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-sgi:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-tga:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-tiff:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-batik:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-pict:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-psd:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-icns:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-pdf:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-thumbsdb:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-hdr:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-clippath:$twelvemonkeysVersion")
+    api("com.twelvemonkeys.imageio:imageio-xwd:$twelvemonkeysVersion")
+    api("org.apache.xmlgraphics:batik-transcoder:$batikVersion")
+    api("org.apache.xmlgraphics:batik-rasterizer-ext:$batikVersion")
+    api("org.apache.xmlgraphics:batik-extension:$batikVersion")
+    api("org.apache.xmlgraphics:batik-anim:$batikVersion")
+    api("org.apache.xmlgraphics:batik-svggen:$batikVersion")
     api("com.ashampoo:kim:0.20.1")
     api("com.madgag:animated-gif-lib:1.4")
-    api("net.java.dev.jna:jna:5.13.0")
+    api("net.java.dev.jna:jna:5.15.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
 

@@ -20,6 +20,8 @@
 
 package io.github.breninsul.simpleimageconvertor.dto.settings.writer
 
+import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
+
 /**
  * The `TiffWriterSettings` class represents the settings for writing TIFF
  * images. It extends the `WriterSettings` interface.
@@ -49,4 +51,4 @@ open class TiffWriterSettings(
      * "Basic Structure of Thumbnail Data"
      */
     val compressionType: String = "LZW",
-) : WriterSettings
+) : ConvertSettings(format = ImageFormat.TIFF)

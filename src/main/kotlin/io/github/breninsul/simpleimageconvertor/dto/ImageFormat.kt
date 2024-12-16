@@ -29,6 +29,7 @@ package io.github.breninsul.simpleimageconvertor.dto
  * @constructor Creates a new instance of the ImageFormat class with the
  *    given name and animation support.
  * @property name The name of the image format.
+ * @property mimeTypes - Mime types for specified image format
  * @property supportsAnimation Indicates whether the image format supports
  *    animation.
  * @see ImageFormat.WEBP
@@ -47,7 +48,10 @@ package io.github.breninsul.simpleimageconvertor.dto
  * @see ImageFormat.ICO
  * @see ImageFormat.IFF
  */
-open class ImageFormat(val name: String, val supportsAnimation: Boolean = false) {
+open class ImageFormat(val name: String,val mimeTypes:List<String>, val supportsAnimation: Boolean = false) {
+    constructor( name: String, mimeType:String,  supportsAnimation: Boolean = false):this(name, listOf(mimeType), supportsAnimation)
+    constructor( name: String,  supportsAnimation: Boolean = false):this(name, DEFAULT_FORMATS.firstOrNull { it.name.equals(name, true) }?.mimeTypes?: listOf(), supportsAnimation)
+
     override fun equals(other: Any?): Boolean {
         return name == (other as? ImageFormat)?.name
     }
@@ -61,20 +65,22 @@ open class ImageFormat(val name: String, val supportsAnimation: Boolean = false)
     }
 
     companion object {
-        val WEBP = ImageFormat("WEBP", true)
-        val GIF = ImageFormat("GIF", true)
-        val PNG = ImageFormat("PNG")
-        val JPEG = ImageFormat("JPEG")
-        val PDF = ImageFormat("PDF")
-        val BMP = ImageFormat("BMP")
-        val WBMP = ImageFormat("WBMP")
-        val TIFF = ImageFormat("TIFF")
-        val TGA = ImageFormat("TGA")
-        val PNM = ImageFormat("PNM")
-        val PICT = ImageFormat("PICT")
-        val PSD = ImageFormat("PSD")
-        val ICNS = ImageFormat("ICNS")
-        val ICO = ImageFormat("ICO")
-        val IFF = ImageFormat("IFF")
+        val WEBP = ImageFormat("WEBP","image/webp", true)
+        val GIF = ImageFormat("GIF", "image/gif",true)
+        val PNG = ImageFormat("PNG","image/png")
+        val JPEG = ImageFormat("JPEG","image/jpeg")
+        val PDF = ImageFormat("PDF","application/pdf")
+        val BMP = ImageFormat("BMP","image/bmp")
+        val WBMP = ImageFormat("WBMP","image/vnd.wap.wbmp")
+        val TIFF = ImageFormat("TIFF","image/tiff")
+        val TGA = ImageFormat("TGA", listOf("image/tga","image/x-tga","application/tga","application/x-tga"))
+        val PNM = ImageFormat("PNM","image/x-portable-anymap")
+        val PICT = ImageFormat("PICT","image/x-pict")
+        val PSD = ImageFormat("PSD","image/vnd.adobe.photoshop")
+        val ICNS = ImageFormat("ICNS","image/x-icns")
+        val ICO = ImageFormat("ICO","image/x-icon")
+        val IFF = ImageFormat("IFF", listOf("image/iff","image/x-iff","application/iff","application/x-iff"))
+        //Some formats can be added or removed dynamically on startup
+        val DEFAULT_FORMATS = mutableListOf(WEBP,GIF,PNG,JPEG,PDF,BMP,WBMP,TIFF,TGA,PNM,PICT,PSD,ICNS,ICO,IFF)
     }
 }

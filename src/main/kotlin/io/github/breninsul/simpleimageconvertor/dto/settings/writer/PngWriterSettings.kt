@@ -20,6 +20,8 @@
 
 package io.github.breninsul.simpleimageconvertor.dto.settings.writer
 
+import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
+
 /**
  * The `PngWriterSettings` class represents the settings for writing PNG
  * files using the `PngWriter` class. It extends the `WriterSettings`
@@ -30,4 +32,4 @@ package io.github.breninsul.simpleimageconvertor.dto.settings.writer
  */
 open class PngWriterSettings(
     val compressionLevel: Int = 9,
-) : WriterSettings
+) : ConvertSettings(format = ImageFormat.PNG)
