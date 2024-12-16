@@ -27,6 +27,7 @@ import io.github.breninsul.simpleimageconvertor.dto.Ordered
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.service.kim.BufferedInputStreamByteReader
 import java.io.InputStream
+import java.io.PushbackInputStream
 import java.io.SequenceInputStream
 import java.util.function.Supplier
 import java.util.logging.Level
@@ -102,9 +103,11 @@ interface ImageReader : Ordered {
             null
         }
         byteReader.readOutputStream.flush()
-        val clonedStream = byteReader.readOutputStream.toByteArray().inputStream()
-        val combinedStream = SequenceInputStream(clonedStream, this)
-        return metadata to combinedStream
+        val readMetadataBytes = byteReader.readOutputStream.toByteArray()
+        val secondPartOfStreamReadStartsAt = readMetadataBytes.size
+        val pushbackInputStream=PushbackInputStream(this, secondPartOfStreamReadStartsAt)
+        pushbackInputStream.unread(readMetadataBytes)
+        return metadata to pushbackInputStream
     }
 
     companion object {

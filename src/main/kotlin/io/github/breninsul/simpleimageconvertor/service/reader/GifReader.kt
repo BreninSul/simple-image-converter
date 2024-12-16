@@ -33,11 +33,6 @@ open class GifReader(private val order: Int = 1) : ImageReader {
 
     override fun readInternal(fileStream: InputStream, settings: List<Settings>, metadata: ImageMetadata?): ImageOrAnimation {
         val gifReader = GifSequenceReaderWithDelay()
-        //Hook to fix incorrect GIF metadata read
-        val buffStream=fileStream.buffered(DEFAULT_BUFFER_SIZE)
-        buffStream.mark(DEFAULT_BUFFER_SIZE)
-        buffStream.readNBytes(DEFAULT_BUFFER_SIZE)
-        buffStream.reset()
         gifReader.read(fileStream)
         val gif = AnimatedGifWithDelay(gifReader)
         return ImageOrAnimation(gif, null, metadata)
