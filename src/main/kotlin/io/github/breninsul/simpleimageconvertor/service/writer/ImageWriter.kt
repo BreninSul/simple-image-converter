@@ -74,14 +74,16 @@ interface ImageWriter : Ordered {
     }
 
     /**
-     * Writes the given ConvertableImage using the specified Settings and
-     * outputs the result to the provided OutputStream.
+     * Writes an image or animation to the specified output stream using the provided settings.
+     * The method handles image orientation based on the original metadata and processes it appropriately
+     * according to the orientation handling mode specified in the settings.
      *
-     * @param image the ConvertableImage to write
-     * @param settings the list of Settings to apply during the writing process
-     * @param out the Supplier of OutputStream to write the image to
+     * @param image The image or animation to be written. It must be an instance of `ImageOrAnimation`.
+     * @param settings A list of `Settings` to apply during the writing process. These settings define specific
+     *                 configurations for handling the image or animation, including orientation processing modes.
+     * @param out The output stream to which the image or animation will be written.
      */
-    fun write(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>){
+    fun write(image: ImageOrAnimation, settings: List<Settings>, out: OutputStream){
         val orientationValue = image.originalMetadata?.findShortValue(TiffTag.TIFF_TAG_ORIENTATION)?.toInt()
         //No need to rotate anything
         if (orientationValue == null || !orientationValue.isRotatedOrientation()) {
@@ -100,7 +102,7 @@ interface ImageWriter : Ordered {
     fun processOrientationDefaultMode(
         image: ImageOrAnimation,
         settings: List<Settings>,
-        out: Supplier<OutputStream>,
+        out: OutputStream,
         orientationValue: Int
     ) {
 
@@ -126,50 +128,43 @@ interface ImageWriter : Ordered {
     fun ImageWriter.rewriteOrientationTagToOutputStream(
         image: ImageOrAnimation,
         settings: List<Settings>,
-        out: Supplier<OutputStream>,
+        out: OutputStream,
         orientationValue: Int
     ) {
         //Create wrapper for output stream
         val queueOutputStream = QueueOutputStream()
         val queueInputStream = queueOutputStream.newQueueInputStream()
         //write bytes there
-        writeInternal(image, settings) { queueOutputStream }
+        writeInternal(image, settings,queueOutputStream)
         val byteReader: ByteReader = JvmInputStreamByteReader(queueInputStream, queueInputStream.available().toLong())
         //set real output stream to write result
-        val byteWriter = OutputStreamByteWriter(out.get())
+        val byteWriter = OutputStreamByteWriter(out)
         //Update metadata
         Kim.update(byteReader, byteWriter, MetadataUpdate.Orientation(TiffOrientation.of(orientationValue)!!))
     }
 
     /**
-     * Rotates an image or animation to the correct orientation based on the provided orientation value
-     * and writes the result to the specified output stream using the given settings.
-     *
-     * This method determines the necessary transformations (e.g., rotation or flipping) for the image
-     * based on the orientation value and applies them. The transformed image is then written to the
-     * output stream supplied by the `out` parameter with the applied settings.
+     * Rotates the specified image or animation to the correct orientation based on the given orientation value
+     * and writes the resulting image to the provided output stream using the specified settings.
      *
      * @param orientationValue The orientation value representing how the image should be rotated or flipped.
      *                         Acceptable values range from 2 to 8:
-     *                         - 2: Flip horizontal
+     *                         - 2: Flip horizontally
      *                         - 3: Rotate 180 degrees clockwise
-     *                         - 4: Flip vertical
-     *                         - 5: Flip horizontal and rotate 270 degrees clockwise (90 degrees counterclockwise)
+     *                         - 4: Flip vertically
+     *                         - 5: Flip horizontally and rotate 270 degrees clockwise
      *                         - 6: Rotate 90 degrees clockwise
-     *                         - 7: Flip horizontal and rotate 90 degrees clockwise
+     *                         - 7: Flip horizontally and rotate 90 degrees clockwise
      *                         - 8: Rotate 270 degrees clockwise
-     * @param image The image or animation to be processed. It can be an instance of `ImageOrAnimation`
-     *              representing either a static image or an animation.
-     * @param settings A list of settings to be applied during the writing process. These settings
-     *                 define specific configurations for handling the image or animation.
-     * @param out A supplier function that provides the output stream to which the processed image
-     *            will be written.
+     * @param image The image or animation to be rotated and written. It must be an instance of `ImageOrAnimation`.
+     * @param settings A list of `Settings` to apply during the writing process, which define specific configurations.
+     * @param out The output stream to which the rotated image or animation will be written.
      */
     fun ImageWriter.rotateAndWriteImageFile(
         orientationValue: Int,
         image: ImageOrAnimation,
         settings: List<Settings>,
-        out: Supplier<OutputStream>
+        out: OutputStream
     ) {
         val rotatedImage = tryRotateImageToRightOrientation(orientationValue, image)
         writeInternal(rotatedImage, settings, out)
@@ -177,15 +172,14 @@ interface ImageWriter : Ordered {
     }
 
     /**
-     * Writes the given image or animation to an output stream using the provided settings.
+     * Writes an image or animation to the specified output stream using the provided settings.
      *
      * @param image The image or animation to be written. It must be an instance of `ImageOrAnimation`.
-     * @param settings A list of `Settings` to apply during the writing process. These settings
-     *                 define specific configurations for handling the image or animation.
-     * @param out A supplier function that provides the `OutputStream` to which the processed
-     *            image or animation will be written.
+     * @param settings A list of `Settings` to apply during the writing process. These settings define specific
+     *                 configurations for handling the image or animation.
+     * @param out The output stream to which the image or animation will be written.
      */
-    fun writeInternal(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>)
+    fun writeInternal(image: ImageOrAnimation, settings: List<Settings>, out: OutputStream)
 
     /**
      * Checks if the image writer supports animation.

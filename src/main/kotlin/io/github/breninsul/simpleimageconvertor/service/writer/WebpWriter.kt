@@ -45,16 +45,16 @@ open class WebpWriter : AnimationImageWriter {
         return supportedImageTypes
     }
 
-    override fun writeAnimation(animation: AnimatedGif, settings: List<Settings>, out: Supplier<OutputStream>) {
+    override fun writeAnimation(animation: AnimatedGif, settings: List<Settings>, out: OutputStream) {
         val webpSetting = settings.getSetting<WebpWriterSettings>()
         val delegate = webpSetting?.let { Gif2WebpWriter(it.q, it.m, !it.lossless) } ?: Gif2WebpWriter()
-        out.get().use { delegate.write(animation, it) }
+        out.use { delegate.write(animation, it) }
     }
 
-    override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: Supplier<OutputStream>) {
+    override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: OutputStream) {
         val webpSetting = settings.getSetting<WebpWriterSettings>()
         val delegate = webpSetting?.let { com.sksamuel.scrimage.webp.WebpWriter(it.z, it.q, it.m, it.lossless, it.noAlpha, it.multiThread) } ?: com.sksamuel.scrimage.webp.WebpWriter()
-        out.get().use { delegate.write(image, image.metadata, it) }
+        out.use { delegate.write(image, image.metadata, it) }
     }
 
     override fun getOrder(): Int {

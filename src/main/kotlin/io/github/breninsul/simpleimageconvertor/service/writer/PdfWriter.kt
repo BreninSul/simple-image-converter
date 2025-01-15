@@ -54,23 +54,23 @@ open class PdfWriter(
         return supportedImageTypes
     }
 
-    override fun writeAnimation(animation: AnimatedGif, settings: List<Settings>, out: Supplier<OutputStream>) {
+    override fun writeAnimation(animation: AnimatedGif, settings: List<Settings>, out: OutputStream) {
         val document = PDDocument()
         val setting = settings.getSetting<PdfWriterSettings>() ?: PdfWriterSettings()
         val writer = getImageWriter(setting)
         animation.frames.forEach {
             writePage(setting, writer, it, settings, document)
         }
-        out.get().use { document.save(it) }
+        out.use { document.save(it) }
     }
 
 
-    override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: Supplier<OutputStream>) {
+    override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: OutputStream) {
         val document = PDDocument()
         val setting = settings.getSetting<PdfWriterSettings>() ?: PdfWriterSettings()
         val writer = getImageWriter(setting)
         writePage(setting, writer, image, settings, document)
-        out.get().use { document.save(it) }
+        out.use { document.save(it) }
     }
 
     protected open fun getImageWriter(setting: PdfWriterSettings) = writers.firstOrNull { it.supportedTypes().contains(setting.imageFormat) } ?: throw ImageWritingException("Unsupported format ${setting.imageFormat}")
@@ -86,7 +86,7 @@ open class PdfWriter(
         val page = PDPage(rectangle);
         document.addPage(page)
         val outputStream = ByteArrayOutputStream()
-        writer.write(ImageOrAnimation(null, image,null), settings) { outputStream }
+        writer.write(ImageOrAnimation(null, image,null), settings,outputStream)
         val pdfImage = PDImageXObject.createFromByteArray(document, outputStream.toByteArray(), null)
         PDPageContentStream(document, page, pdfSetting.appendMode, pdfSetting.compress).use { contents ->
             contents.drawImage(pdfImage, 0F, 0F, rectangle.width, rectangle.height)

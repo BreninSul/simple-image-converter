@@ -46,7 +46,7 @@ interface StaticImageWriter : ImageWriter {
         return this.firstOrNull { it is AnimationToStaticSettings } as AnimationToStaticSettings?
     }
 
-    override fun writeInternal(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>) {
+    override fun writeInternal(image: ImageOrAnimation, settings: List<Settings>, out: OutputStream) {
         if (image.isAnimation()) {
             writeAnimationToStatic(image.animation!!, settings.getAnimationToStaticSettings() ?: AnimationToStaticSettings(), settings, out)
         } else {
@@ -55,25 +55,23 @@ interface StaticImageWriter : ImageWriter {
     }
 
     /**
-     * Writes a static image to an output stream using the specified settings.
+     * Writes a static image to the specified output stream using the given settings.
      *
-     * @param image the ImmutableImage to write
-     * @param settings the list of Settings to apply during the writing process
-     * @param out the Supplier of OutputStream to write the image to
-     * @throws ImageException if both animation and image are null or not null
+     * @param image the `ImmutableImage` to be written as a static image
+     * @param settings a list of `Settings` that define how the image should be written
+     * @param out the output stream to which the static image will be written
      */
-    fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: Supplier<OutputStream>)
+    fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: OutputStream)
 
     /**
-     * Writes an animation to a static image based on the specified settings.
+     * Converts an animated GIF to a static image based on the provided settings and writes it to the output stream.
      *
-     * @param animation the AnimatedGif to write to a static image
-     * @param animationSettings the AnimationToStaticSettings object specifying
-     *    the conversion settings
-     * @param settings the list of Settings to apply during the writing process
-     * @param out the Supplier of OutputStream to write the static image to
+     * @param animation the `AnimatedGif` object representing the animation to be converted
+     * @param animationSettings the `AnimationToStaticSettings` object defining the strategy and frame for conversion
+     * @param settings a list of additional settings that define how the static image should be written
+     * @param out the output stream to which the resulting static image will be written
      */
-    fun writeAnimationToStatic(animation: AnimatedGif, animationSettings: AnimationToStaticSettings, settings: List<Settings>, out: Supplier<OutputStream>) {
+    fun writeAnimationToStatic(animation: AnimatedGif, animationSettings: AnimationToStaticSettings, settings: List<Settings>, out: OutputStream) {
         when (animationSettings.strategy) {
             AnimationToStaticSettings.StrategyEnum.FIRST_FRAME -> writeStatic(animation.frames.first(), settings, out)
             AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME -> writeStatic(animation.frames.middle(), settings, out)

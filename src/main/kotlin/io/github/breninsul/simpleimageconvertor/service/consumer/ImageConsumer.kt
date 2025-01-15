@@ -31,17 +31,15 @@ import java.util.function.Supplier
  */
 interface ImageConsumer {
     /**
-     * Reads an image from an input stream using the specified settings.
+     * Reads an image or animation from the given input stream using the provided settings and optional MIME type.
      *
-     * @param inputStreamSupplier The supplier of the input stream from which
-     *    the image will be read.
-     * @param settings The list of settings to be applied while reading the
-     *    image.
-     * @return The convertable image that has been read.
-     * @throws ImageException If an error occurs while reading the image.
+     * @param inputStream The input stream from which the image or animation is read.
+     * @param settings A list of settings to customize the reading process for different file types.
+     * @param mimeType An optional MIME type to assist in determining the type of the file. If null, the type will be auto-detected.
+     * @return An `ImageOrAnimation` object that represents the read image or animation.
      */
     fun read(
-        inputStreamSupplier: Supplier<InputStream>,
+        inputStream: InputStream,
         settings: List<Settings>,
         mimeType: String? = null,
     ): ImageOrAnimation

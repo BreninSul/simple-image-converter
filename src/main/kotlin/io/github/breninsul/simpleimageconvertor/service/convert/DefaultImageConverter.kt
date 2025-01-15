@@ -57,12 +57,12 @@ open class DefaultImageConverter(
     override fun convert(
         image: ImageOrAnimation,
         settings: List<Settings>,
-        outputSupplier: Supplier<OutputStream>
+        outputStream: OutputStream
     ) {
         try {
             val setting = settings.getConvertSetting()
             val writer = getWriter(setting)
-            writer.write(image, settings, outputSupplier)
+            writer.write(image, settings, outputStream)
         } catch (e: Exception) {
             logger.log(Level.WARNING, "Error writing image", e)
             throw if (e is ImageException) e else ImageWritingException(e.message, e)

@@ -1,4 +1,6 @@
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.net.URL
 
 plugins {
     val kotlinVersion = "2.1.0"
@@ -11,7 +13,7 @@ plugins {
 }
 
 group = "io.github.breninsul"
-version = "1.1.0"
+version = "2.0.0"
 
 val scrimageVersion = "4.3.0"
 val twelvemonkeysVersion = "3.12.0"
@@ -75,12 +77,27 @@ dependencies {
     api("org.apache.xmlgraphics:batik-extension:$batikVersion")
     api("org.apache.xmlgraphics:batik-anim:$batikVersion")
     api("org.apache.xmlgraphics:batik-svggen:$batikVersion")
-    api("com.ashampoo:kim:0.20.1")
+    api("com.ashampoo:kim:0.20.2")
     api("com.madgag:animated-gif-lib:1.4")
     api("net.java.dev.jna:jna:5.15.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
 
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    val repositoryName = project.name
+    dokkaSourceSets {
+        named("main") {
+            moduleName.set(project.name)
+            includes.from("README.md")
+            sourceLink {
+                localDirectory.set(file("src/main/kotlin"))
+                remoteUrl.set(URL("https://github.com/BreninSul/$repositoryName"))
+                remoteLineSuffix.set("#L")
+            }
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {

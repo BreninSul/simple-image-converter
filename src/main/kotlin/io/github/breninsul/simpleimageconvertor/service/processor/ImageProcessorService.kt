@@ -40,156 +40,124 @@ import java.util.function.Supplier
  */
 interface ImageProcessorService {
     /**
-     * Asynchronously processes an image and returns a CompletableFuture with
-     * the result.
+     * Processes the input stream according to the provided settings and writes the result to the
+     * output stream asynchronously.
      *
-     * @param inputStreamSupplier A supplier that provides the input stream for
-     *    the image.
-     * @param outputStreamSupplier A supplier that provides the output stream
-     *    for the processed image.
-     * @param writerSettings A list of writer settings to be applied during the
-     *    image processing.
-     * @param transformSettings A list of transform settings to be applied
-     *    during the image processing. Defaults to an empty list.
-     * @param readerSettings A list of reader settings to be applied during the
-     *    image processing. Defaults to an empty list.
-     * @param mimeType Image mime type. Will be resolved automatically if not
-     *    provided.
-     * @param id An optional identifier for the image processing operation.
-     * @return A CompletableFuture that represents the asynchronous operation
-     *    and contains the id.
+     * @param inputStream The input stream containing the data to be processed.
+     * @param outputStream The output stream to which the processed data will be written.
+     * @param writerSettings A list of settings to configure the writing process.
+     * @param transformSettings A list of settings to configure transformations to be applied
+     *                          during the process. Defaults to an empty list if not provided.
+     * @param readerSettings A list of settings to configure the reading process. Defaults to an
+     *                       empty list if not provided.
+     * @param mimeType The MIME type of the data being processed. Nullable, default is null.
+     * @param id An optional identifier for the process. Nullable, default is null.
+     * @return A CompletableFuture containing the optional result identifier as a string.
      */
     fun processFuture(
-        inputStreamSupplier: Supplier<InputStream>,
-        outputStreamSupplier: Supplier<OutputStream>,
+        inputStream: InputStream,
+        outputStream: OutputStream,
         writerSettings: List<WriterSettings>,
         transformSettings: List<TransformSettings> = listOf(),
         readerSettings: List<ReaderSettings> = listOf(),
         mimeType: String? = null,
         id: String? = null,
     ): CompletableFuture<String?> {
-        return processFuture(inputStreamSupplier, outputStreamSupplier, readerSettings + writerSettings + transformSettings, mimeType, id)
+        return processFuture(inputStream, outputStream, readerSettings + writerSettings + transformSettings, mimeType, id)
     }
 
     /**
-     * Asynchronously processes an image and returns a CompletableFuture with
-     * the result.
+     * Processes the input stream according to the provided settings and writes the result to the
+     * output stream asynchronously.
      *
-     * @param inputStreamSupplier A supplier that provides the input stream for
-     *    the image.
-     * @param outputStreamSupplier A supplier that provides the output stream
-     *    for the processed image.
-     * @param settings A list of settings to be applied during the image
-     *    processing.
-     * @param mimeType Image mime type. Will be resolved automatically if not
-     *    provided
-     * @param id An optional identifier for the image processing operation.
-     * @return A CompletableFuture that represents the asynchronous operation
-     *    and contains the id.
+     * @param inputStream The input stream containing the data to be processed.
+     * @param outputStream The output stream where the processed data will be written.
+     * @param settings A list of settings to configure the processing.
+     * @param mimeType The MIME type of the data being processed. Nullable, defaults to null.
+     * @param id An optional identifier for the process. Nullable, defaults to null.
+     * @return A CompletableFuture containing the optional result identifier as a string.
      */
     fun processFuture(
-        inputStreamSupplier: Supplier<InputStream>,
-        outputStreamSupplier: Supplier<OutputStream>,
+        inputStream: InputStream,
+        outputStream: OutputStream,
         settings: List<Settings>,
         mimeType: String? = null,
         id: String? = null,
     ): CompletableFuture<String?>
 
     /**
-     * Asynchronously processes an image and returns the result as a String.
+     * Processes the input stream according to the provided settings and writes the result to the output stream.
      *
-     * @param inputStreamSupplier A supplier that provides the input stream for
-     *    the image.
-     * @param outputStreamSupplier A supplier that provides the output stream
-     *    for the processed image.
-     * @param writerSettings A list of writer settings to be applied during the
-     *    image processing.
-     * @param transformSettings A list of transform settings to be applied
-     *    during the image processing. Defaults to an empty list.
-     * @param readerSettings A list of reader settings to be applied during the
-     *    image processing. Defaults to an empty list.
-     * @param mimeType Image mime type. Will be resolved automatically if not
-     *    provided.
-     * @param id An optional identifier for the image processing operation.
-     * @return The result of the image processing as a String. Returns null if
-     *    an error occurs.
+     * @param inputStream The input stream containing data to be processed.
+     * @param outputStream The output stream where the processed data will be written.
+     * @param writerSettings A list of settings to configure the writing process.
+     * @param transformSettings A list of settings to configure transformations during the process. Defaults to an empty list if not provided.
+     * @param readerSettings A list of settings to configure the reading process. Defaults to an empty list if not provided.
+     * @param mimeType The MIME type of the data being processed. Nullable, default is null.
+     * @param id An optional identifier for the process. Nullable, default is null.
+     * @return An optional result identifier as a string, or null if no identifier was generated.
      */
     fun process(
-        inputStreamSupplier: Supplier<InputStream>,
-        outputStreamSupplier: Supplier<OutputStream>,
+        inputStream: InputStream,
+        outputStream: OutputStream,
         writerSettings: List<WriterSettings>,
         transformSettings: List<TransformSettings> = listOf(),
         readerSettings: List<ReaderSettings> = listOf(),
         mimeType: String? = null,
         id: String? = null,
     ): String? {
-        return process(inputStreamSupplier, outputStreamSupplier, readerSettings + writerSettings + transformSettings, mimeType, id)
+        return process(inputStream,outputStream, readerSettings + writerSettings + transformSettings, mimeType, id)
     }
 
     /**
-     * Processes an image and returns a CompletableFuture with the result.
+     * Processes the input stream according to the provided settings and writes the result to the output stream.
      *
-     * @param inputStreamSupplier A supplier that provides the input stream for
-     *    the image.
-     * @param outputStreamSupplier A supplier that provides the output stream
-     *    for the processed image.
-     * @param settings A list of settings to be applied during the image
-     *    processing.
-     * @param mimeType Image mime type. Will be resolved automatically if not
-     *    provided
-     * @param id An optional identifier for the image processing operation.
-     * @return id.
+     * @param inputStream The input stream containing data to be processed.
+     * @param outputStream The output stream where the processed data will be written.
+     * @param settings A list of settings to configure the processing.
+     * @param mimeType The MIME type of the data being processed. Nullable, defaults to null.
+     * @param id An optional identifier for the process. Nullable, defaults to null.
+     * @return An optional result identifier as a string, or null if no identifier was generated.
      */
     fun process(
-        inputStreamSupplier: Supplier<InputStream>,
-        outputStreamSupplier: Supplier<OutputStream>,
+        inputStream: InputStream,
+        outputStream: OutputStream,
         settings: List<Settings>,
         mimeType: String? = null,
         id: String? = null,
     ): String?
 
     /**
-     * Performs an image transformation based on the given parameters.
+     * Performs an image transformation based on the provided input stream and settings.
      *
-     * @param inputStreamSupplier A supplier that provides the input stream for
-     *    the image.
-     * @param transformSettings A list of transform settings to be applied
-     *    during the image processing. Defaults to an empty list.
-     * @param readerSettings A list of reader settings to be applied during the
-     *    image processing. Defaults to an empty list.
-     * @param mimeType Image mime type. Will be resolved automatically if not
-     *    provided.
-     * @param id An optional identifier for the image processing operation.
-     * @return The transformed image as a ConvertableImage object of type
-     *    ImageOrAnimation.
+     * @param inputStream The input stream containing the image data to be transformed.
+     * @param transformSettings A list of settings to configure transformations to be applied during the process. Defaults to an empty list if not provided.
+     * @param readerSettings A list of settings to configure the reading process. Defaults to an empty list if not provided.
+     * @param mimeType The MIME type of the image data being processed. Nullable, defaults to null.
+     * @param id An optional identifier for the transformation process. Nullable, defaults to null.
+     * @return An ImageOrAnimation object representing the transformed image or animation.
      */
     fun performImageTransformation(
-        inputStreamSupplier: Supplier<InputStream>,
+        inputStream: InputStream,
         transformSettings: List<TransformSettings> = listOf(),
         readerSettings: List<ReaderSettings> = listOf(),
         mimeType: String? = null,
         id: String? = null,
     ): ImageOrAnimation {
-        return performImageTransformation(inputStreamSupplier, readerSettings + transformSettings, mimeType, id)
+        return performImageTransformation(inputStream, readerSettings + transformSettings, mimeType, id)
     }
 
     /**
-     * Performs an image transformation based on the given parameters.
+     * Performs an image transformation based on the provided input stream and settings.
      *
-     * @param inputStreamSupplier A supplier that provides the input stream for
-     *    the image.
-     * @param mimeType Image mime type. Will be resolved automatically if not
-     *    provided.
-     * @param id An optional identifier for the image processing operation.
-     * @param transformSettings A list of transform settings to be applied
-     *    during the image processing. Defaults to an empty list.
-     * @param readerSettings A list of reader settings to be applied during the
-     *    image processing. Defaults to an empty list.
-     * @return The transformed image as a ConvertableImage object of type
-     *    ImageOrAnimation.
+     * @param inputStream The input stream containing the image data to be transformed.
+     * @param settings A list of settings that specify the details of the transformation process.
+     * @param mimeType The MIME type of the image data being processed. Nullable, defaults to null.
+     * @param id An optional identifier for the transformation process. Nullable, defaults to null.
+     * @return An ImageOrAnimation object representing the transformed image or animation.
      */
     fun performImageTransformation(
-        inputStreamSupplier: Supplier<InputStream>,
+        inputStream: InputStream,
         settings: List<Settings>,
         mimeType: String? = null,
         id: String? = null,

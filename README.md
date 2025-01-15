@@ -48,12 +48,12 @@ open class SimpleExample {
 
     fun convertWebpToGif() {
         val file = File(javaClass.classLoader.getResource("dir/animated-webp.webp").toURI())
-        val image: ImageOrAnimation = reader.read({ file.inputStream() }, listOf())
+        val image: ImageOrAnimation = reader.read( file.inputStream() , listOf())
         val scaledImage= ScaleToTransformer().process(image, listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale)))
         val rotatedImage =ImageTransformer{ img, st->img.rotate(Degrees(90))}.process(scaledImage)
         val outFile = File("dir/animated.gif")
         outFile.createNewFile()
-        writer.convert(rotatedImage, listOf(ConvertSettings(format = ImageFormat.GIF)), { outFile.outputStream() })
+        writer.convert(rotatedImage, listOf(ConvertSettings(format = ImageFormat.GIF)), outFile.outputStream() )
     }
 }
 ````
@@ -68,13 +68,12 @@ package io.github.breninsul.simpleimageconvertor.example
 
 import com.sksamuel.scrimage.ScaleMethod
 import com.sksamuel.scrimage.angles.Degrees
-import io.github.breninsul.simpleimageconvertor.dto.writer.ConvertSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
-import io.github.breninsul.simpleimageconvertor.dto.Resolution
-import io.github.breninsul.simpleimageconvertor.dto.ScaleSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Resolution
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.ScaleToSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.TransformFunctionSettings
 import io.github.breninsul.simpleimageconvertor.service.processor.ImageProcessorService
-import io.github.breninsul.simpleimageconvertor.service.transformer.ImageTransformer
-import io.github.breninsul.simpleimageconvertor.service.transformer.ScaleTransformer
 import java.io.File
 open class DynamicExample {
     val processor = ImageProcessorService.Default
@@ -83,10 +82,10 @@ open class DynamicExample {
         val file = File(javaClass.classLoader.getResource("dir/animated-webp.webp").toURI())
         val outFile = File("dir/animated.gif")
         outFile.createNewFile()
-        processor.process({ file.inputStream() }, { outFile.outputStream() },
-            listOf(ConvertSettings(format = ImageFormat.GIF)),
-            listOf(ScaleTransformer(), ImageTransformer{ img, st->img.rotate(Degrees(90))}),
-            listOf(ScaleSettings(Resolution(100, 100), ScaleMethod.FastScale))
+        processor.process(file.inputStream() ,  outFile.outputStream() ,
+            writerSettings =  listOf(ConvertSettings(format = ImageFormat.GIF)),
+            transformSettings = listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale), TransformFunctionSettings{ img, st -> img.rotate(Degrees(90))}),
+            mimeType = null
         )
     }
 }

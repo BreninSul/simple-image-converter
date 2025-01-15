@@ -45,8 +45,8 @@ open class DefaultImageProcessorService(
 ) : ImageProcessorService {
 
     override fun processFuture(
-        inputStreamSupplier: Supplier<InputStream>,
-        outputStreamSupplier: Supplier<OutputStream>,
+        inputStream: InputStream,
+        outputStream: OutputStream,
         settings: List<Settings>,
         mimeType: String?,
         id: String?,
@@ -57,7 +57,7 @@ open class DefaultImageProcessorService(
         converter.checkSettings(settings)
         val result =
             CompletableFuture.supplyAsync(
-                { process(inputStreamSupplier, outputStreamSupplier, settings, mimeType, id) },
+                { process(inputStream, outputStream, settings, mimeType, id) },
                 executorService,
             )
         return result
@@ -65,17 +65,17 @@ open class DefaultImageProcessorService(
 
 
     override fun process(
-        inputStreamSupplier: Supplier<InputStream>,
-        outputStreamSupplier: Supplier<OutputStream>,
+        inputStream: InputStream,
+        outputStream: OutputStream,
         settings: List<Settings>,
         mimeType: String?,
         id: String?,
     ): String? {
         try {
             val time = System.currentTimeMillis()
-            val processed = performImageTransformation(inputStreamSupplier, settings, mimeType, id)
+            val processed = performImageTransformation(inputStream, settings, mimeType, id)
             val afterProcessTime = System.currentTimeMillis()
-            converter.convert(processed, settings, outputStreamSupplier)
+            converter.convert(processed, settings, outputStream)
             logger.log(loggingLevel, "Image write $id took ${System.currentTimeMillis() - afterProcessTime} ms. Total time ${System.currentTimeMillis() - time} ms")
         } catch (t: Throwable) {
             throw if (t is ImageException) t else ImageException(t.message, t)
@@ -85,7 +85,7 @@ open class DefaultImageProcessorService(
 
 
     override fun performImageTransformation(
-        inputStreamSupplier: Supplier<InputStream>,
+        inputStream: InputStream,
         settings: List<Settings>,
         mimeType: String?,
         id: String?,
@@ -93,7 +93,7 @@ open class DefaultImageProcessorService(
         val transformers: List<ImageTransformer> = settings.filterIsInstance<TransformSettings>().map { it.createTransformer() }
         try {
             val time = System.currentTimeMillis()
-            val image = consumer.read(inputStreamSupplier, settings, mimeType)
+            val image = consumer.read(inputStream, settings, mimeType)
             val afterReadTime = System.currentTimeMillis()
             logger.log(loggingLevel, "Image read $id took ${System.currentTimeMillis() - time} ms")
             val processed = transformers.fold(image) { img, transformer ->

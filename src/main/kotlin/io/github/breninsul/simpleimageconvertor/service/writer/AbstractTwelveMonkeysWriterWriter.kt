@@ -55,9 +55,9 @@ open class AbstractTwelveMonkeysWriterWriter(
         return supportedImageTypes
     }
 
-    override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: Supplier<OutputStream>) {
+    override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: OutputStream) {
         val params = settings.getSetting<ImageIOWriterSettings>()
-        delegatedWriter.write(image.awt(), image.metadata, out.get(), params)
+        delegatedWriter.write(image.awt(), image.metadata, out, params)
     }
 
     override fun getOrder(): Int {

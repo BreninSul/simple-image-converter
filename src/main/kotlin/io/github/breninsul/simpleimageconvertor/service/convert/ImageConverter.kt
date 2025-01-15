@@ -31,20 +31,16 @@ import java.util.function.Supplier
  */
 interface ImageConverter {
     /**
-     * Converts the given [image] with the specified [settings] and writes the
-     * output to the [outputSupplier].
+     * Converts an image or animation using the specified settings and writes the output to the provided output stream.
      *
-     * @param image The image to be converted. It must be an instance of
-     *    [ImageOrAnimation].
-     * @param settings The list of settings to be applied during the
-     *    conversion. Each setting must implement the [Settings] interface.
-     * @param outputSupplier The supplier of the output stream where the
-     *    converted image will be written to.
+     * @param image The image or animation to be converted. It must be an instance of the [ImageOrAnimation] class.
+     * @param settings A list of settings that determine the conversion configuration. Each setting must implement the [Settings] interface.
+     * @param outputStream The output stream where the converted image or animation will be written.
      */
     fun convert(
         image: ImageOrAnimation,
         settings: List<Settings>,
-        outputSupplier: Supplier<OutputStream>
+        outputStream: OutputStream
     )
 
     /**

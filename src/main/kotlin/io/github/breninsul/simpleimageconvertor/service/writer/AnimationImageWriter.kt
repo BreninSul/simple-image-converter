@@ -33,7 +33,7 @@ import java.util.function.Supplier
  * writing animated images.
  */
 interface AnimationImageWriter : StaticImageWriter {
-    override fun writeInternal(image: ImageOrAnimation, settings: List<Settings>, out: Supplier<OutputStream>) {
+    override fun writeInternal(image: ImageOrAnimation, settings: List<Settings>, out: OutputStream) {
         if (image.isAnimation()) {
             val animationToStaticSetting = settings.getAnimationToStaticSettings()
             if (animationToStaticSetting != null) {
@@ -47,11 +47,11 @@ interface AnimationImageWriter : StaticImageWriter {
     }
 
     /**
-     * Writes an animation to an output stream using the specified settings.
+     * Writes an animated GIF to the provided output stream using the specified settings.
      *
-     * @param animation the AnimatedGif to write
-     * @param settings the list of Settings to apply during the writing process
-     * @param out the Supplier of OutputStream to write the animation to
+     * @param animation The animated GIF object to be written.
+     * @param settings A list of settings to customize the writing process.
+     * @param out The output stream where the animated GIF will be written.
      */
-    fun writeAnimation(animation: AnimatedGif, settings: List<Settings>, out: Supplier<OutputStream>)
+    fun writeAnimation(animation: AnimatedGif, settings: List<Settings>, out: OutputStream)
 }

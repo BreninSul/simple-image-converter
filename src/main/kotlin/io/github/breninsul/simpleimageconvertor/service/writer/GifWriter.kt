@@ -45,14 +45,14 @@ open class GifWriter : AnimationImageWriter {
         return supportedImageTypes
     }
 
-    override fun writeAnimation(animation: AnimatedGif, settings: List<Settings>, out: Supplier<OutputStream>) {
-        out.get().use { outputStream ->
+    override fun writeAnimation(animation: AnimatedGif, settings: List<Settings>, out: OutputStream) {
+        out.use { outputStream ->
             outputStream.write(animation.bytes)
         }
     }
 
-    override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: Supplier<OutputStream>) {
-        out.get().use { ImageIO.write(image.awt(), "gif", it) }
+    override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: OutputStream) {
+        out.use { ImageIO.write(image.awt(), "gif", it) }
     }
 
     override fun getOrder(): Int {

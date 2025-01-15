@@ -38,11 +38,11 @@ open class SimpleExample {
 
     fun convertWebpToGif() {
         val file = File(javaClass.classLoader.getResource("dir/animated-webp.webp").toURI())
-        val image: ImageOrAnimation = reader.read({ file.inputStream() }, listOf())
+        val image: ImageOrAnimation = reader.read( file.inputStream() , listOf())
         val scaledImage= ScaleToTransformer().process(image, listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale)))
         val rotatedImage =ImageTransformer{ img, st->img.rotate(Degrees(90))}.process(scaledImage)
         val outFile = File("dir/animated.gif")
         outFile.createNewFile()
-        writer.convert(rotatedImage, listOf(ConvertSettings(format = ImageFormat.GIF)), { outFile.outputStream() })
+        writer.convert(rotatedImage, listOf(ConvertSettings(format = ImageFormat.GIF)), outFile.outputStream() )
     }
 }

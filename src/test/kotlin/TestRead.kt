@@ -38,10 +38,10 @@ class TestRead {
     fun readAnimatedWebp() {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/animated-webp-supported.webp").toURI())
-        val image = reader.read({ file.inputStream() }, listOf())
+        val image = reader.read( file.inputStream() , listOf())
         val outFile = File("testout/animated-webp-supported_converted.webp")
         outFile.createNewFile()
-        writer.write(image, listOf()) { outFile.outputStream() }
+        writer.write(image, listOf(), outFile.outputStream())
 
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
@@ -49,10 +49,10 @@ class TestRead {
     fun readTransparentWebp() {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/1_webp_a.webp").toURI())
-        val image = reader.read({ file.inputStream() }, listOf())
+        val image = reader.read( file.inputStream() , listOf())
         val outFile = File("testout/1_webp_a_converted.webp")
         outFile.createNewFile()
-        writer.write(image, listOf()) { outFile.outputStream() }
+        writer.write(image, listOf(),outFile.outputStream())
 
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
@@ -60,10 +60,10 @@ class TestRead {
     fun readTransparentWebpLossless() {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/1_webp_ll.webp").toURI())
-        val image = reader.read({ file.inputStream() }, listOf())
+        val image = reader.read( file.inputStream() , listOf())
         val outFile = File("testout/1_webp_ll_converted.webp")
         outFile.createNewFile()
-        writer.write(image, listOf()) { outFile.outputStream() }
+        writer.write(image, listOf(),outFile.outputStream())
 
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
@@ -72,10 +72,10 @@ class TestRead {
     fun readGif() {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/200w.gif").toURI())
-        val image = reader.read({ file.inputStream() }, listOf())
+        val image = reader.read(file.inputStream(), listOf())
         val outFile = File("testout/200w_converted.webp")
         outFile.createNewFile()
-        writer.write(image, listOf()) { outFile.outputStream() }
+        writer.write(image, listOf(),outFile.outputStream() )
 
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
@@ -84,10 +84,22 @@ class TestRead {
     fun readJpeg() {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/IMG20240804175503.jpg").toURI())
-        val image = reader.read({ file.inputStream() }, listOf())
+        val image = reader.read(file.inputStream(), listOf())
         val outFile = File("testout/IMG20240804175503_converted.webp")
         outFile.createNewFile()
-        writer.write(image, listOf()) { outFile.outputStream() }
+        writer.write(image, listOf(),outFile.outputStream() )
+
+        println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
+    }
+    @Test
+    fun readTiff() {
+        val time = System.currentTimeMillis()
+        val file = File(javaClass.classLoader.getResource("images/file_example_TIFF_1MB.tiff").toURI())
+        val bytes=file.readBytes()
+        val image = reader.read(bytes.inputStream() , listOf())
+        val outFile = File("testout/tiff_converted.webp")
+        outFile.createNewFile()
+        writer.write(image, listOf(),outFile.outputStream())
 
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
@@ -96,10 +108,10 @@ class TestRead {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/bee.svg").toURI())
         val bytes=file.readBytes()
-        val image = reader.read({ bytes.inputStream() }, listOf())
+        val image = reader.read(bytes.inputStream() , listOf())
         val outFile = File("testout/bee_converted.webp")
         outFile.createNewFile()
-        writer.write(image, listOf()) { outFile.outputStream() }
+        writer.write(image, listOf(),outFile.outputStream())
 
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
@@ -108,10 +120,10 @@ class TestRead {
     fun readPDF() {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/52.pdf").toURI())
-        val image = reader.read({ file.inputStream() }, listOf())
+        val image = reader.read( file.inputStream(), listOf())
         val outFile = File("testout/52.webp")
         outFile.createNewFile()
-        writer.write(image, listOf()) { outFile.outputStream() }
+        writer.write(image, listOf(),outFile.outputStream())
 
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }

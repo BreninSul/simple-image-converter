@@ -28,7 +28,6 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.service.kim.BufferedInputStreamByteReader
 import java.io.InputStream
 import java.io.PushbackInputStream
-import java.io.SequenceInputStream
 import java.util.function.Supplier
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -39,19 +38,17 @@ import java.util.logging.Logger
  */
 interface ImageReader : Ordered {
     /**
-     * Reads an image from a given file stream and applies the specified
-     * settings to convert it into a ConvertableImage object.
+     * Reads an image or animation from the provided input stream, using the specified settings.
+     * This method processes metadata from the input stream and invokes an internal reader
+     * to generate the result.
      *
-     * @param fileStream A Supplier of InputStream that represents the file
-     *    stream from which the image will be read.
-     * @param settings A List of Settings objects that specify the settings to
-     *    be applied during the conversion of the image.
-     * @return A ConvertableImage object that represents the converted image.
-     * @see ImageReader
-     * @see ImageOrAnimation
+     * @param fileStream The input stream containing the image or animation data to be read.
+     * @param settings A list of settings to be applied during the reading process.
+     * @return An instance of [ImageOrAnimation] containing the parsed image or animation
+     *         along with any associated metadata.
      */
-    open fun read(fileStream: Supplier<InputStream>, settings: List<Settings>): ImageOrAnimation {
-        fileStream.get().use {
+    open fun read(fileStream: InputStream, settings: List<Settings>): ImageOrAnimation {
+        fileStream.use {
             val (metadata, inputStream) = it.readMetadata()
             return readInternal(inputStream, settings, metadata)
         }
@@ -95,6 +92,7 @@ interface ImageReader : Ordered {
      *    InputStream for further processing.
      */
     fun InputStream.readMetadata(): Pair<ImageMetadata?, InputStream> {
+        return null to this
         val byteReader = BufferedInputStreamByteReader(this,false)
         val metadata = try {
             Kim.readMetadata(byteReader)
@@ -102,12 +100,7 @@ interface ImageReader : Ordered {
             logger.log(Level.FINE, "Error while read metadata ${e.javaClass}:${e.message}")
             null
         }
-        byteReader.readOutputStream.flush()
-        val readMetadataBytes = byteReader.readOutputStream.toByteArray()
-        val secondPartOfStreamReadStartsAt = readMetadataBytes.size
-        val pushbackInputStream=PushbackInputStream(this, secondPartOfStreamReadStartsAt)
-        pushbackInputStream.unread(readMetadataBytes)
-        return metadata to pushbackInputStream
+        return metadata to byteReader.toUnreadPushbackInputStream()
     }
 
     companion object {

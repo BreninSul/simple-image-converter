@@ -130,43 +130,43 @@ class TestWrite {
     fun writeStatic(format: ImageFormat) {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/IMG20240804175503.jpg").toURI())
-        val image = reader.read({ file.inputStream() }, listOf())
+        val image = reader.read(file.inputStream() , listOf())
         val outFile = File("testwrite/static.${format.name.lowercase()}")
         outFile.createNewFile()
         writer.convert(image, listOf(
             ScaleToSettings(Resolution(640, 640, true)),
             ConvertSettings(format = format)
-        ), { outFile.outputStream() })
+        ),  outFile.outputStream() )
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
 
     protected open fun animatedToStatic(format: ImageFormat) {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/animated-webp-supported.webp").toURI())
-        val image = reader.read({ file.inputStream() }, listOf())
+        val image = reader.read(file.inputStream() , listOf())
         val outFile = File("testwrite/animated-to-static.${format.name.lowercase()}")
         outFile.createNewFile()
-        writer.convert(image, listOf(ConvertSettings(format = format), AnimationToStaticSettings(strategy = AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME)), { outFile.outputStream() })
+        writer.convert(image, listOf(ConvertSettings(format = format), AnimationToStaticSettings(strategy = AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME)),  outFile.outputStream() )
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
 
     protected open fun icon(format: ImageFormat) {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/icon.png").toURI())
-        val image = reader.read({ file.inputStream() }, listOf())
+        val image = reader.read( file.inputStream() , listOf())
         val outFile = File("testwrite/animated-to-static.${format.name.lowercase()}")
         outFile.createNewFile()
-        writer.convert(image, listOf(ConvertSettings(format = format), AnimationToStaticSettings(strategy = AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME)), { outFile.outputStream() })
+        writer.convert(image, listOf(ConvertSettings(format = format), AnimationToStaticSettings(strategy = AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME)),  outFile.outputStream() )
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
 
     protected open fun animated(format: ImageFormat) {
         val time = System.currentTimeMillis()
         val file = File(javaClass.classLoader.getResource("images/animated-webp-supported.webp").toURI())
-        val image = reader.read({ file.inputStream() }, listOf())
+        val image = reader.read( file.inputStream() , listOf())
         val outFile = File("testwrite/animated.${format.name.lowercase()}")
         outFile.createNewFile()
-        writer.convert(image, listOf(ConvertSettings(format = format)), { outFile.outputStream() })
+        writer.convert(image, listOf(ConvertSettings(format = format)),  outFile.outputStream() )
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
 

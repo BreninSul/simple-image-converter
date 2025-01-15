@@ -20,30 +20,38 @@
 
 package io.github.breninsul.simpleimageconvertor.service.kim
 
-import com.ashampoo.kim.input.ByteReader
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.io.PushbackInputStream
 
 /**
- * A utility class for reading bytes from an InputStream. This
- * implementation of the ByteReader interface provides methods for
- * sequential reading of bytes or a specified number of bytes.
+ * A subclass of `InputStream` that provides a buffered reading mechanism
+ * for an underlying input stream. This class keeps track of all bytes
+ * read from the stream into an internal buffer, allowing for operations
+ * like converting to a `PushbackInputStream` while retaining the already
+ * read bytes.
  *
- * The class maintains an internal buffer (`readOutputStream`) to store all
- * the bytes that have been read from the InputStream, enabling tracking of
- * the reading process.
+ * This is particularly useful in scenarios where data that has already
+ * been read needs to be retained or processed further (e.g., for metadata
+ * extraction or re-processing the same data).
  *
- * @property inputStream The InputStream to read data from.
+ * @constructor Initializes the `BufferedReadInputStream` with the given input stream.
+ * Optionally closes the underlying input stream when `close()` is called.
+ *
+ * @param inputStream The underlying input stream to read data from.
+ * @param closeStream Set to `true` if the underlying input stream should be closed
+ * when this stream is closed; otherwise, `false`.
  */
-public open class BufferedInputStreamByteReader(
-    protected open val inputStream: InputStream,
+open class BufferedReadInputStream(
+    protected open  val inputStream: InputStream,
     protected open val closeStream: Boolean
-) : ByteReader {
+) : InputStream() {
     protected open val readOutputStream: ByteArrayOutputStream = ByteArrayOutputStream();
 
     open fun toUnreadPushbackInputStream(): PushbackInputStream {
         val alreadyRead = flushAndGetBufferBytes()
+        val last=alreadyRead.last()
+        val preLast=alreadyRead[alreadyRead.lastIndex-1]
         val secondPartOfStreamReadStartsAt = alreadyRead.size
         val pushbackInputStream = PushbackInputStream(inputStream, secondPartOfStreamReadStartsAt)
         pushbackInputStream.unread(alreadyRead)
@@ -55,28 +63,29 @@ public open class BufferedInputStreamByteReader(
         val readMetadataBytes = readOutputStream.toByteArray()
         return readMetadataBytes
     }
-
-    override val contentLength: Long
-        get() = Long.MAX_VALUE
-
-    override fun readByte(): Byte? {
-        val nextByte = inputStream.read()
-        if (nextByte == -1) {
-            return null
-        }
-        readOutputStream.write(nextByte)
-        return nextByte.toByte()
+    override fun readAllBytes(): ByteArray {
+        val bytes = super.readAllBytes()
+        readOutputStream.write(bytes)
+        return bytes
     }
 
-    override fun readBytes(count: Int): ByteArray {
+    override fun readNBytes(count: Int): ByteArray {
         val bytes = inputStream.readNBytes(count)
         readOutputStream.write(bytes)
         return bytes
     }
 
     override fun close(): Unit {
-        if (closeStream) {
+        if (closeStream){
             inputStream.close()
         }
+    }
+
+    override fun read(): Int {
+        val nextByte = inputStream.read()
+        if (nextByte != -1) {
+            readOutputStream.write(nextByte)
+        }
+        return nextByte
     }
 }

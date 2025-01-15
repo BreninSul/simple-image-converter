@@ -25,6 +25,7 @@ import com.sksamuel.scrimage.ImmutableImage
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import java.awt.image.BufferedImage
+import java.io.BufferedInputStream
 import java.io.InputStream
 import java.util.function.Supplier
 import javax.imageio.ImageIO
@@ -34,7 +35,8 @@ open class ImageIOReader(private val order: Int = Int.MAX_VALUE) : ImageReader {
     override fun supportedTypes() = supportedImageTypes
 
     override fun readInternal(fileStream: InputStream, settings: List<Settings>, metadata: ImageMetadata?): ImageOrAnimation{
-        val bufferedImage: BufferedImage = ImageIO.read(fileStream)
+        val inputStream = BufferedInputStream(fileStream)
+        val bufferedImage: BufferedImage = ImageIO.read(inputStream)
         val originalImage = ImmutableImage.fromAwt(bufferedImage)
         return ImageOrAnimation(null, originalImage,metadata)
     }

@@ -53,8 +53,7 @@ class TestTransform {
         val outFile = File("testtransform/animated-scaled.${format.name.lowercase()}")
         outFile.createNewFile()
 
-        processor.process(
-            { file.inputStream() }, { outFile.outputStream() },
+        processor.process(file.inputStream() ,  outFile.outputStream() ,
             writerSettings = listOf(ConvertSettings(format = format)),
             transformSettings = listOf(
                 ScaleToSettings(Resolution(1000, 1000), ScaleMethod.FastScale),
@@ -63,7 +62,7 @@ class TestTransform {
             ),
             readerSettings = listOf(),
         )
-        processor.process({ file.inputStream() }, { outFile.outputStream() },
+        processor.process( file.inputStream() , outFile.outputStream() ,
             listOf(
                 ScaleToSettings(Resolution(640, 640, true)),
                 WebpWriterSettings(z = 100, lossless = false)
@@ -80,7 +79,7 @@ class TestTransform {
         val outFile = File("testtransform/animated-overlay.${format.name.lowercase()}")
         val secondAnimationOutputStream = ByteArrayOutputStream()
         processor.process(
-            { file.inputStream() }, { secondAnimationOutputStream },
+             file.inputStream() ,  secondAnimationOutputStream ,
             writerSettings = listOf(ConvertSettings(format = format)),
             transformSettings = listOf(
                 ScaleToSettings(Resolution(200, 200), ScaleMethod.FastScale),
@@ -90,9 +89,9 @@ class TestTransform {
             readerSettings = listOf(),
         )
         val secondAnimationBytes = secondAnimationOutputStream.toByteArray()
-        val secondAnimation = reader.read({ secondAnimationBytes.inputStream() }, listOf())
+        val secondAnimation = reader.read( secondAnimationBytes.inputStream() , listOf())
         processor.process(
-            { file.inputStream() }, { outFile.outputStream() },
+            file.inputStream() ,  outFile.outputStream() ,
             writerSettings = listOf(ConvertSettings(format = format)),
             transformSettings = listOf(
                 OverlaySettings(0, 0, secondAnimation),
@@ -118,8 +117,8 @@ class TestTransform {
         ImageIO.write(new, "jpg", outFile2);
         val outFile = File("testtransform/tst.${format.name.lowercase()}")
         processor.process(
-            {file.inputStream()},
-            { outFile.outputStream() },
+            file.inputStream(),
+             outFile.outputStream() ,
             listOf(ConvertSettings(format = ImageFormat(format.name.uppercase()))),
             listOf(ScaleToSettings(Resolution(1920,1080,true),ScaleMethod.FastScale)),
         )

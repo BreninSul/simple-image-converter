@@ -36,7 +36,7 @@ open class DynamicExample {
         val file = File(javaClass.classLoader.getResource("dir/animated-webp.webp").toURI())
         val outFile = File("dir/animated.gif")
         outFile.createNewFile()
-        processor.process({ file.inputStream() }, { outFile.outputStream() },
+        processor.process(file.inputStream() ,  outFile.outputStream() ,
            writerSettings =  listOf(ConvertSettings(format = ImageFormat.GIF)),
             transformSettings = listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale), TransformFunctionSettings{ img, st -> img.rotate(Degrees(90))}),
             mimeType = null
