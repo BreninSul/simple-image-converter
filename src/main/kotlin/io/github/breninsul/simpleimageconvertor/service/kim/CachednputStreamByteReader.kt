@@ -36,7 +36,7 @@ import java.io.PushbackInputStream
  *
  * @property inputStream The InputStream to read data from.
  */
-public open class BufferedInputStreamByteReader(
+public open class CachednputStreamByteReader(
     protected open val inputStream: InputStream,
     protected open val closeStream: Boolean
 ) : ByteReader {

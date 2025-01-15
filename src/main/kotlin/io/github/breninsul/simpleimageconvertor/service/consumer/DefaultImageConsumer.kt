@@ -20,20 +20,14 @@
 
 package io.github.breninsul.simpleimageconvertor.service.consumer
 
-import com.ashampoo.kim.Kim
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.exception.ImageException
 import io.github.breninsul.simpleimageconvertor.exception.ImageReadingException
-import io.github.breninsul.simpleimageconvertor.service.kim.BufferedInputStreamByteReader
-import io.github.breninsul.simpleimageconvertor.service.kim.BufferedReadInputStream
+import io.github.breninsul.simpleimageconvertor.service.kim.CachedReadInputStream
 import io.github.breninsul.simpleimageconvertor.service.reader.*
-import io.github.breninsul.simpleimageconvertor.service.reader.ImageReader.Companion
 import org.apache.tika.Tika
-import java.io.BufferedInputStream
 import java.io.InputStream
-import java.io.PushbackInputStream
-import java.util.function.Supplier
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -49,7 +43,7 @@ open class DefaultImageConsumer(
     ): ImageOrAnimation {
         try {
             val (resolvedMimeType, resolvedIs) = if (mimeType == null) {
-                val byteReader = BufferedReadInputStream(inputStream, false)
+                val byteReader = CachedReadInputStream(inputStream, false)
                 val type = tika.detect(byteReader)
                 type to byteReader.toUnreadPushbackInputStream()
             } else {

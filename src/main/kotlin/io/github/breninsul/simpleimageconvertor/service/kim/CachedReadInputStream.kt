@@ -42,7 +42,7 @@ import java.io.PushbackInputStream
  * @param closeStream Set to `true` if the underlying input stream should be closed
  * when this stream is closed; otherwise, `false`.
  */
-open class BufferedReadInputStream(
+open class CachedReadInputStream(
     protected open  val inputStream: InputStream,
     protected open val closeStream: Boolean
 ) : InputStream() {
@@ -50,8 +50,6 @@ open class BufferedReadInputStream(
 
     open fun toUnreadPushbackInputStream(): PushbackInputStream {
         val alreadyRead = flushAndGetBufferBytes()
-        val last=alreadyRead.last()
-        val preLast=alreadyRead[alreadyRead.lastIndex-1]
         val secondPartOfStreamReadStartsAt = alreadyRead.size
         val pushbackInputStream = PushbackInputStream(inputStream, secondPartOfStreamReadStartsAt)
         pushbackInputStream.unread(alreadyRead)
@@ -87,5 +85,19 @@ open class BufferedReadInputStream(
             readOutputStream.write(nextByte)
         }
         return nextByte
+    }
+
+    override fun markSupported(): Boolean {
+        return super.markSupported()
+    }
+
+    override fun available(): Int {
+        return super.available()
+    }
+    override fun mark(readlimit: Int) {
+        super.mark(readlimit)
+    }
+    override fun reset() {
+        super.reset()
     }
 }
