@@ -25,7 +25,7 @@ import com.ashampoo.kim.format.ImageMetadata
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.Ordered
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
-import io.github.breninsul.simpleimageconvertor.service.kim.CachednputStreamByteReader
+import io.github.breninsul.simpleimageconvertor.service.kim.CachedInputStreamByteReader
 import java.io.InputStream
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -91,7 +91,7 @@ interface ImageReader : Ordered {
      */
     fun InputStream.readMetadata(): Pair<ImageMetadata?, InputStream> {
         return null to this
-        val byteReader = CachednputStreamByteReader(this,false)
+        val byteReader = CachedInputStreamByteReader(this,false)
         val metadata = try {
             Kim.readMetadata(byteReader)
         } catch (e: Exception) {

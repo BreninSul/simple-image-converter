@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "io.github.breninsul"
-version = "2.0.1"
+version = "2.0.2"
 
 val scrimageVersion = "4.3.0"
 val twelvemonkeysVersion = "3.12.0"
