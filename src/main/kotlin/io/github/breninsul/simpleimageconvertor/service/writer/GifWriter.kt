@@ -25,7 +25,6 @@ import com.sksamuel.scrimage.nio.AnimatedGif
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import java.io.OutputStream
-import java.util.function.Supplier
 import javax.imageio.ImageIO
 
 /**

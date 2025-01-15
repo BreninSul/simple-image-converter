@@ -20,14 +20,12 @@
 
 package io.github.breninsul.simpleimageconvertor.service.writer
 
-import com.ashampoo.kim.Kim
 import com.sksamuel.scrimage.ImmutableImage
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
 import io.github.breninsul.simpleimageconvertor.dto.settings.writer.JpegWriterSettings
 import java.io.OutputStream
-import java.util.function.Supplier
 
 /**
  * The `JpegWriter` class is an implementation of the `StaticImageWriter`

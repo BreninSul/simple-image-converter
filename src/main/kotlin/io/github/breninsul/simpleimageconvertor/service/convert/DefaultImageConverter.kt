@@ -30,7 +30,6 @@ import io.github.breninsul.simpleimageconvertor.exception.ImageException
 import io.github.breninsul.simpleimageconvertor.exception.ImageWritingException
 import io.github.breninsul.simpleimageconvertor.service.writer.*
 import java.io.OutputStream
-import java.util.function.Supplier
 import java.util.logging.Level
 import java.util.logging.Logger
 

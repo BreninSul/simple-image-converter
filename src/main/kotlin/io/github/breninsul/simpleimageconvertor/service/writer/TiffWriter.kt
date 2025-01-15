@@ -26,7 +26,6 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
 import io.github.breninsul.simpleimageconvertor.dto.settings.writer.TiffWriterSettings
 import java.io.OutputStream
-import java.util.function.Supplier
 
 /**
  * The `TiffWriter` class is a concrete implementation of the

@@ -28,7 +28,6 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
 import io.github.breninsul.simpleimageconvertor.dto.settings.writer.WebpWriterSettings
 import java.io.OutputStream
-import java.util.function.Supplier
 
 /**
  * The WebpWriter class is an implementation of the AnimationImageWriter

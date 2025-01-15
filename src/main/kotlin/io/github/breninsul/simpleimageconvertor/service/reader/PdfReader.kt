@@ -26,9 +26,9 @@ import com.sksamuel.scrimage.ImmutableImage
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay
 import com.sksamuel.scrimage.nio.internal.AnimatedGifWithDelay.GifSequenceReaderWithDelay
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
-import io.github.breninsul.simpleimageconvertor.dto.settings.reader.PdfReaderSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.getSetting
+import io.github.breninsul.simpleimageconvertor.dto.settings.reader.PdfReaderSettings
 import io.github.breninsul.simpleimageconvertor.exception.ImageReadingException
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
@@ -36,7 +36,6 @@ import org.apache.pdfbox.rendering.PDFRenderer
 import java.awt.image.BufferedImage
 import java.io.InputStream
 import java.nio.file.Files
-import java.util.function.Supplier
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.inputStream
 import kotlin.io.path.outputStream

@@ -23,7 +23,6 @@ package io.github.breninsul.simpleimageconvertor.service.convert
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import java.io.OutputStream
-import java.util.function.Supplier
 
 /**
  * Interface for converting an image using specified settings and writing

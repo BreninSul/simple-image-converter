@@ -25,7 +25,6 @@ import com.sksamuel.scrimage.format.png.PngReader
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import java.io.InputStream
-import java.util.function.Supplier
 
 open class PngReader(private val order: Int = 1) : ImageReader {
     protected open val supportedImageTypes = setOf("png")

@@ -34,7 +34,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
-import java.util.function.Supplier
 
 /**
  * PdfWriter is a class responsible for writing PDF files.

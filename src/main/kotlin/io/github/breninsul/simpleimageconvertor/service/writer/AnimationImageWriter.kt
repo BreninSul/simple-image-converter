@@ -24,7 +24,6 @@ import com.sksamuel.scrimage.nio.AnimatedGif
 import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import java.io.OutputStream
-import java.util.function.Supplier
 
 /**
  * AnimationImageWriter is an interface that represents an image writer

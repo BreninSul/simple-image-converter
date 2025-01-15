@@ -27,7 +27,6 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import java.awt.image.BufferedImage
 import java.io.BufferedInputStream
 import java.io.InputStream
-import java.util.function.Supplier
 import javax.imageio.ImageIO
 
 open class ImageIOReader(private val order: Int = Int.MAX_VALUE) : ImageReader {

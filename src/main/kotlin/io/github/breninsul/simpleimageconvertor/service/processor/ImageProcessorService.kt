@@ -20,15 +20,14 @@
 
 package io.github.breninsul.simpleimageconvertor.service.processor
 
-import io.github.breninsul.simpleimageconvertor.dto.*
-import io.github.breninsul.simpleimageconvertor.dto.settings.reader.ReaderSettings
+import io.github.breninsul.simpleimageconvertor.dto.ImageOrAnimation
 import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
+import io.github.breninsul.simpleimageconvertor.dto.settings.reader.ReaderSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.TransformSettings
 import io.github.breninsul.simpleimageconvertor.dto.settings.writer.WriterSettings
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.concurrent.CompletableFuture
-import java.util.function.Supplier
 
 /**
  * The ImageProcessorService interface provides methods for asynchronously

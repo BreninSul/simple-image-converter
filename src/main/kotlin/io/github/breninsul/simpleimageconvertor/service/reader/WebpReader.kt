@@ -30,7 +30,6 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import webpdecoderjn.WebPDecoder
 import java.io.InputStream
 import java.nio.file.Files
-import java.util.function.Supplier
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.inputStream
 import kotlin.io.path.outputStream

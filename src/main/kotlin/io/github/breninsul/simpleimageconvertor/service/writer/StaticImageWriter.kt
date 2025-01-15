@@ -27,7 +27,6 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.writer.AnimationToStaticSettings
 import io.github.breninsul.simpleimageconvertor.extensions.middle
 import java.io.OutputStream
-import java.util.function.Supplier
 
 /**
  * Represents an interface for writing static images. Extends the

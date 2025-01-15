@@ -39,7 +39,6 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.writer.ConvertSetti
 import io.github.breninsul.simpleimageconvertor.dto.supportsKimMetadataWrite
 import org.apache.commons.io.output.QueueOutputStream
 import java.io.OutputStream
-import java.util.function.Supplier
 import java.util.logging.Level
 import java.util.logging.Logger
 
