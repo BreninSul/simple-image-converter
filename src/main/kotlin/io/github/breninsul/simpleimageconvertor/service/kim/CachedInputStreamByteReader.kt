@@ -21,6 +21,8 @@
 package io.github.breninsul.simpleimageconvertor.service.kim
 
 import com.ashampoo.kim.input.ByteReader
+import com.ashampoo.kim.input.JvmInputStreamByteReader
+import io.github.breninsul.io.service.stream.inputStream.CacheReadenInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.io.PushbackInputStream
@@ -37,46 +39,15 @@ import java.io.PushbackInputStream
  * @property inputStream The InputStream to read data from.
  */
 public open class CachedInputStreamByteReader(
-    protected open val inputStream: InputStream,
-    protected open val closeStream: Boolean
-) : ByteReader {
-    protected open val readOutputStream: ByteArrayOutputStream = ByteArrayOutputStream();
+    inputStream: InputStream,
+    protected open val bufferSize: Int = UShort.MAX_VALUE.toInt(),
+    protected open val closeStream: Boolean = false,
+    protected open val inputStreamDelegate: CacheReadenInputStream =CacheReadenInputStream(inputStream,closeStream,bufferSize),
+    delegate: ByteReader = JvmInputStreamByteReader(inputStream,Long.MAX_VALUE),
+) : ByteReader by delegate {
 
     open fun toUnreadPushbackInputStream(): PushbackInputStream {
-        val alreadyRead = flushAndGetBufferBytes()
-        val secondPartOfStreamReadStartsAt = alreadyRead.size
-        val pushbackInputStream = PushbackInputStream(inputStream, secondPartOfStreamReadStartsAt)
-        pushbackInputStream.unread(alreadyRead)
-        return pushbackInputStream
+        return inputStreamDelegate.toUnreadPushbackInputStream()
     }
 
-    open fun flushAndGetBufferBytes(): ByteArray {
-        readOutputStream.flush()
-        val readMetadataBytes = readOutputStream.toByteArray()
-        return readMetadataBytes
-    }
-
-    override val contentLength: Long
-        get() = Long.MAX_VALUE
-
-    override fun readByte(): Byte? {
-        val nextByte = inputStream.read()
-        if (nextByte == -1) {
-            return null
-        }
-        readOutputStream.write(nextByte)
-        return nextByte.toByte()
-    }
-
-    override fun readBytes(count: Int): ByteArray {
-        val bytes = inputStream.readNBytes(count)
-        readOutputStream.write(bytes)
-        return bytes
-    }
-
-    override fun close(): Unit {
-        if (closeStream) {
-            inputStream.close()
-        }
-    }
 }

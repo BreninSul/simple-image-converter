@@ -91,7 +91,7 @@ interface ImageReader : Ordered {
      */
     fun InputStream.readMetadata(): Pair<ImageMetadata?, InputStream> {
         return null to this
-        val byteReader = CachedInputStreamByteReader(this,false)
+        val byteReader = CachedInputStreamByteReader(this)
         val metadata = try {
             Kim.readMetadata(byteReader)
         } catch (e: Exception) {

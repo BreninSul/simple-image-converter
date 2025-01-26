@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "io.github.breninsul"
-version = "2.0.4"
+version = "2.0.5"
 
 val scrimageVersion = "4.3.0"
 val twelvemonkeysVersion = "3.12.0"
@@ -43,6 +43,7 @@ tasks.compileKotlin {
 }
 
 dependencies {
+    api("io.github.breninsul:io-stream-commons:1.0.0")
     api("io.github.breninsul:WebPDecoderJN:1.3-b")
     api("org.apache.pdfbox:pdfbox:3.0.3")
     api("org.apache.tika:tika-core:3.0.0")
