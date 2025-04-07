@@ -12,7 +12,7 @@ Based on https://github.com/haraldk/TwelveMonkeys and https://github.com/sksamue
 ````kotlin
 dependencies {
 //Other dependencies
-    implementation("io.github.breninsul:simple-image-converter:${version}")
+    implementation("io.github.breninsul:simple-image-converter:2.0.6")
 //Other dependencies
 }
 ````

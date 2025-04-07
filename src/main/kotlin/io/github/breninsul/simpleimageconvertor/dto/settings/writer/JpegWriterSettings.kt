@@ -24,15 +24,21 @@ import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 
 /**
  * The `JpegWriterSettings` class represents the settings for writing JPEG
- * files. It extends the `WriterSettings` interface.
+ * files. It extends the functionality provided by `ConvertSettings` and
+ * is specifically tailored to handle JPEG-specific configurations.
  *
- * @property compressionLevel The compression level of the JPEG file,
- *    ranging from 0 to 99. Higher values result in lower file sizes but
- *    higher image quality. Not percentage
- * @property progressive Indicates whether the JPEG file should be saved in
- *    progressive mode. Progressive mode allows partial rendering of the
- *    image when it is being loaded, giving the appearance of a faster
- *    loading time.
+ * @param compressionLevel Specifies the compression level for the JPEG
+ *    file. The accepted range is typically from 0 (maximum compression)
+ *    to 100 (no compression, not acceptable, max is 99). The default value is 80.
+ * @param progressive Determines whether the JPEG file should be written in
+ *    progressive mode. If set to true, the file will be written in a way
+ *    that allows for incremental rendering. The default value is false.
+ * @property compressionLevel The defined compression level of the JPEG file.
+ * @property progressive Indicates whether progressive mode is enabled for
+ *    JPEG output.
+ * @see ConvertSettings
+ * @see WriterSettings
+ * @see ImageFormat
  */
 open class JpegWriterSettings(
     val compressionLevel: Int = 80,
