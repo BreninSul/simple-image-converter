@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "io.github.breninsul"
-version = "2.0.7"
+version = "2.0.8"
 
 val scrimageVersion = "4.3.5"
 val scrimagePngVersion = "4.3.2"
@@ -126,6 +126,7 @@ centralPortal {
         url.set("https://github.com/BreninSul/$repositoryName")
         description.set(
             """
+This is lib to make image editing (basically conversion, but any ImageIO/scrimage action can be performed ) more universal and easy.           
             """.trimIndent(),
         )
         licenses {
