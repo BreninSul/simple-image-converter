@@ -23,6 +23,7 @@ package io.github.breninsul.simpleimageconvertor.service.writer
 import com.ashampoo.kim.Kim
 import com.ashampoo.kim.format.tiff.constant.TiffTag
 import com.ashampoo.kim.input.ByteReader
+import com.ashampoo.kim.input.Closeable
 import com.ashampoo.kim.input.JvmInputStreamByteReader
 import com.ashampoo.kim.model.MetadataUpdate
 import com.ashampoo.kim.model.TiffOrientation
@@ -140,6 +141,25 @@ interface ImageWriter : Ordered {
         val byteWriter = OutputStreamByteWriter(out)
         //Update metadata
         Kim.update(byteReader, byteWriter, MetadataUpdate.Orientation(TiffOrientation.of(orientationValue)!!))
+        queueOutputStream.tryClose()
+        queueInputStream.tryClose()
+        byteWriter.tryClose()
+        byteReader.tryClose()
+    }
+    fun AutoCloseable.tryClose(){
+        try {
+            this.close()
+        } catch (e: Exception) {
+            logger.log(Level.WARNING, "Error closing closeable", e)
+        }
+    }
+
+    fun Closeable.tryClose(){
+        try {
+            this.close()
+        } catch (e: Exception) {
+            logger.log(Level.WARNING, "Error closing closeable", e)
+        }
     }
 
     /**

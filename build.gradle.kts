@@ -13,11 +13,13 @@ plugins {
 }
 
 group = "io.github.breninsul"
-version = "2.0.6"
+version = "2.0.7"
 
-val scrimageVersion = "4.3.0"
-val twelvemonkeysVersion = "3.12.0"
-val batikVersion = "1.18"
+val scrimageVersion = "4.3.5"
+val scrimagePngVersion = "4.3.2"
+
+val twelvemonkeysVersion = "3.13.0"
+val batikVersion = "1.19"
 
 
 val javaVersion = JavaVersion.VERSION_17
@@ -48,7 +50,7 @@ dependencies {
     api("org.apache.pdfbox:pdfbox:3.0.3")
     api("org.apache.tika:tika-core:3.0.0")
     api("com.sksamuel.scrimage:scrimage-core:$scrimageVersion")
-    api("com.sksamuel.scrimage:scrimage-format-png:$scrimageVersion")
+    api("com.sksamuel.scrimage:scrimage-format-png:$scrimagePngVersion")
     api("com.sksamuel.scrimage:scrimage-formats-extra:$scrimageVersion")
     api("com.sksamuel.scrimage:scrimage-hash:$scrimageVersion")
     api("com.sksamuel.scrimage:scrimage-filters:$scrimageVersion")
