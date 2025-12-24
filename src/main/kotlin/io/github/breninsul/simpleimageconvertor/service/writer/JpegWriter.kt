@@ -52,9 +52,8 @@ open class JpegWriter : StaticImageWriter {
     override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: OutputStream) {
         val setting = settings.getSetting<JpegWriterSettings>()
         val writer = setting?.let { com.sksamuel.scrimage.nio.JpegWriter(it.compressionLevel, it.progressive) } ?: com.sksamuel.scrimage.nio.JpegWriter()
-        writer.write(image, image.metadata, out)
+        out.use { writer.write(image, image.metadata, it) }
     }
-
 
     override fun getOrder(): Int {
         return 1

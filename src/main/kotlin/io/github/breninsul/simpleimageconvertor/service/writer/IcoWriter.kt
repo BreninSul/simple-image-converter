@@ -52,6 +52,6 @@ open class IcoWriter(order: Int = 1) : AbstractTwelveMonkeysWriterWriter(setOf(I
                 convertedImg.graphics.drawImage(image, 0, 0, null)
                 convertedImg
             } else image
-            super.write(convertedType, metadata, outStream, params)
+            outStream.use {  super.write(convertedType, metadata, it, params)}
         }
     })

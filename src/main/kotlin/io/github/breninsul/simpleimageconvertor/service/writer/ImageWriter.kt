@@ -69,8 +69,8 @@ interface ImageWriter : Ordered {
      * @return the first supported image format if available
      * @throws IllegalStateException if no supported image formats are found
      */
-    fun getImageFormat(): ImageFormat{
-        return supportedTypes().firstOrNull()?:throw IllegalStateException("No supported types")
+    fun getImageFormat(): ImageFormat {
+        return supportedTypes().firstOrNull() ?: throw IllegalStateException("No supported types")
     }
 
     /**
@@ -83,19 +83,21 @@ interface ImageWriter : Ordered {
      *                 configurations for handling the image or animation, including orientation processing modes.
      * @param out The output stream to which the image or animation will be written.
      */
-    fun write(image: ImageOrAnimation, settings: List<Settings>, out: OutputStream){
+    fun write(image: ImageOrAnimation, settings: List<Settings>, out: OutputStream) {
         val orientationValue = image.originalMetadata?.findShortValue(TiffTag.TIFF_TAG_ORIENTATION)?.toInt()
         //No need to rotate anything
         if (orientationValue == null || !orientationValue.isRotatedOrientation()) {
             writeInternal(image, settings, out)
             return
         }
-        val rotateSetting=settings.getSetting<ConvertSettings>()?: ConvertSettings()
-        when(rotateSetting.originalOrientationProcessingMode){
-            ConvertSettings.OriginalOrientationProcessingMode.DEFAULT->processOrientationDefaultMode(image, settings, out,orientationValue)
-            ConvertSettings.OriginalOrientationProcessingMode.WRITE_EXIF_METADATA_TAG->rewriteOrientationTagToOutputStream(image, settings, out, orientationValue)
-            ConvertSettings.OriginalOrientationProcessingMode.ROTATE_IMAGE->rotateAndWriteImageFile(orientationValue, image, settings, out)
-            ConvertSettings.OriginalOrientationProcessingMode.IGNORE -> { writeInternal(image, settings, out) }
+        val rotateSetting = settings.getSetting<ConvertSettings>() ?: ConvertSettings()
+        when (rotateSetting.originalOrientationProcessingMode) {
+            ConvertSettings.OriginalOrientationProcessingMode.DEFAULT -> processOrientationDefaultMode(image, settings, out, orientationValue)
+            ConvertSettings.OriginalOrientationProcessingMode.WRITE_EXIF_METADATA_TAG -> rewriteOrientationTagToOutputStream(image, settings, out, orientationValue)
+            ConvertSettings.OriginalOrientationProcessingMode.ROTATE_IMAGE -> rotateAndWriteImageFile(orientationValue, image, settings, out)
+            ConvertSettings.OriginalOrientationProcessingMode.IGNORE -> {
+                writeInternal(image, settings, out)
+            }
         }
     }
 
@@ -135,7 +137,7 @@ interface ImageWriter : Ordered {
         val queueOutputStream = QueueOutputStream()
         val queueInputStream = queueOutputStream.newQueueInputStream()
         //write bytes there
-        writeInternal(image, settings,queueOutputStream)
+        writeInternal(image, settings, queueOutputStream)
         val byteReader: ByteReader = JvmInputStreamByteReader(queueInputStream, queueInputStream.available().toLong())
         //set real output stream to write result
         val byteWriter = OutputStreamByteWriter(out)
@@ -145,8 +147,10 @@ interface ImageWriter : Ordered {
         queueInputStream.tryClose()
         byteWriter.tryClose()
         byteReader.tryClose()
+        out.tryClose()
     }
-    fun AutoCloseable.tryClose(){
+
+    fun AutoCloseable.tryClose() {
         try {
             this.close()
         } catch (e: Exception) {
@@ -154,7 +158,7 @@ interface ImageWriter : Ordered {
         }
     }
 
-    fun Closeable.tryClose(){
+    fun Closeable.tryClose() {
         try {
             this.close()
         } catch (e: Exception) {
@@ -186,7 +190,7 @@ interface ImageWriter : Ordered {
         out: OutputStream
     ) {
         val rotatedImage = tryRotateImageToRightOrientation(orientationValue, image)
-        writeInternal(rotatedImage, settings, out)
+        out.use { writeInternal(rotatedImage, settings, out) }
         return
     }
 
@@ -229,8 +233,8 @@ interface ImageWriter : Ordered {
         image: ImageOrAnimation
     ): ImageOrAnimation {
         //Not rotated
-        val time=System.currentTimeMillis()
-        if ( !orientation.isRotatedOrientation() ) return image
+        val time = System.currentTimeMillis()
+        if (!orientation.isRotatedOrientation()) return image
         try {
             val settings = when (orientation) {
                 2 -> listOf(FlipSettings(FlipSettings.Type.HORIZONTAL))// Flip Horizontal
@@ -247,10 +251,12 @@ interface ImageWriter : Ordered {
             logger.log(Level.WARNING, "Error rotating image to right orientation $orientation ${t.javaClass}:${t.message}")
             return image
         } finally {
-            logger.log(Level.FINEST,"Rotating image to original orientation took ${System.currentTimeMillis()-time}ms")
+            logger.log(Level.FINEST, "Rotating image to original orientation took ${System.currentTimeMillis() - time}ms")
         }
     }
-    fun Int?.isRotatedOrientation(): Boolean = this!=null && this in 2..8
+
+    fun Int?.isRotatedOrientation(): Boolean = this != null && this in 2..8
+
     companion object {
         private val logger = Logger.getLogger(this::class.java.name)
     }

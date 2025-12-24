@@ -46,7 +46,7 @@ open class TiffWriter : StaticImageWriter {
     override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: OutputStream) {
         val setting = settings.getSetting<TiffWriterSettings>()
         val writer = setting?.let { com.sksamuel.scrimage.nio.TiffWriter(it.compressionType) } ?: com.sksamuel.scrimage.nio.TiffWriter()
-        writer.write(image, image.metadata, out)
+        out.use {  writer.write(image, image.metadata, it)}
     }
 
     override fun getOrder(): Int {
