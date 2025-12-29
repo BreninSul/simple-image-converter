@@ -2,6 +2,7 @@
 import io.github.breninsul.simpleimageconvertor.dto.ImageFormat
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Resolution
 import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.ScaleToSettings
+import io.github.breninsul.simpleimageconvertor.dto.settings.Settings
 import io.github.breninsul.simpleimageconvertor.dto.settings.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.service.consumer.DefaultImageConsumer
 import io.github.breninsul.simpleimageconvertor.service.processor.DefaultImageProcessorService
@@ -21,24 +22,105 @@ class TestNativeMemoryLeak {
 
     private val imageUrls = listOf(
         "https://m.media-amazon.com/images/I/61Pcx-RIs+L.jpg",
-        "https://m.media-amazon.com/images/I/71rG17yL9PL.jpg",
-        "https://m.media-amazon.com/images/I/71aEvvWS9JL.jpg",
-        "https://m.media-amazon.com/images/I/71mRNHWTE6L.jpg",
+//        "https://m.media-amazon.com/images/I/71rG17yL9PL.jpg",
+//        "https://m.media-amazon.com/images/I/71aEvvWS9JL.jpg",
+//        "https://m.media-amazon.com/images/I/71mRNHWTE6L.jpg",
+//        "https://m.media-amazon.com/images/I/81Wf8JV6pXL.jpg",
+//        "https://m.media-amazon.com/images/I/51gXiNdHOoL.jpg",
+//        "https://m.media-amazon.com/images/I/51gXiNdHOoL.jpg",
         "https://m.media-amazon.com/images/I/81Wf8JV6pXL.jpg",
-        "https://m.media-amazon.com/images/I/51gXiNdHOoL.jpg",
-        "https://m.media-amazon.com/images/I/51gXiNdHOoL.jpg",
-        "https://m.media-amazon.com/images/I/81Wf8JV6pXL.jpg"
+        "https://www.gstatic.com/webp/gallery/5.webp",
+        "https://colinbendell.github.io/webperf/animated-gif-decode/1.webp"
     )
+
 
     data class ResizeTask(val width: Int, val height: Int, val type: String, val keepAspectRatio: Boolean)
 
     @Test
     fun testNativeMemoryLeakJpegResize() {
-        printNMT("Start")
-        println("Downloading images...")
-        val imagesData = imageUrls.map { url ->
+        runLeakTest(
+            "JpegResize",
+            "jpg",
+             imageUrls,
+            { width, height, type ->
+                listOf(
+                    ScaleToSettings(Resolution(width, height, true)),
+                    ConvertSettings(format = ImageFormat.JPEG)
+                )
+            }
+        )
+    }
+
+    @Test
+    fun testNativeMemoryLeakWebpStatic() {
+        runLeakTest(
+            "WebpStatic",
+            "webp",
+             imageUrls,
+            { width, height, type ->
+                listOf(
+                    ScaleToSettings(Resolution(width, height, true)),
+                    ConvertSettings(format = ImageFormat.WEBP)
+                )
+            }
+        )
+    }
+
+    @Test
+    fun testNativeMemoryLeakPdf() {
+        runLeakTest(
+            "Pdf",
+            "pdf",
+            imageUrls,
+            { width, height, type ->
+                listOf(
+                    ScaleToSettings(Resolution(width, height, true)),
+                    ConvertSettings(format = ImageFormat.PDF)
+                )
+            }
+        )
+    }
+
+    @Test
+    fun testNativeMemoryLeakWebpAnimated() {
+        val animatedGifUrl = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"
+        runLeakTest(
+            "WebpAnimated",
+            "webp",
+            listOf(animatedGifUrl),
+            { width, height, type ->
+                listOf(
+                    ScaleToSettings(Resolution(width, height, true)),
+                    ConvertSettings(format = ImageFormat.WEBP)
+                )
+            }
+        )
+    }
+
+
+    private fun runLeakTest(
+        testName: String,
+        extension: String,
+        urls: List<String>,
+        settingsFactory: (Int, Int, String) -> List<Settings>
+    ) {
+        printNMT("$testName Start")
+        println("Downloading images for $testName...")
+        val imagesData = urls.mapIndexed { index, url ->
             println("Downloading $url")
-            URI.create(url).toURL().openStream().use { it.readBytes() }
+            try {
+                val connection = URI.create(url).toURL().openConnection() as java.net.HttpURLConnection
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                connection.inputStream.use { it.readBytes() }
+            } catch (e: Exception) {
+                println("Failed to download $url: ${e.message}")
+                null
+            }
+        }.filterNotNull()
+
+        if (imagesData.isEmpty()) {
+            println("No images downloaded for $testName. Skipping test.")
+            return
         }
         println("Downloaded ${imagesData.size} images.")
 
@@ -48,7 +130,7 @@ class TestNativeMemoryLeak {
         )
 
         val iterations = 50
-        val outputDir = File("testwrite/native_memory_leak_test")
+        val outputDir = File("testwrite/native_memory_leak_test/$testName")
         outputDir.mkdirs()
 
         val runtime = Runtime.getRuntime()
@@ -60,19 +142,15 @@ class TestNativeMemoryLeak {
                 try {
                     resizeTasks.forEach { task ->
                         val inputStream = ByteArrayInputStream(bytes)
-                        val outFile = File(outputDir, "iter_${i}_img_${index}_${task.type}.jpg")
-                        
-                        // Use DefaultImageProcessorService for entire pipeline (read -> transform -> write)
+                        val outFile = File(outputDir, "iter_${i}_img_${index}_${task.type}.$extension")
+
                         outFile.outputStream().use { outputStream ->
                             processor.process(
-                                inputStream, 
-                                outputStream, 
-                                listOf(
-                                    ScaleToSettings(Resolution(task.width, task.height, task.keepAspectRatio)),
-                                    ConvertSettings(format = ImageFormat.JPEG)
-                                ),
-                                null, 
-                                "iter_${i}_img_${index}_${task.type}" 
+                                inputStream,
+                                outputStream,
+                                settingsFactory(task.width, task.height, task.type),
+                                null,
+                                "iter_${i}_img_${index}_${task.type}"
                             )
                         }
                     }
@@ -88,7 +166,7 @@ class TestNativeMemoryLeak {
                 val usedMemory = (runtime.totalMemory() - runtime.freeMemory()) / 1024 / 1024
                 println("Heap Memory used after iteration $i: $usedMemory MB")
                 printDirectMemory()
-                printNMT("Iteration $i")
+                printNMT("$testName Iteration $i")
             }
         }
         
@@ -115,3 +193,4 @@ class TestNativeMemoryLeak {
         println("==========================")
     }
 }
+
