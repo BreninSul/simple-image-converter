@@ -1,3 +1,5 @@
+# Module simple-image-converter
+
 This is lib to make image editing (basically conversion, but any ImageIO/scrimage action can be performed ) more universal and easy.
 
 
@@ -48,12 +50,12 @@ open class SimpleExample {
 
     fun convertWebpToGif() {
         val file = File(javaClass.classLoader.getResource("dir/animated-webp.webp").toURI())
-        val image: ImageOrAnimation = reader.read( file.inputStream() , listOf())
-        val scaledImage= ScaleToTransformer().process(image, listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale)))
-        val rotatedImage =ImageTransformer{ img, st->img.rotate(Degrees(90))}.process(scaledImage)
+        val image: ImageOrAnimation = file.inputStream().use { reader.read(it, listOf()) }
+        val scaledImage = ScaleToTransformer().process(image, listOf(ScaleToSettings(Resolution(100, 100), ScaleMethod.FastScale)))
+        val rotatedImage = ImageTransformer { img, st -> img.rotate(Degrees(90)) }.process(scaledImage)
         val outFile = File("dir/animated.gif")
         outFile.createNewFile()
-        writer.convert(rotatedImage, listOf(ConvertSettings(format = ImageFormat.GIF)), outFile.outputStream() )
+        outFile.outputStream().use { writer.convert(rotatedImage, listOf(ConvertSettings(format = ImageFormat.GIF)), it) }
     }
 }
 ````

@@ -1,7 +1,8 @@
-import org.jetbrains.dokka.gradle.DokkaTask
+
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.net.URL
+
+import java.net.URI
 
 plugins {
     val kotlinVersion = "2.3.0"
@@ -27,7 +28,7 @@ val javaVersion = JavaVersion.VERSION_17
 
 
 tasks.named<Jar>("javadocJar") {
-    from(tasks.named("dokkaJavadoc"))
+    from(tasks.named("dokkaGenerate"))
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 java {
@@ -89,17 +90,15 @@ dependencies {
 
 }
 
-tasks.withType<DokkaTask>().configureEach {
+dokka {
     val repositoryName = project.name
-    dokkaSourceSets {
-        named("main") {
-            moduleName.set(project.name)
-            includes.from("README.md")
-            sourceLink {
-                localDirectory.set(file("src/main/kotlin"))
-                remoteUrl.set(URL("https://github.com/BreninSul/$repositoryName"))
-                remoteLineSuffix.set("#L")
-            }
+    moduleName.set(project.name)
+    dokkaSourceSets.named("main") {
+        includes.from("README.md")
+        sourceLink {
+            localDirectory.set(file("src/main/kotlin"))
+            remoteUrl.set(URI("https://github.com/BreninSul/$repositoryName"))
+            remoteLineSuffix.set("#L")
         }
     }
 }
