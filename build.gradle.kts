@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "io.github.breninsul"
-version = "2.0.9"
+version = "2.1.0"
 
 val scrimageVersion = "4.3.5"
 val scrimagePngVersion = "4.3.2"
