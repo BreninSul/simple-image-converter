@@ -54,22 +54,24 @@ open class PdfWriter(
     }
 
     override fun writeAnimation(animation: AnimatedGif, settings: List<Settings>, out: OutputStream) {
-        val document = PDDocument()
-        val setting = settings.getSetting<PdfWriterSettings>() ?: PdfWriterSettings()
-        val writer = getImageWriter(setting)
-        animation.frames.forEach {
-            writePage(setting, writer, it, settings, document)
+        PDDocument().use { document ->
+            val setting = settings.getSetting<PdfWriterSettings>() ?: PdfWriterSettings()
+            val writer = getImageWriter(setting)
+            animation.frames.forEach {
+                writePage(setting, writer, it, settings, document)
+            }
+            out.use { document.save(it) }
         }
-        out.use { document.save(it) }
     }
 
 
     override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: OutputStream) {
-        val document = PDDocument()
-        val setting = settings.getSetting<PdfWriterSettings>() ?: PdfWriterSettings()
-        val writer = getImageWriter(setting)
-        writePage(setting, writer, image, settings, document)
-        out.use { document.save(it) }
+        PDDocument().use { document ->
+            val setting = settings.getSetting<PdfWriterSettings>() ?: PdfWriterSettings()
+            val writer = getImageWriter(setting)
+            writePage(setting, writer, image, settings, document)
+            out.use { document.save(it) }
+        }
     }
 
     protected open fun getImageWriter(setting: PdfWriterSettings) = writers.firstOrNull { it.supportedTypes().contains(setting.imageFormat) } ?: throw ImageWritingException("Unsupported format ${setting.imageFormat}")

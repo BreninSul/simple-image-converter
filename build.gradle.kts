@@ -3,17 +3,17 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.net.URL
 
 plugins {
-    val kotlinVersion = "2.1.0"
+    val kotlinVersion = "2.3.0"
     id("java")
     id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.2.4"
     id("org.jetbrains.kotlin.jvm") version kotlinVersion
     id("org.jetbrains.kotlin.plugin.spring") version kotlinVersion
     id("org.jetbrains.kotlin.kapt") version kotlinVersion
-    id("org.jetbrains.dokka") version "2.0.0"
+    id("org.jetbrains.dokka") version "2.1.0"
 }
 
 group = "io.github.breninsul"
-version = "2.0.8"
+version = "2.0.9"
 
 val scrimageVersion = "4.3.5"
 val scrimagePngVersion = "4.3.2"
@@ -45,10 +45,10 @@ tasks.compileKotlin {
 }
 
 dependencies {
-    api("io.github.breninsul:io-stream-commons:1.0.0")
+    api("io.github.breninsul:io-stream-commons:1.0.4")
     api("io.github.breninsul:WebPDecoderJN:1.3-b")
-    api("org.apache.pdfbox:pdfbox:3.0.3")
-    api("org.apache.tika:tika-core:3.0.0")
+    api("org.apache.pdfbox:pdfbox:3.0.6")
+    api("org.apache.tika:tika-core:3.2.3")
     api("com.sksamuel.scrimage:scrimage-core:$scrimageVersion")
     api("com.sksamuel.scrimage:scrimage-format-png:$scrimagePngVersion")
     api("com.sksamuel.scrimage:scrimage-formats-extra:$scrimageVersion")
@@ -80,9 +80,9 @@ dependencies {
     api("org.apache.xmlgraphics:batik-extension:$batikVersion")
     api("org.apache.xmlgraphics:batik-anim:$batikVersion")
     api("org.apache.xmlgraphics:batik-svggen:$batikVersion")
-    api("com.ashampoo:kim:0.20.2")
+    api("com.ashampoo:kim:0.26.2")
     api("com.madgag:animated-gif-lib:1.4")
-    api("net.java.dev.jna:jna:5.15.0")
+    api("net.java.dev.jna:jna:5.18.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
 
@@ -155,3 +155,4 @@ tasks.jar {
     enabled = true
     archiveClassifier.set("")
 }
+

@@ -45,40 +45,43 @@ open class PdfReader(private val order: Int = 1) : ImageReader {
     protected open val supportedImageTypes = setOf("pdf")
     override fun supportedTypes() = supportedImageTypes
     override fun readInternal(fileStream: InputStream, settings: List<Settings>,metadata: ImageMetadata?): ImageOrAnimation {
-        val document: PDDocument = Loader.loadPDF(fileStream.readAllBytes())
-        val setting = settings.getSetting<PdfReaderSettings>() ?: PdfReaderSettings()
-        val pdfRenderer = PDFRenderer(document)
-        val numberOfPages = document.numberOfPages
-        val count = document.pages.count
-        if (numberOfPages < 1) {
-            throw ImageReadingException("No pages!")
-        }
-        val firstImage: BufferedImage = pdfRenderer.renderImage(0, setting.scale, setting.imageType, setting.destination)
-        if (numberOfPages == 1) {
-            val originalImage = ImmutableImage.fromAwt(firstImage)
-            return ImageOrAnimation(null, originalImage,metadata)
-        } else {
-            val encoder = AnimatedGifEncoder()
-            val tempFile = Files.createTempFile("AnimationReaderPdf", ".gif")
-            tempFile.outputStream().use { outputStream ->
-                encoder.start(outputStream)
-                encoder.setRepeat(1)
-                encoder.setSize(firstImage.width, firstImage.height)
-                (0..<numberOfPages).forEach { index ->
-                    encoder.setDelay(setting.animationDelay.toMillis().toInt())
-                    val frame = if (index == 0) firstImage else pdfRenderer.renderImage(index, setting.scale, setting.imageType, setting.destination)
-                    encoder.addFrame(frame)
+        Loader
+            .loadPDF(fileStream.readAllBytes())
+            .use { document ->
+            val setting = settings.getSetting<PdfReaderSettings>() ?: PdfReaderSettings()
+            val pdfRenderer = PDFRenderer(document)
+            val numberOfPages = document.numberOfPages
+            val count = document.pages.count
+            if (numberOfPages < 1) {
+                throw ImageReadingException("No pages!")
+            }
+            val firstImage: BufferedImage = pdfRenderer.renderImage(0, setting.scale, setting.imageType, setting.destination)
+            if (numberOfPages == 1) {
+                val originalImage = ImmutableImage.fromAwt(firstImage)
+                return ImageOrAnimation(null, originalImage, metadata)
+            } else {
+                val encoder = AnimatedGifEncoder()
+                val tempFile = Files.createTempFile("AnimationReaderPdf", ".gif")
+                tempFile.outputStream().use { outputStream ->
+                    encoder.start(outputStream)
+                    encoder.setRepeat(1)
+                    encoder.setSize(firstImage.width, firstImage.height)
+                    (0..<numberOfPages).forEach { index ->
+                        encoder.setDelay(setting.animationDelay.toMillis().toInt())
+                        val frame = if (index == 0) firstImage else pdfRenderer.renderImage(index, setting.scale, setting.imageType, setting.destination)
+                        encoder.addFrame(frame)
+                    }
                 }
+                encoder.finish()
+                val reader = tempFile.inputStream().use {
+                    val reader = GifSequenceReaderWithDelay()
+                    reader.read(it)
+                    reader
+                }
+                tempFile.deleteIfExists()
+                val gif = AnimatedGifWithDelay(reader)
+                return ImageOrAnimation(gif, null, metadata)
             }
-            encoder.finish()
-            val reader = tempFile.inputStream().use {
-                val reader = GifSequenceReaderWithDelay()
-                reader.read(it)
-                reader
-            }
-            tempFile.deleteIfExists()
-            val gif = AnimatedGifWithDelay(reader)
-            return ImageOrAnimation(gif, null,metadata)
         }
     }
 
