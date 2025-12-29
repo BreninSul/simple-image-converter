@@ -112,6 +112,11 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    jvmArgs("-XX:NativeMemoryTracking=summary")
+    testLogging {
+        events("standardOut", "standardError")
+        showStandardStreams = true
+    }
 }
 
 signing {
