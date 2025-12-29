@@ -25,6 +25,7 @@ import com.ashampoo.kim.format.tiff.constant.TiffTag
 import com.ashampoo.kim.input.ByteReader
 import com.ashampoo.kim.input.Closeable
 import com.ashampoo.kim.input.JvmInputStreamByteReader
+import com.ashampoo.kim.input.use
 import com.ashampoo.kim.model.MetadataUpdate
 import com.ashampoo.kim.model.TiffOrientation
 import com.ashampoo.kim.output.OutputStreamByteWriter
@@ -134,20 +135,19 @@ interface ImageWriter : Ordered {
         orientationValue: Int
     ) {
         //Create wrapper for output stream
-        val queueOutputStream = QueueOutputStream()
-        val queueInputStream = queueOutputStream.newQueueInputStream()
-        //write bytes there
-        writeInternal(image, settings, queueOutputStream)
-        val byteReader: ByteReader = JvmInputStreamByteReader(queueInputStream, queueInputStream.available().toLong())
-        //set real output stream to write result
-        val byteWriter = OutputStreamByteWriter(out)
-        //Update metadata
-        Kim.update(byteReader, byteWriter, MetadataUpdate.Orientation(TiffOrientation.of(orientationValue)!!))
-        queueOutputStream.tryClose()
-        queueInputStream.tryClose()
-        byteWriter.tryClose()
-        byteReader.tryClose()
-        out.tryClose()
+        QueueOutputStream().use { queueOutputStream ->
+            queueOutputStream.newQueueInputStream().use { queueInputStream ->
+                //write bytes there
+                writeInternal(image, settings, queueOutputStream)
+                OutputStreamByteWriter(out).use { byteWriter ->
+                    JvmInputStreamByteReader(queueInputStream, queueInputStream.available().toLong()).use { byteReader ->
+                        //set real output stream to write result
+                        //Update metadata
+                        Kim.update(byteReader, byteWriter, MetadataUpdate.Orientation(TiffOrientation.of(orientationValue)!!))
+                    }
+                }
+            }
+        }
     }
 
     fun AutoCloseable.tryClose() {
