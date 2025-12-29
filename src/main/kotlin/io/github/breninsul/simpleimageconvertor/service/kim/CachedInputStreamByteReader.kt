@@ -22,6 +22,7 @@ package io.github.breninsul.simpleimageconvertor.service.kim
 
 import com.ashampoo.kim.input.ByteReader
 import com.ashampoo.kim.input.JvmInputStreamByteReader
+import com.sksamuel.scrimage.format.png.deflate
 import io.github.breninsul.io.service.stream.inputStream.CacheReadenInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
@@ -39,11 +40,11 @@ import java.io.PushbackInputStream
  * @property inputStream The InputStream to read data from.
  */
 public open class CachedInputStreamByteReader(
-    inputStream: InputStream,
+    protected open val inputStream: InputStream,
     protected open val bufferSize: Int = UShort.MAX_VALUE.toInt(),
     protected open val closeStream: Boolean = false,
     protected open val inputStreamDelegate: CacheReadenInputStream =CacheReadenInputStream(inputStream,closeStream,bufferSize),
-    delegate: ByteReader = JvmInputStreamByteReader(inputStream,Long.MAX_VALUE),
+    protected open val delegate: ByteReader = JvmInputStreamByteReader(inputStreamDelegate,Long.MAX_VALUE),
 ) : ByteReader by delegate {
 
     open fun toUnreadPushbackInputStream(): PushbackInputStream {

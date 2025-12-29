@@ -90,15 +90,16 @@ interface ImageReader : Ordered {
      *    InputStream for further processing.
      */
     fun InputStream.readMetadata(): Pair<ImageMetadata?, InputStream> {
-        return null to this
-        val byteReader = CachedInputStreamByteReader(this)
+//        return null to this
+        val byteReader = CachedInputStreamByteReader(this,closeStream=false)
         val metadata = try {
             Kim.readMetadata(byteReader)
         } catch (e: Exception) {
             logger.log(Level.FINE, "Error while read metadata ${e.javaClass}:${e.message}")
             null
         }
-        return metadata to byteReader.toUnreadPushbackInputStream()
+        val toUnreadPushbackInputStream = byteReader.toUnreadPushbackInputStream()
+        return metadata to toUnreadPushbackInputStream
     }
 
     companion object {

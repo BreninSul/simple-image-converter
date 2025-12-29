@@ -45,7 +45,8 @@ open class DefaultImageConsumer(
             val (resolvedMimeType, resolvedIs) = if (mimeType == null) {
                 val byteReader = CacheReadenInputStream(inputStream)
                 val type = tika.detect(byteReader)
-                type to byteReader.toUnreadPushbackInputStream()
+                val toUnreadPushbackInputStream = byteReader.toUnreadPushbackInputStream()
+                type to toUnreadPushbackInputStream
             } else {
                 mimeType to inputStream
             }
