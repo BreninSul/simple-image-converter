@@ -40,6 +40,7 @@ import io.github.breninsul.simpleimageconvertor.dto.settings.transformation.Tran
 import io.github.breninsul.simpleimageconvertor.dto.settings.writer.ConvertSettings
 import io.github.breninsul.simpleimageconvertor.dto.supportsKimMetadataWrite
 import org.apache.commons.io.output.QueueOutputStream
+import org.apache.commons.io.output.CloseShieldOutputStream
 import java.io.OutputStream
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -139,7 +140,7 @@ interface ImageWriter : Ordered {
             queueOutputStream.newQueueInputStream().use { queueInputStream ->
                 //write bytes there
                 writeInternal(image, settings, queueOutputStream)
-                OutputStreamByteWriter(out).use { byteWriter ->
+                OutputStreamByteWriter(CloseShieldOutputStream(out)).use { byteWriter ->
                     JvmInputStreamByteReader(queueInputStream, queueInputStream.available().toLong()).use { byteReader ->
                         //set real output stream to write result
                         //Update metadata
@@ -190,7 +191,7 @@ interface ImageWriter : Ordered {
         out: OutputStream
     ) {
         val rotatedImage = tryRotateImageToRightOrientation(orientationValue, image)
-        out.use { writeInternal(rotatedImage, settings, out) }
+        writeInternal(rotatedImage, settings, out)
         return
     }
 

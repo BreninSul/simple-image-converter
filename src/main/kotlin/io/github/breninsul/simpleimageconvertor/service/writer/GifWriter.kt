@@ -45,13 +45,11 @@ open class GifWriter : AnimationImageWriter {
     }
 
     override fun writeAnimation(animation: AnimatedGif, settings: List<Settings>, out: OutputStream) {
-        out.use { outputStream ->
-            outputStream.write(animation.bytes)
-        }
+        out.write(animation.bytes)
     }
 
     override fun writeStatic(image: ImmutableImage, settings: List<Settings>, out: OutputStream) {
-        out.use { ImageIO.write(image.awt(), "gif", it) }
+        ImageIO.write(image.awt(), "gif", out)
     }
 
     override fun getOrder(): Int {

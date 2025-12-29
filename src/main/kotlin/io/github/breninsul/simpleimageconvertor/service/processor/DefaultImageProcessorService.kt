@@ -71,11 +71,18 @@ open class DefaultImageProcessorService(
         id: String?,
     ): String? {
         try {
-            val time = System.currentTimeMillis()
-            val processed = performImageTransformation(inputStream, settings, mimeType, id)
-            val afterProcessTime = System.currentTimeMillis()
-            converter.convert(processed, settings, outputStream)
-            logger.log(loggingLevel, "Image write $id took ${System.currentTimeMillis() - afterProcessTime} ms. Total time ${System.currentTimeMillis() - time} ms")
+            inputStream.use { _ ->
+                outputStream.use { _ ->
+                    val time = System.currentTimeMillis()
+                    val processed = performImageTransformation(inputStream, settings, mimeType, id)
+                    val afterProcessTime = System.currentTimeMillis()
+                    converter.convert(processed, settings, outputStream)
+                    logger.log(
+                        loggingLevel,
+                        "Image write $id took ${System.currentTimeMillis() - afterProcessTime} ms. Total time ${System.currentTimeMillis() - time} ms"
+                    )
+                }
+            }
         } catch (t: Throwable) {
             throw if (t is ImageException) t else ImageException(t.message, t)
         }

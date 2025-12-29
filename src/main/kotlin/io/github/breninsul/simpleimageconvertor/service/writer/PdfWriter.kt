@@ -60,7 +60,7 @@ open class PdfWriter(
             animation.frames.forEach {
                 writePage(setting, writer, it, settings, document)
             }
-            out.use { document.save(it) }
+            document.save(out)
         }
     }
 
@@ -70,7 +70,7 @@ open class PdfWriter(
             val setting = settings.getSetting<PdfWriterSettings>() ?: PdfWriterSettings()
             val writer = getImageWriter(setting)
             writePage(setting, writer, image, settings, document)
-            out.use { document.save(it) }
+            document.save(out)
         }
     }
 

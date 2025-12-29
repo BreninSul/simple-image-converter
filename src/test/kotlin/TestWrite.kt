@@ -133,10 +133,12 @@ class TestWrite {
         val image = reader.read(file.inputStream() , listOf())
         val outFile = File("testwrite/static.${format.name.lowercase()}")
         outFile.createNewFile()
-        writer.convert(image, listOf(
-            ScaleToSettings(Resolution(640, 640, true)),
-            ConvertSettings(format = format)
-        ),  outFile.outputStream() )
+        outFile.outputStream().use { 
+            writer.convert(image, listOf(
+                ScaleToSettings(Resolution(640, 640, true)),
+                ConvertSettings(format = format)
+            ),  it )
+        }
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
 
@@ -146,7 +148,7 @@ class TestWrite {
         val image = reader.read(file.inputStream() , listOf())
         val outFile = File("testwrite/animated-to-static.${format.name.lowercase()}")
         outFile.createNewFile()
-        writer.convert(image, listOf(ConvertSettings(format = format), AnimationToStaticSettings(strategy = AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME)),  outFile.outputStream() )
+        outFile.outputStream().use { writer.convert(image, listOf(ConvertSettings(format = format), AnimationToStaticSettings(strategy = AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME)),  it ) }
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
 
@@ -156,7 +158,7 @@ class TestWrite {
         val image = reader.read( file.inputStream() , listOf())
         val outFile = File("testwrite/animated-to-static.${format.name.lowercase()}")
         outFile.createNewFile()
-        writer.convert(image, listOf(ConvertSettings(format = format), AnimationToStaticSettings(strategy = AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME)),  outFile.outputStream() )
+        outFile.outputStream().use { writer.convert(image, listOf(ConvertSettings(format = format), AnimationToStaticSettings(strategy = AnimationToStaticSettings.StrategyEnum.MIDDLE_FRAME)),  it ) }
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
 
@@ -166,7 +168,7 @@ class TestWrite {
         val image = reader.read( file.inputStream() , listOf())
         val outFile = File("testwrite/animated.${format.name.lowercase()}")
         outFile.createNewFile()
-        writer.convert(image, listOf(ConvertSettings(format = format)),  outFile.outputStream() )
+        outFile.outputStream().use { writer.convert(image, listOf(ConvertSettings(format = format)),  it ) }
         println("${outFile.absolutePath} took ${System.currentTimeMillis() - time}ms")
     }
 

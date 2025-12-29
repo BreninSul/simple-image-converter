@@ -46,10 +46,8 @@ interface ImageReader : Ordered {
      *         along with any associated metadata.
      */
     open fun read(fileStream: InputStream, settings: List<Settings>): ImageOrAnimation {
-        fileStream.use {
-            val (metadata, inputStream) = it.readMetadata()
-            return readInternal(inputStream, settings, metadata)
-        }
+        val (metadata, inputStream) = fileStream.readMetadata()
+        return readInternal(inputStream, settings, metadata)
     }
 
     fun readInternal(fileStream: InputStream, settings: List<Settings>, metadata: ImageMetadata?): ImageOrAnimation

@@ -35,7 +35,7 @@ open class ImageIOReader(private val order: Int = Int.MAX_VALUE) : ImageReader {
 
     override fun readInternal(fileStream: InputStream, settings: List<Settings>, metadata: ImageMetadata?): ImageOrAnimation{
         val inputStream = if (fileStream is BufferedInputStream) fileStream else BufferedInputStream(fileStream)
-        val bufferedImage: BufferedImage = inputStream.use {  ImageIO.read(it)}
+        val bufferedImage: BufferedImage = ImageIO.read(inputStream)
         val originalImage = ImmutableImage.fromAwt(bufferedImage)
         return ImageOrAnimation(null, originalImage,metadata)
     }
