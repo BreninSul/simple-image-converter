@@ -1,5 +1,6 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.net.URL
 
 plugins {
@@ -104,9 +105,9 @@ tasks.withType<DokkaTask>().configureEach {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = javaVersion.majorVersion
+    compilerOptions {
+        freeCompilerArgs.add("-Xjsr305=strict")
+        jvmTarget.set(JvmTarget.fromTarget(javaVersion.majorVersion))
     }
 }
 
